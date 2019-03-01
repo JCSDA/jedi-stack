@@ -1,6 +1,6 @@
 # OSX Software Stack
 
-These repository will build widely used packages [by me] from source on OSX, instead of using existing package managers e.g. [HomeBrew](https://brew.sh/), etc.
+This repository will facilitate building widely used packages [by me] from source on OSX, instead of using existing package managers e.g. [HomeBrew](https://brew.sh/), etc.
 
 The following software can be built on OSX with the scripts under `ush` and instructions that follow:
 * GNU
