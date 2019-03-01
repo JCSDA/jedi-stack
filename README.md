@@ -40,6 +40,7 @@ The individual packages should be downloaded and placed under`pkg`
 
 ### Checking the installation; will execute ctest or make check
 `export CHECK=""` # Empty String -- Disable checking [Prefered]
+
 `export CHECK="Y"` # Enable checking [ This can be slow ]
 
 ### Todos
