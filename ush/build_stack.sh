@@ -23,6 +23,8 @@ export COMPILER="gnu-7.3.0"
 ./build_nco.sh
 ./build_eccodes.sh
 
+./deploy_modules.sh
+
 # Then build GNU + OpenMPI compiler suite
 export MPI="openmpi-3.1.2"
 ./build_mpi.sh
@@ -32,6 +34,8 @@ export MPI="openmpi-3.1.2"
 ./build_boost.sh
 ./build_baselibs.sh
 
+./deploy_modules.sh
+
 # Finally build GNU + MPICH compiler suite
 export MPI="mpich-3.2.1"
 ./build_mpi.sh
@@ -40,5 +44,7 @@ export MPI="mpich-3.2.1"
 ./build_netcdf.sh
 ./build_boost.sh
 ./build_baselibs.sh
+
+./deploy_modules.sh
 
 exit 0
