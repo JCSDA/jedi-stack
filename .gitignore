@@ -1,0 +1,3 @@
+# Ignore the contents of these directories
+pkg/
+build/
