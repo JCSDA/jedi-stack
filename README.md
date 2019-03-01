@@ -26,6 +26,9 @@ The following software can be built on OSX with the scripts under `ush` and inst
 ### Packages
 The individual packages should be downloaded and placed under`pkg`
 
+### Compiler options
+`export COMPILER="gnu-7.3.0"
+
 ### MPI options
 `export MPI=""` # Disable MPI for some software e.g. HDF5, NetCDF, Boost, etc.
 
@@ -34,14 +37,12 @@ The individual packages should be downloaded and placed under`pkg`
 `export MPI="mpich-3.2.1"`
 
 ### Installation path
-`export PREFIX=""` # [will install under $HOME/opt]
-
 `export PREFIX="/opt"`
 
 ### Checking the installation; will execute ctest or make check
-`export CHECK=""` # Empty String -- Disable checking [Prefered]
+`export CHECK="NO"` # Disable checking
 
-`export CHECK="Y"` # Enable checking [ This can be slow ]
+`export CHECK="YES"` # Enable checking
 
 ### Todos
 

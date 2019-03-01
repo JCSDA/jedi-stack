@@ -9,7 +9,7 @@ software_cxx=netcdf-cxx4-4.3.0
 name=$(echo $software_c | cut -d"-" -f1)
 version=$(echo $software_c | cut -d"-" -f3)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
 set +x
@@ -55,7 +55,7 @@ export LDFLAGS="-L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 ./configure --prefix=$prefix $extra_conf
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 export LDFLAGS+=" -L$prefix/lib"
@@ -67,7 +67,7 @@ rm -rf $software_f; tar -xzf ../pkg/$software_f.tar.gz; cd $software_f
 ./configure --prefix=$prefix $extra_conf
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 # NetCDF CXX
@@ -77,7 +77,7 @@ rm -rf $software_cxx; tar -xzf ../pkg/$software_cxx.tar.gz; cd $software_cxx
 ./configure --prefix=$prefix
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0

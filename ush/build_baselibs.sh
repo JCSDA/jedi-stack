@@ -8,7 +8,7 @@ software=baselibs-5.2.2
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-"openmpi-3.1.2"}
 
 set +x

@@ -6,7 +6,7 @@ software=eigen-eigen-b3f3d4950030
 name=eigen
 version=3.3.5
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 
 set +x
 source $MODULESHOME/init/sh
@@ -28,7 +28,7 @@ mkdir build && cd build
 prefix="${PREFIX:-"$HOME/opt"}/$name/$version"
 
 cmake .. -DCMAKE_INSTALL_PREFIX=$prefix
-[[ -z $CHECK ]] && ctest
+[[ "$CHECK" = "YES" ]] && ctest
 make install
 
 exit 0

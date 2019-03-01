@@ -7,7 +7,7 @@ software="boost_1_68_0"
 name=$(echo $software | cut -d"_" -f1)
 version=$(echo $software | cut -d"_" -f2-)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
 debug="--debug-configuration"

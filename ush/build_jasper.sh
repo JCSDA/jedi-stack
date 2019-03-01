@@ -7,7 +7,7 @@ software="jasper-1.900.1"
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 
 set +x
 source $MODULESHOME/init/sh
@@ -28,7 +28,7 @@ prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
 ./configure --prefix=$prefix
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0

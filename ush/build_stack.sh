@@ -2,11 +2,13 @@
 
 set -x
 
-export PREFIX=""
-export CHECK=""
+export PREFIX="/opt"
+export CHECK="NO"
 
 # First build the GNU compiler
 ./build_gnu.sh
+
+export COMPILER="gnu-7.3.0"
 
 # Next build GNU compiler suite
 ./build_szip.sh

@@ -7,7 +7,7 @@ software=fftw-3.3.8
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
 set +x
@@ -33,7 +33,7 @@ prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 ./configure --prefix=$prefix --enable-openmp --enable-threads $extra_conf
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0
