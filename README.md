@@ -28,16 +28,19 @@ The individual packages should be downloaded and placed under`pkg`
 
 ### MPI options
 `export MPI=""` # Disable MPI for some software e.g. HDF5, NetCDF, Boost, etc.
+
 `export MPI="openmpi-3.1.2"`
+
 `export MPI="mpich-3.2.1"`
 
 ### Installation path
 `export PREFIX=""` # [will install under $HOME/opt]
+
 `export PREFIX="/opt"`
 
 ### Checking the installation; will execute ctest or make check
-`export CHECK=""` # Disable checking [Prefered]
-`export CHECK="non-empty-string"` # Enable checking [ This can be slow ]
+`export CHECK=""` # Empty String -- Disable checking [Prefered]
+`export CHECK="Y"` # Enable checking [ This can be slow ]
 
 ### Todos
 
