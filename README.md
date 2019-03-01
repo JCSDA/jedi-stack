@@ -42,6 +42,7 @@ The individual packages should be downloaded and placed under`pkg`
 ### Todos
 
  - Remove hard-wired software versions
+ - Remove hard-wired prefix paths in modulefiles
 
 License
 ----
