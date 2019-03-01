@@ -42,7 +42,3 @@ The individual packages should be downloaded and placed under`pkg`
 ### Todos
 
  - Remove hard-wired software versions
-
-License
-----
-Apache
