@@ -12,13 +12,13 @@ local mpiNameVerD  = mpiNameVer:gsub("/","-")
 local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
-conflict("szip")
-conflict("hdf5")
-conflict("netcdf")
-conflict("udunits")
-conflict("esmf")
 
-local base = pathJoin("/Users/rmahajan/opt",compNameVerD,mpiNameVerD,pkgName,pkgVersion)
+always_load("hdf5")
+prereq("hdf5")
+
+local opt = os.getenv("OPT") or "/opt"
+
+local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
@@ -26,21 +26,12 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
-setenv("BASEDIR", base)
-
-setenv("HDF4_ROOT", base)
-setenv("HDF4_INCLUDES", pathJoin(base,"include"))
-setenv("HDF4_LIBRARIES", pathJoin(base,"lib"))
-
-setenv("HDF5_ROOT", base)
-setenv("HDF5_INCLUDES", pathJoin(base,"include"))
-setenv("HDF5_LIBRARIES", pathJoin(base,"lib"))
-
 setenv("NETCDF_ROOT", base)
-setenv("NETCDF_INCLUDES", pathJoin(base,"include/netcdf"))
+setenv("NETCDF_INCLUDES", pathJoin(base,"include"))
 setenv("NETCDF_LIBRARIES", pathJoin(base,"lib"))
+setenv("NETCDF_VERSION", pkgVersion)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
-whatis("Category: Collection of libraries")
-whatis("Description: GMAO ESMA-Baselibs")
+whatis("Category: library")
+whatis("Description: NetCDF4 C, CXX and Fortran library")

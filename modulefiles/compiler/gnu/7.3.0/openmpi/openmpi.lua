@@ -15,15 +15,18 @@ local compNameVerD = compNameVer:gsub("/","-")
 family("mpi")
 
 conflict(pkgName)
-conflict("openmpi")
+conflict("mpich")
 
 always_load("szip")
 prereq("szip")
 
-local mpath = pathJoin("/Users/rmahajan/opt/modulefiles/mpi",compNameVer,pkgName,pkgVersion)
+local opt = os.getenv("OPT") or "/opt"
+
+local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,pkgName,pkgVersion)
 prepend_path("MODULEPATH", mpath)
 
-local base = pathJoin("/Users/rmahajan/opt",compNameVerD,pkgName,pkgVersion)
+local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
+
 prepend_path("PATH", pathJoin(base,"bin"))
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
@@ -37,4 +40,4 @@ setenv("MPICXX", "mpicxx")
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: library")
-whatis("Description: MPICH library")
+whatis("Description: OpenMPI library")

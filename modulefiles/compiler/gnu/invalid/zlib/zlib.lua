@@ -8,6 +8,8 @@ local root = pathJoin("/Users/rmahajan/opt",name,compiler,version)
 
 conflict(name)
 
+local opt = os.getenv("OPT") or "/opt"
+
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(root,"lib"))
 prepend_path("CPATH", pathJoin(root,"include"))
 prepend_path("MANPATH", pathJoin(root,"share","man"))

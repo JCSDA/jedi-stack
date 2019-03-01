@@ -9,10 +9,12 @@ family("compiler")
 
 conflict(pkgName)
 
-local mpath = pathJoin("/Users/rmahajan/opt/modulefiles/compiler",pkgName,pkgVersion)
+local opt = os.getenv("OPT") or "/opt"
+
+local mpath = pathJoin(opt,"modulefiles/compiler",pkgName,pkgVersion)
 prepend_path("MODULEPATH", mpath)
 
-local base = pathJoin("/Users/rmahajan/opt",pkgName,pkgVersion)
+local base = pathJoin(opt,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))
 prepend_path("LIBRARY_PATH", pathJoin(base,"lib"))

@@ -7,7 +7,9 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-local base = pathJoin("/Users/rmahajan/opt",pkgName,pkgVersion)
+local opt = os.getenv("OPT") or "/opt"
+
+local base = pathJoin(opt,pkgName,pkgVersion)
 
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))

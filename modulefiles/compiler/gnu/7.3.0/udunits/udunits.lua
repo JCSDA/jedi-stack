@@ -11,10 +11,9 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("szip")
-prereq("szip")
+local opt = os.getenv("OPT") or "/opt"
 
-local base = pathJoin("/Users/rmahajan/opt",compNameVerD,pkgName,pkgVersion)
+local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
@@ -22,12 +21,13 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
-setenv("HDF5_ROOT", base)
-setenv("HDF5_INCLUDES", pathJoin(base,"include"))
-setenv("HDF5_LIBRARIES", pathJoin(base,"lib"))
-setenv("HDF5_VERSION", pkgVersion)
+setenv("UDUNITS2_ROOT", base)
+setenv("UDUNITS2_PATH", base)
+setenv("UDUNITS2_INCLUDE_DIRS", pathJoin(base,"include"))
+setenv("UDUNITS2_LIBRARIES", pathJoin(base,"lib"))
+setenv("UDUNITS2_VERSION", pkgVersion)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: library")
-whatis("Description: HDF5 library")
+whatis("Description: Udunits2 library")
