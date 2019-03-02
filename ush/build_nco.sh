@@ -2,7 +2,9 @@
 
 set -ex
 
-software=nco-4.7.3
+
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
@@ -31,8 +33,7 @@ export FCFLAGS=$FFLAGS
 
 export LDFLAGS="-L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
-mkdir -p ../build ; cd ../build
-rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
 

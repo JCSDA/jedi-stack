@@ -2,7 +2,8 @@
 
 set -ex
 
-software=zlib-1.2.8
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
@@ -22,8 +23,7 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
-mkdir -p ../build ; cd ../build
-rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
 

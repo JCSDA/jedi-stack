@@ -2,9 +2,12 @@
 
 set -ex
 
-software=eigen-eigen-b3f3d4950030
-name=eigen
-version=3.3.5
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
+
+name=$(echo $software | cut -d- -f1)
+tag=$(echo $software | cut -d- -f3)
+version=${2:-$tag}
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -21,8 +24,7 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
-mkdir -p ../build ; cd ../build
-rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 mkdir build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$name/$version"

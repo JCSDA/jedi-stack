@@ -38,7 +38,8 @@ if [ $install_gmp = "YES" ]; then
     cd $root_dir
     software=$gmp
     echo "BUILDING ... $software"
-    rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+    dir_software=${PKGDIR:-"../pkg"}/$software
+    [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
     build=$root_dir/$software/build
     [[ -d $build ]] && rm -rf $build
     mkdir -p $build && cd $build
@@ -52,7 +53,8 @@ if [ $install_mpfr = "YES" ]; then
     cd $root_dir
     software=$mpfr
     echo "BUILDING ... $software"
-    rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+    dir_software=${PKGDIR:-"../pkg"}/$software
+    [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
     build=$root_dir/$software/build
     [[ -d $build ]] && rm -rf $build
     mkdir -p $build && cd $build
@@ -67,7 +69,8 @@ if [ $install_mpc = "YES" ]; then
     cd $root_dir
     software=$mpc
     echo "BUILDING ... $software"
-    rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+    dir_software=${PKGDIR:-"../pkg"}/$software
+    [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
     build=$root_dir/$software/build
     [[ -d $build ]] && rm -rf $build
     mkdir -p $build && cd $build
@@ -83,7 +86,8 @@ if [ $install_isl = "YES" ]; then
     cd $root_dir
     software=$isl
     echo "BUILDING ... $software"
-    rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+    dir_software=${PKGDIR:-"../pkg"}/$software
+    [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
     build=$root_dir/$software/build
     [[ -d $build ]] && rm -rf $build
     mkdir -p $build && cd $build
@@ -98,7 +102,8 @@ if [ $install_gcc = "YES" ]; then
     cd $root_dir
     software=$gcc
     echo "BUILDING ... $software"
-    rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+    dir_software=${PKGDIR:-"../pkg"}/$software
+    [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
     build=$root_dir/$software/build
     [[ -d $build ]] && rm -rf $build
     mkdir -p $build && cd $build

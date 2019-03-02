@@ -2,8 +2,8 @@
 
 set -ex
 
-dir_software=/Users/rmahajan/scratch/ESMA-Baselibs
-software=baselibs-5.2.2
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
@@ -19,7 +19,7 @@ module load $(echo $mpi | sed 's/-/\//g')
 module list
 set -x
 
-cd $dir_software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 
