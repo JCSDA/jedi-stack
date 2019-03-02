@@ -2,12 +2,14 @@
 
 set -ex
 
-software=udunits-2.2.26
+
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 
 set +x
 source $MODULESHOME/init/sh
@@ -15,17 +17,17 @@ module load $(echo $compiler | sed 's/-/\//g')
 module list
 set -x
 
-export CFLAGS="-fPIC"
 export FCFLAGS="-fPIC"
+export CFLAGS="-fPIC"
 
-mkdir -p ../build ; cd ../build
-rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
 
 ./configure --prefix=$prefix
+
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0

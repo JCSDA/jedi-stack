@@ -2,12 +2,13 @@
 
 set -x
 
-software="boost_1_68_0"
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"_" -f1)
 version=$(echo $software | cut -d"_" -f2-)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
 debug="--debug-configuration"
@@ -19,8 +20,7 @@ module load $(echo $mpi | sed 's/-/\//g')
 module list
 set -x
 
-mkdir -p ../build ; cd ../build
-rm -rf $software ; tar -xzf ../pkg/$software.tar.gz ; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 

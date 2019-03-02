@@ -2,12 +2,13 @@
 
 set -ex
 
-software=fftw-3.3.8
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
 set +x
@@ -23,8 +24,7 @@ export FFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export MPICC=mpicc
 
-mkdir -p ../build ; cd ../build
-rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 
@@ -33,7 +33,7 @@ prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 ./configure --prefix=$prefix --enable-openmp --enable-threads $extra_conf
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0

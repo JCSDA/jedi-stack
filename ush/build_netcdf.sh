@@ -2,14 +2,15 @@
 
 set -ex
 
-software_c=netcdf-c-4.6.1
-software_f=netcdf-fortran-4.4.4
-software_cxx=netcdf-cxx4-4.3.0
+
+software_c=$1
+software_f=$2
+software_cxx=$3
 
 name=$(echo $software_c | cut -d"-" -f1)
 version=$(echo $software_c | cut -d"-" -f3)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
 set +x
@@ -43,41 +44,43 @@ prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 
 [[ -z $mpi ]] || extra_conf="--enable-parallel-tests"
 
-mkdir -p ../build ; cd ../build
 curr_dir=$(pwd)
 
 # NetCDF C
 cd $curr_dir
-rm -rf $software_c; tar -xzf ../pkg/$software_c.tar.gz; cd $software_c
+dir_software=${PKGDIR:-"../pkg"}/$software_c
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 export LDFLAGS="-L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
 ./configure --prefix=$prefix $extra_conf
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 export LDFLAGS+=" -L$prefix/lib"
 
 # NetCDF Fortran
 cd $curr_dir
-rm -rf $software_f; tar -xzf ../pkg/$software_f.tar.gz; cd $software_f
+dir_software=${PKGDIR:-"../pkg"}/$software_f
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 ./configure --prefix=$prefix $extra_conf
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 # NetCDF CXX
 cd $curr_dir
-rm -rf $software_cxx; tar -xzf ../pkg/$software_cxx.tar.gz; cd $software_cxx
+dir_software=${PKGDIR:-"../pkg"}/$software_cxx
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 ./configure --prefix=$prefix
 
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0

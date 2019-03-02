@@ -2,13 +2,13 @@
 
 set -ex
 
-#openmpi-3.1.2 OR mpich-3.2.1
-software=${MPI:-"openmpi-3.1.2"}
+software=$1
+dir_software=${PKGDIR:-"../pkg"}/$software
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
 
-compiler=gnu-7.3.0
+compiler=${COMPILER:-"gnu-7.3.0"}
 
 set +x
 source $MODULESHOME/init/sh
@@ -24,8 +24,7 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 export FCFLAGS="-fPIC"
 
-mkdir -p ../build ; cd ../build
-rm -rf $software; tar -xzf ../pkg/$software.tar.gz; cd $software
+[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
 
@@ -37,7 +36,7 @@ esac
 
 ./configure --prefix=$prefix $extra_conf
 make -j${NTHREADS:-4}
-[[ -z $CHECK ]] && make check
+[[ "$CHECK" = "YES" ]] && make check
 make install
 
 exit 0
