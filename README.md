@@ -4,8 +4,8 @@ This repository will facilitate building widely used packages [by me] from sourc
 
 The following software can be built on OSX with the scripts under `ush` and instructions that follow:
 * GNU
-* Jasper [ Not used ]
-* Zlib [ Not used ]
+* Jasper
+* Zlib
 * SZip
 * OpenMPI
 * MPICH
@@ -24,12 +24,14 @@ The following software can be built on OSX with the scripts under `ush` and inst
 * Other
 
 ### Packages
-The individual packages should be downloaded and placed under`pkg`
+The individual packages should be downloaded, untarred and placed under`pkg`.  Most build scripts will look for directory `pkg/pkgName-pkgVersion` e.g. `pkg/hdf5-1.10.3`.
 
 ### Compiler options
+Set the default compiler to build the stack.
 `export COMPILER="gnu-7.3.0"
 
 ### MPI options
+Set the default MPI flavour to build the stack.
 `export MPI=""` # Disable MPI for some software e.g. HDF5, NetCDF, Boost, etc.
 
 `export MPI="openmpi-3.1.2"`
@@ -37,14 +39,13 @@ The individual packages should be downloaded and placed under`pkg`
 `export MPI="mpich-3.2.1"`
 
 ### Installation path
-`export PREFIX="/opt"`
+Specify the installation path for packages.
+`export PREFIX="$HOME/opt"`
 
-### Checking the installation; will execute ctest or make check
+### Verify installation
+Check the installation; will execute ctest or make check
 `export CHECK="NO"` # Disable checking
 
 `export CHECK="YES"` # Enable checking
 
 ### Todos
-
- - Remove hard-wired software versions
- - Remove hard-wired prefix paths in modulefiles
