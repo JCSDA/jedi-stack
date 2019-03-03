@@ -2,13 +2,14 @@
 
 set -ex
 
+name=$1
+version=$2
+f_version=$3
+cxx_version=$4
 
-software_c=$1
-software_f=$2
-software_cxx=$3
-
-name=$(echo $software_c | cut -d"-" -f1)
-version=$(echo $software_c | cut -d"-" -f3)
+software_c=$name-"c"-$version
+software_f=$name-"fortran"-$f_version
+software_cxx=$name-"cxx4"-$cxx_version
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
@@ -46,14 +47,16 @@ prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 
 curr_dir=$(pwd)
 
-# NetCDF C
-cd $curr_dir
-dir_software=${PKGDIR:-"../pkg"}/$software_c
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-
 export LDFLAGS="-L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
-./configure --prefix=$prefix $extra_conf
+# NetCDF C
+cd $curr_dir
+cd ${PKGDIR:-"../pkg"}
+[[ -d $software_c ]] && cd $software_c || (echo "$software_c does not exist, ABORT!"; exit 1)
+[[ -d build ]] && rm -rf build
+mkdir -p build && cd build
+
+../configure --prefix=$prefix $extra_conf
 
 make -j${NTHREADS:-4}
 [[ "$CHECK" = "YES" ]] && make check
@@ -63,10 +66,12 @@ export LDFLAGS+=" -L$prefix/lib"
 
 # NetCDF Fortran
 cd $curr_dir
-dir_software=${PKGDIR:-"../pkg"}/$software_f
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
+cd ${PKGDIR:-"../pkg"}
+[[ -d $software_f ]] && cd $software_f || (echo "$software_f does not exist, ABORT!"; exit 1)
+[[ -d build ]] && rm -rf build
+mkdir -p build && cd build
 
-./configure --prefix=$prefix $extra_conf
+../configure --prefix=$prefix $extra_conf
 
 make -j${NTHREADS:-4}
 [[ "$CHECK" = "YES" ]] && make check
@@ -74,10 +79,12 @@ make install
 
 # NetCDF CXX
 cd $curr_dir
-dir_software=${PKGDIR:-"../pkg"}/$software_cxx
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
+cd ${PKGDIR:-"../pkg"}
+[[ -d $software_cxx ]] && cd $software_cxx || (echo "$software_cxx does not exist, ABORT!"; exit 1)
+[[ -d build ]] && rm -rf build
+mkdir -p build && cd build
 
-./configure --prefix=$prefix
+../configure --prefix=$prefix
 
 make -j${NTHREADS:-4}
 [[ "$CHECK" = "YES" ]] && make check

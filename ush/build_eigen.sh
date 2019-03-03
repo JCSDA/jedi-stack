@@ -2,12 +2,11 @@
 
 set -ex
 
-software=$1
-dir_software=${PKGDIR:-"../pkg"}/$software
+name=$1
+version=$2
+tag=$3
 
-name=$(echo $software | cut -d- -f1)
-tag=$(echo $software | cut -d- -f3)
-version=${2:-$tag}
+software=$name-$name-$tag
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -24,8 +23,10 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-mkdir build && cd build
+cd ${PKGDIR:-"../pkg"}
+[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d build ]] && rm -rf build
+mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$name/$version"
 

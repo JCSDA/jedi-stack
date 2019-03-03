@@ -2,11 +2,10 @@
 
 set -x
 
-software=$1
-dir_software=${PKGDIR:-"../pkg"}/$software
+name=$1
+version=$2
 
-name=$(echo $software | cut -d"_" -f1)
-version=$(echo $software | cut -d"_" -f2-)
+software=${name}_$version
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
@@ -20,13 +19,14 @@ module load $(echo $mpi | sed 's/-/\//g')
 module list
 set -x
 
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-
-prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+cd ${PKGDIR:-"../pkg"}
+[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
 
 BoostRoot=$(pwd)
 BoostBuild=$BoostRoot/BoostBuild
 build_boost=$BoostRoot/build_boost
+[[ -d $BoostBuild ]] && rm -rf $BoostBuild
+[[ -d $build_boost ]] && rm -rf $build_boost
 
 cd $BoostRoot/tools/build
 
@@ -50,6 +50,8 @@ EOF
 rm -f $HOME/user-config.jam
 [[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
 
+prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+
 ./bootstrap.sh --with-toolset=$toolset
 ./b2 install $debug --prefix=$BoostBuild
 
@@ -60,7 +62,7 @@ b2 $debug --build-dir=$build_boost address-model=64 toolset=$toolset stage
 
 mkdir -p $prefix $prefix/include
 mv stage/lib $prefix
-mv boost $prefix/include
+cp -R boost $prefix/include
 
 rm -f $HOME/user-config.jam
 
