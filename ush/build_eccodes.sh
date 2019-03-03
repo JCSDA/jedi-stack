@@ -2,8 +2,10 @@
 
 set -ex
 
-software=$1
-dir_software=${PKGDIR:-"../pkg"}/$software
+name=$1
+version=$2
+
+software="$name-$version-Source"
 
 name=$(echo $software | cut -d"-" -f1)
 version=$(echo $software | cut -d"-" -f2)
@@ -26,7 +28,9 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
+cd ${PKGDIR:-"../pkg"}
+[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
