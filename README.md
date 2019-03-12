@@ -28,15 +28,15 @@ The individual packages should be downloaded, untarred and placed under`pkg`.  M
 
 ### Compiler options
 Set the default compiler to build the stack.
-`export COMPILER="gnu-7.3.0"
+`export COMPILER="gnu-7.3.0"`
 
 ### MPI options
 Set the default MPI flavour to build the stack.
-`export MPI=""` # Disable MPI for some software e.g. HDF5, NetCDF, Boost, etc.
-
-`export MPI="openmpi-3.1.2"`
-
-`export MPI="mpich-3.2.1"`
+```
+export MPI="" # Disable MPI for some software e.g. HDF5, NetCDF, Boost, etc.
+export MPI="openmpi-3.1.2"
+export MPI="mpich-3.2.1"
+```
 
 ### Installation path
 Specify the installation path for packages.
@@ -44,8 +44,8 @@ Specify the installation path for packages.
 
 ### Verify installation
 Check the installation; will execute ctest or make check
-`export CHECK="NO"` # Disable checking
-
-`export CHECK="YES"` # Enable checking
-
+```
+export CHECK="NO" # Disable checking
+export CHECK="YES" # Enable checking
+```
 ### Todos
