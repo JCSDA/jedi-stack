@@ -24,6 +24,7 @@ export COMPILER="$compilerName-$compilerVersion"
 ./build_netcdf.sh "netcdf" "4.6.1" "4.4.4" "4.3.0"
 ./build_boost.sh "boost" "1_68_0"
 ./build_eccodes.sh "eccodes" "2.8.2"
+./build_esmf "esmf" "7_1_0r"
 
 # Then build GNU + OpenMPI compiler suite
 mpiName="openmpi"
@@ -35,6 +36,7 @@ export MPI="$mpiName-$mpiVersion"
 ./build_hdf5.sh "hdf5" "1.10.3"
 ./build_netcdf.sh "netcdf" "4.6.1" "4.4.4" "4.3.0"
 ./build_boost.sh "boost" "1_68_0"
+./build_esmf "esmf" "7_1_0r"
 ./build_baselibs.sh "baselibs" "5.2.2"
 
 # Finally build GNU + MPICH compiler suite
@@ -47,6 +49,7 @@ export MPI="$mpiName-$mpiVersion"
 ./build_hdf5.sh "hdf5" "1.10.3"
 ./build_netcdf.sh "netcdf" "4.6.1" "4.4.4" "4.3.0"
 ./build_boost.sh "boost" "1_68_0"
+./build_esmf "esmf" "7_1_0r"
 ./build_baselibs.sh "baselibs" "5.2.2"
 
 exit 0
