@@ -17,6 +17,7 @@ The following software can be built on OSX with the scripts under `ush` and inst
 * Eigen
 * FFTW
 * ecCodes
+* ESMF
 * ESMA-Baselibs
 
 ### Pre-requisites
