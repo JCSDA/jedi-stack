@@ -2,10 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
-
-software=$name-$version
+name="hdf5"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
@@ -35,7 +33,11 @@ export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d hdf5 ]] && cd hdf5 || (git clone https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git && cd hdf5 || (echo "git clone failed, ABORT!"; exit 1))
+git checkout tags/hdf5-$version || (echo "git checkout failed, ABORT!"; exit 1)
+
+exit
+
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
