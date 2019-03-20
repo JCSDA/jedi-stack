@@ -2,10 +2,8 @@
 
 set -x
 
-name=$1
-version=$2
-
-software=${name}_$version
+name="boost"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
@@ -20,7 +18,8 @@ module list
 set -x
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d boost ]] && cd boost || (git clone https://github.com/boostorg/boost.git && cd boost || (echo "git clone failed, ABORT!"; exit 1))
+git checkout tags/boost-$version || (echo "git checkout failed, ABORT!"; exit 1)
 
 BoostRoot=$(pwd)
 BoostBuild=$BoostRoot/BoostBuild

@@ -2,11 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
-tag=$3
-
-software=$name-$name-$tag
+name="eigen"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -24,7 +21,9 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d eigen-git-mirror ]] && cd eigen-git-mirror || (git clone https://github.com/eigenteam/eigen-git-mirror.git && cd eigen-git-mirror || (echo "git clone failed, ABORT!"; exit 1))
+git checkout tags/$version || (echo "git checkout failed, ABORT!"; exit 1)
+
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 

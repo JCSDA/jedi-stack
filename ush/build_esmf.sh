@@ -2,8 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
+name="esmf"
+version=$1
 
 software=${name}_$version
 
@@ -51,7 +51,10 @@ export ESMF_COMPILER="gfortran"
 export ESMF_NETCDF="nc-config"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $name ]] && cd $name || (echo "$name does not exist, ABORT!"; exit 1)
+
+[[ -d esmf ]] && cd esmf || (git clone https://git.code.sf.net/p/esmf/esmf && cd esmf || (echo "git clone failed, ABORT!"; exit 1))
+git checkout ESMF_$version || (echo "git checkout failed, ABORT!"; exit 1)
+
 export ESMF_DIR=$PWD
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
