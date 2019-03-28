@@ -33,10 +33,7 @@ export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d hdf5 ]] && cd hdf5 || (git clone https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git && cd hdf5 || (echo "git clone failed, ABORT!"; exit 1))
-git checkout tags/hdf5-$version || (echo "git checkout failed, ABORT!"; exit 1)
-
-exit
+[[ -d hdf5 ]] && cd hdf5 || (git clone  -b "hdf5-$version" https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git && cd hdf5 || (echo "git clone failed, ABORT!"; exit 1))
 
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build

@@ -21,8 +21,7 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d eigen-git-mirror ]] && cd eigen-git-mirror || (git clone https://github.com/eigenteam/eigen-git-mirror.git && cd eigen-git-mirror || (echo "git clone failed, ABORT!"; exit 1))
-git checkout tags/$version || (echo "git checkout failed, ABORT!"; exit 1)
+[[ -d eigen-git-mirror ]] && cd eigen-git-mirror || (git clone -b "$version" https://github.com/eigenteam/eigen-git-mirror.git && cd eigen-git-mirror || (echo "git clone failed, ABORT!"; exit 1))
 
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build

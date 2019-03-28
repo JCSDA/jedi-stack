@@ -18,8 +18,7 @@ module list
 set -x
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d boost ]] && cd boost || (git clone https://github.com/boostorg/boost.git && cd boost || (echo "git clone failed, ABORT!"; exit 1))
-git checkout tags/boost-$version || (echo "git checkout failed, ABORT!"; exit 1)
+[[ -d boost ]] && cd boost || (git clone -b "boost-$version" https://github.com/boostorg/boost.git && cd boost || (echo "git clone failed, ABORT!"; exit 1))
 
 BoostRoot=$(pwd)
 BoostBuild=$BoostRoot/BoostBuild

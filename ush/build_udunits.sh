@@ -2,10 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
-
-software=$name-$version
+name="udunits"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -18,8 +16,10 @@ set -x
 export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 
+gitUnidata="https://github.com/Unidata"
+
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d udunits ]] && cd udunits || (git clone -b "v$version" $gitUnidata/UDUNITS-2.git udunits && cd udunits || (echo "git clone failed, ABORT!"; exit 1))
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 

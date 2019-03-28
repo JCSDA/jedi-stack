@@ -2,14 +2,10 @@
 
 set -ex
 
-name=$1
-version=$2
-f_version=$3
-cxx_version=$4
-
-software_c=$name-"c"-$version
-software_f=$name-"fortran"-$f_version
-software_cxx=$name-"cxx4"-$cxx_version
+name="netcdf"
+c_version=$1
+f_version=$2
+cxx_version=$3
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
@@ -41,7 +37,9 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
-prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+gitUnidata="https://github.com/Unidata"
+
+prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$c_version"
 
 [[ -z $mpi ]] || extra_conf="--enable-parallel-tests"
 
@@ -50,9 +48,11 @@ curr_dir=$(pwd)
 export LDFLAGS="-L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
 # NetCDF C
+software=$name-"c"
+version=$c_version
 cd $curr_dir
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software_c ]] && cd $software_c || (echo "$software_c does not exist, ABORT!"; exit 1)
+[[ -d $software ]] && cd $software || (git clone -b "v$version" $gitUnidata/$software.git && cd $software || (echo "git clone failed, ABORT!"; exit 1))
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
@@ -65,9 +65,11 @@ make install
 export LDFLAGS+=" -L$prefix/lib"
 
 # NetCDF Fortran
+software=$name-"fortran"
+version=$f_version
 cd $curr_dir
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software_f ]] && cd $software_f || (echo "$software_f does not exist, ABORT!"; exit 1)
+[[ -d $software ]] && cd $software || (git clone -b "v$version" $gitUnidata/$software.git && cd $software || (echo "git clone failed, ABORT!"; exit 1))
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
@@ -78,9 +80,11 @@ make -j${NTHREADS:-4}
 make install
 
 # NetCDF CXX
+software=$name-"cxx4"
+version=$cxx_version
 cd $curr_dir
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software_cxx ]] && cd $software_cxx || (echo "$software_cxx does not exist, ABORT!"; exit 1)
+[[ -d $software ]] && cd $software || (git clone -b "v$version" $gitUnidata/$software.git && cd $software || (echo "git clone failed, ABORT!"; exit 1))
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
