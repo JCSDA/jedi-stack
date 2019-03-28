@@ -21,7 +21,6 @@ gcc=gcc-7.3.0
 
 gcc_ver=$(echo $gcc | cut -d"-" -f2)
 
-mkdir -p ../build ; cd ../build
 root_dir=$(pwd)
 
 # Installation path
@@ -40,9 +39,8 @@ if [ $install_gmp = "YES" ]; then
     echo "BUILDING ... $software"
     dir_software=${PKGDIR:-"../pkg"}/$software
     [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-    build=$root_dir/$software/build
-    [[ -d $build ]] && rm -rf $build
-    mkdir -p $build && cd $build
+    [[ -d build ]] && rm -rf build
+    mkdir -p build && cd build
     ../configure --prefix=$prefix
     make -j${NTHREADS:-4}
     make install
@@ -55,9 +53,8 @@ if [ $install_mpfr = "YES" ]; then
     echo "BUILDING ... $software"
     dir_software=${PKGDIR:-"../pkg"}/$software
     [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-    build=$root_dir/$software/build
-    [[ -d $build ]] && rm -rf $build
-    mkdir -p $build && cd $build
+    [[ -d build ]] && rm -rf build
+    mkdir -p build && cd build
     ../configure --prefix=$prefix \
                  --with-gmp=$prefix
     make -j${NTHREADS:-4}
@@ -71,9 +68,8 @@ if [ $install_mpc = "YES" ]; then
     echo "BUILDING ... $software"
     dir_software=${PKGDIR:-"../pkg"}/$software
     [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-    build=$root_dir/$software/build
-    [[ -d $build ]] && rm -rf $build
-    mkdir -p $build && cd $build
+    [[ -d build ]] && rm -rf build
+    mkdir -p build && cd build
     ../configure --prefix=$prefix \
                  --with-gmp=$prefix \
                  --with-mpfr=$prefix
@@ -88,9 +84,8 @@ if [ $install_isl = "YES" ]; then
     echo "BUILDING ... $software"
     dir_software=${PKGDIR:-"../pkg"}/$software
     [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-    build=$root_dir/$software/build
-    [[ -d $build ]] && rm -rf $build
-    mkdir -p $build && cd $build
+    [[ -d build ]] && rm -rf build
+    mkdir -p build && cd build
     ../configure --prefix=$prefix \
                  --with-gmp=$prefix
     make -j${NTHREADS:-4}
@@ -104,9 +99,8 @@ if [ $install_gcc = "YES" ]; then
     echo "BUILDING ... $software"
     dir_software=${PKGDIR:-"../pkg"}/$software
     [[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
-    build=$root_dir/$software/build
-    [[ -d $build ]] && rm -rf $build
-    mkdir -p $build && cd $build
+    [[ -d build ]] && rm -rf build
+    mkdir -p build && cd build
     ../configure --prefix=$prefix \
                  --enable-checking=release \
                   --with-gmp=$prefix \
