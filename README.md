@@ -22,6 +22,7 @@ The following software can be built on OSX with the scripts under `ush` and inst
 
 ### Pre-requisites
 * Lua Modules - for software stack management
+* wget, curl, git - for fetching packages
 * Other
 
 ### Packages
@@ -29,7 +30,9 @@ The individual packages should be downloaded, untarred and placed under`pkg`.  M
 
 ### Compiler options
 Set the default compiler to build the stack.
-`export COMPILER="gnu-7.3.0"`
+```
+export COMPILER="gnu-7.3.0"
+```
 
 ### MPI options
 Set the default MPI flavour to build the stack.
