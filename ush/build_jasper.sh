@@ -15,8 +15,7 @@ module load $(echo $compiler | sed 's/-/\//g')
 module list
 set -x
 
-export F77=gfortran
-export CC=gcc
+export F77=$FC
 export FFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 

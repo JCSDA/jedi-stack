@@ -21,9 +21,6 @@ module load netcdf
 module list
 set -x
 
-export FC=gfortran
-export CC=gcc
-export CXX=g++
 export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
