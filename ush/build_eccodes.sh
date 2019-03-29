@@ -2,13 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
-
-software="$name-$version-Source"
-
-name=$(echo $software | cut -d"-" -f1)
-version=$(echo $software | cut -d"-" -f2)
+name="eccodes"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -25,8 +20,10 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
+gitECMWF="https://github.com/ecmwf/"
+
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d $name ]] && cd $name || (git clone -b "$version" $gitECMWF/$name.git && cd $name || (echo "git clone failed, ABORT!"; exit 1))
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 

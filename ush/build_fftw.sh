@@ -2,8 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
+name="fftw"
+version=$1
 
 software=$name-$version
 
@@ -20,16 +20,17 @@ set -x
 export F77=$FC
 export FFLAGS="-fPIC"
 export CFLAGS="-fPIC"
-export MPICC=mpicc
+
+url="http://fftw.org/${software}.tar.gz"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+[[ -d $software ]] && cd $software || ( wget $url; tar -xf $software.tar.gz; cd $software )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 
-[[ -z $mpi ]] || extra_conf="--enable-mpi"
+[[ -z $mpi ]] || ( export MPICC=mpicc; extra_conf="--enable-mpi" )
 
 ../configure --prefix=$prefix --enable-openmp --enable-threads $extra_conf
 

@@ -28,8 +28,10 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
+gitHDFgrp="https://bitbucket.hdfgroup.org/scm/hdffv"
+
 cd ${PKGDIR:-"../pkg"}
-[[ -d hdf5 ]] && cd hdf5 || (git clone  -b "hdf5-$version" https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git && cd hdf5 || (echo "git clone failed, ABORT!"; exit 1))
+[[ -d $name ]] && cd $name || (git clone -b "$name-$version" $gitHDFgrp/$name.git && cd $name || (echo "git clone failed, ABORT!"; exit 1))
 
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build

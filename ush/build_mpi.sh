@@ -30,7 +30,7 @@ export CXXFLAGS="-fPIC"
 export FCFLAGS="-fPIC"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || ( wget $url; tar -xf $software.tar.gz )
+[[ -d $software ]] && cd $software || ( wget $url; tar -xf $software.tar.gz; cd $software )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
