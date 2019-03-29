@@ -37,7 +37,7 @@ export MPI="$mpiName-$mpiVersion"
 ./build_netcdf.sh "4.6.1" "4.4.4" "4.3.0"
 ./build_boost.sh "1.68.0"
 ./build_esmf "7_1_0r"
-./build_baselibs.sh "baselibs" "5.2.2"
+./build_baselibs.sh "5.2.2"
 
 # Finally build GNU + MPICH compiler suite
 mpiName="mpich"
@@ -50,6 +50,6 @@ export MPI="$mpiName-$mpiVersion"
 ./build_netcdf.sh "4.6.1" "4.4.4" "4.3.0"
 ./build_boost.sh "1.68.0"
 ./build_esmf "7_1_0r"
-./build_baselibs.sh "baselibs" "5.2.2"
+./build_baselibs.sh "5.2.2"
 
 exit 0

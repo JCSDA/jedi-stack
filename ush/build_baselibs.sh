@@ -2,11 +2,8 @@
 
 set -ex
 
-software=$1
-dir_software=${PKGDIR:-"../pkg"}/$software
-
-name=$(echo $software | cut -d"-" -f1)
-version=$(echo $software | cut -d"-" -f2)
+name="baselibs"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-"openmpi-3.1.2"}
@@ -19,7 +16,9 @@ module load $(echo $mpi | sed 's/-/\//g')
 module list
 set -x
 
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
+gitNASA="https://developer.nasa.gov/"
+
+[[ -d $name ]] && cd $name || (git clone -b "$version" $gitNASA/GMAO/ESMA-Baselibs.git $name && cd $name || (echo "git clone failed, ABORT!"; exit 1))
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
 
@@ -30,7 +29,7 @@ mpiN=$(echo $mpi | sed 's/-/\//g')
 case "$mpiN" in
     openmpi ) ESMF_COMM="openmpi" ;;
     mpich   ) ESMF_COMM="mpich2" ;;
-    *       ) echo "Invalid option for MPI = $software, ABORT!"; exit 1 ;;
+    *       ) echo "Invalid option for MPI = $name, ABORT!"; exit 1 ;;
 esac
 
 make install F90=$FC ESMF_COMM=$ESMF_COMM CONFIG="${compilerD}-${mpiD}" prefix=$prefix
