@@ -1,9 +1,9 @@
-# OSX Software Stack
+# Software Stack for JEDI applications
 
-This repository will facilitate building widely used packages [by me] from source on OSX, instead of using existing package managers e.g. [HomeBrew](https://brew.sh/), etc.
+This repository will facilitate building widely used packages by JEDI from source, instead of using existing package managers e.g. [HomeBrew](https://brew.sh/) for OSX, [apt-get](https://linux.die.net/man/8/apt-get) for Linux, etc.
 
-The following software can be built on OSX with the scripts under `ush` and instructions that follow:
-* GNU
+The following software can be built with the scripts under `ush` and instructions that follow:
+* GCC
 * Jasper
 * Zlib
 * SZip
@@ -26,7 +26,7 @@ The following software can be built on OSX with the scripts under `ush` and inst
 * Other
 
 ### Packages
-The individual packages should be downloaded, untarred and placed under`pkg`.  Most build scripts will look for directory `pkg/pkgName-pkgVersion` e.g. `pkg/hdf5-1.10.3`.
+The individual packages will be fetched from their respective sources, but can be downloaded, untarred and placed under`pkg` if desired.  Most build scripts will look for directory `pkg/pkgName-pkgVersion` e.g. `pkg/hdf5-1_10_3`.
 
 ### Compiler options
 Set the default compiler to build the stack.
@@ -44,13 +44,15 @@ export MPI="mpich-3.2.1"
 
 ### Installation path
 Specify the installation path for packages.
-`export PREFIX="$HOME/opt"`
-If PREFIX is anything other than `/opt`, the user will have to define an environment variable `OPT=$PREFIX` in order for the modulefiles to correctly define the installation path of the packages.
+```
+export PREFIX="$HOME/opt"
+```
+If `$PREFIX` is anything other than `/opt`, the user will have to define an environment variable `export OPT=$PREFIX` in order for the modulefiles to correctly define the installation path of the packages.
 
 ### Verify installation
 Check the installation; will execute ctest or make check
 ```
-export CHECK="NO" # Disable checking
-export CHECK="YES" # Enable checking
+export CHECK="YES|NO" # Enable|Disable checking
 ```
 ### Todos
+Update `ush/deploy_modules.sh` to automagically create appropriate modulefiles for packages from templates.
