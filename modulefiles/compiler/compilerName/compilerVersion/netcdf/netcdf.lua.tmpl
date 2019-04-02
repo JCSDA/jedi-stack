@@ -14,7 +14,9 @@ conflict(pkgName)
 always_load("hdf5")
 prereq("hdf5")
 
-local base = pathJoin("/Users/rmahajan/opt",compNameVerD,pkgName,pkgVersion)
+local opt = os.getenv("OPT") or "/opt"
+
+local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))

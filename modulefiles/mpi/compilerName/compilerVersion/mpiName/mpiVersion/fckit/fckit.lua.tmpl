@@ -17,7 +17,9 @@ always_load("eckit")
 
 prereq("eckit")
 
-local base = pathJoin("/Users/rmahajan/opt",compNameVerD,mpiNameVerD,pkgName,pkgVersion)
+local opt = os.getenv("OPT") or "/opt"
+
+local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))

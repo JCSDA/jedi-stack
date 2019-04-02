@@ -7,7 +7,9 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-local base = pathJoin("/Users/rmahajan/opt",pkgName)
+local opt = os.getenv("OPT") or "/opt"
+
+local base = pathJoin(opt,pkgName)
 
 prepend_path("PATH", pathJoin(base,"bin"))
 
