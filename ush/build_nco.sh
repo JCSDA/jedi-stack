@@ -3,11 +3,8 @@
 set -ex
 
 
-software=$1
-dir_software=${PKGDIR:-"../pkg"}/$software
-
-name=$(echo $software | cut -d"-" -f1)
-version=$(echo $software | cut -d"-" -f2)
+name="nco"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -21,9 +18,6 @@ module load udunits
 module list
 set -x
 
-export FC=gfortran
-export CC=gcc
-export CXX=g++
 export FFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
@@ -33,9 +27,18 @@ export FCFLAGS=$FFLAGS
 
 export LDFLAGS="-L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
-[[ -d $dir_software ]] && cd $dir_software || (echo "$dir_software does not exist, ABORT!"; exit 1)
+gitURL="https://github.com/nco/nco.git"
+
+cd ${PKGDIR:-"../pkg"}
+
+software=$name-$version
+[[ -d $software ]] || ( git clone -b $version $gitURL $software )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+[[ -d build ]] && rm -rf build
+mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 ./configure --prefix=$prefix --enable-doc=no
 

@@ -17,8 +17,12 @@ module load $(echo $mpi | sed 's/-/\//g')
 module list
 set -x
 
+gitURL="https://github.com/boostorg/boost.git"
+
 cd ${PKGDIR:-"../pkg"}
-[[ -d boost ]] && cd boost || (git clone -b "boost-$version" https://github.com/boostorg/boost.git && cd boost || (echo "git clone failed, ABORT!"; exit 1))
+software=$name-$version
+[[ -d $software ]] || ( git clone -b $software $gitURL $software )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
 BoostRoot=$(pwd)
 BoostBuild=$BoostRoot/BoostBuild
@@ -49,6 +53,7 @@ rm -f $HOME/user-config.jam
 [[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 ./bootstrap.sh --with-toolset=$toolset
 ./b2 install $debug --prefix=$BoostBuild

@@ -20,14 +20,18 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
-gitECMWF="https://github.com/ecmwf/"
+gitURL="https://github.com/ecmwf/eccodes.git"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $name ]] && cd $name || (git clone -b "$version" $gitECMWF/$name.git && cd $name || (echo "git clone failed, ABORT!"; exit 1))
+
+software=$name-$version
+[[ -d $software ]] || ( git clone -b $version $gitURL $software )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DENABLE_NETCDF=ON -DENABLE_FORTRAN=ON ..
 

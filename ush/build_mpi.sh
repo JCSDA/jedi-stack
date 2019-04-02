@@ -5,8 +5,6 @@ set -ex
 name=$1
 version=$2
 
-software=$name-$version
-
 mm=$(echo $version | cut -d. -f-2)
 patch=$(echo $version | cut -d. -f3)
 
@@ -21,7 +19,6 @@ compiler=${COMPILER:-"gnu-7.3.0"}
 set +x
 source $MODULESHOME/init/sh
 module load $(echo $compiler | sed 's/-/\//g')
-module load szip
 module list
 set -x
 
@@ -30,14 +27,18 @@ export CXXFLAGS="-fPIC"
 export FCFLAGS="-fPIC"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || ( wget $url; tar -xf $software.tar.gz; cd $software )
+
+software=$name-$version
+[[ -d $software ]] || ( wget $url; tar -xf $software.tar.gz )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 case "$name" in
-    openmpi ) extra_conf="" ;;
+    openmpi ) extra_conf="--enable-mpi-fortran --enable-mpi-cxx" ;;
     mpich   ) extra_conf="--enable-fortran --enable-cxx" ;;
     *       ) echo "Invalid option for MPI = $software, ABORT!"; exit 1 ;;
 esac

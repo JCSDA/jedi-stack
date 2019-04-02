@@ -17,13 +17,18 @@ export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
-cd ${PKGDIR:-"../pkg"}
-[[ -d eigen-git-mirror ]] && cd eigen-git-mirror || (git clone -b "$version" https://github.com/eigenteam/eigen-git-mirror.git && cd eigen-git-mirror || (echo "git clone failed, ABORT!"; exit 1))
+gitURL="https://github.com/eigenteam/eigen-git-mirror.git"
 
+cd ${PKGDIR:-"../pkg"}
+
+software=$name-$version
+[[ -d $software ]] || ( git clone -b "$version" $gitURL $software )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 cmake .. -DCMAKE_INSTALL_PREFIX=$prefix
 [[ "$CHECK" = "YES" ]] && ctest

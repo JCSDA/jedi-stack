@@ -11,16 +11,20 @@ mpi=${MPI:-"openmpi-3.1.2"}
 set +x
 source $MODULESHOME/init/sh
 module load $(echo $compiler | sed 's/-/\//g')
-module load szip
 module load $(echo $mpi | sed 's/-/\//g')
 module list
 set -x
 
-gitNASA="https://developer.nasa.gov/"
+gitURL="https://developer.nasa.gov/GMAO/ESMA-Baselibs.git"
 
-[[ -d $name ]] && cd $name || (git clone -b "$version" $gitNASA/GMAO/ESMA-Baselibs.git $name && cd $name || (echo "git clone failed, ABORT!"; exit 1))
+cd ${PKGDIR:-"../pkg"}
+
+software=$name-$version
+[[ -d $software ]] || ( git clone -b $version $gitURL $software )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 compilerD=$(echo $compiler | sed 's/-/_/g')
 mpiD=$(echo $mpi | sed 's/-/_/g')

@@ -6,17 +6,17 @@ export PREFIX="${HOME}/opt"
 export CHECK="NO"
 export PKGDIR="${PWD}/../pkg"
 
-# First build the GNU compiler
-./build_gnu.sh
-
 compilerName="gnu"
 compilerVersion="7.3.0"
 export COMPILER="$compilerName-$compilerVersion"
 
+# First build the GNU compiler
+./build_gnu.sh $compilerVersion
+
 # Next build GNU compiler suite
-./build_jasper.sh "jasper" "1.900.1"
-./build_zlib.sh "zlib" "1.2.8"
-./build_szip.sh "szip" "2.1.1"
+./build_jasper.sh "1.900.1"
+./build_zlib.sh "1.2.8"
+./build_szip.sh "2.1.1"
 ./build_udunits.sh "2.2.26"
 ./build_eigen.sh "3.3.5"
 ./build_fftw.sh "3.3.8"

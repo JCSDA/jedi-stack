@@ -2,10 +2,8 @@
 
 set -ex
 
-name=$1
-version=$2
-
-software=$name-$version
+name="jasper"
+version=$1
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -20,11 +18,14 @@ export FFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+
+software=$name-$version
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 ../configure --prefix=$prefix
 

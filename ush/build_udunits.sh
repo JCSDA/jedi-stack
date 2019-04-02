@@ -16,14 +16,18 @@ set -x
 export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
 
-gitUnidata="https://github.com/Unidata"
+gitURL="https://github.com/Unidata/UDUNITS-2.git"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d udunits ]] && cd udunits || (git clone -b "v$version" $gitUnidata/UDUNITS-2.git udunits && cd udunits || (echo "git clone failed, ABORT!"; exit 1))
+
+software=$name-$version
+[[ -d $software ]] || ( git clone -b v$version $gitURL $software )
+[[ -d $software ]] && cd i$software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 ../configure --prefix=$prefix
 

@@ -2,10 +2,9 @@
 
 set -ex
 
-name=$1
-version=$2
+name="zlib"
+version=$1
 
-software=$name-$version
 
 compiler=${COMPILER:-"gnu-7.3.0"}
 
@@ -20,11 +19,14 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $software ]] && cd $software || (echo "$software does not exist, ABORT!"; exit 1)
+
+software=$name-$version
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 ../configure --prefix=$prefix
 

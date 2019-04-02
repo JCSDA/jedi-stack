@@ -11,8 +11,8 @@ mpi=${MPI:-""}
 set +x
 source $MODULESHOME/init/sh
 module load $(echo $compiler | sed 's/-/\//g')
-module load szip
 module load $(echo $mpi | sed 's/-/\//g')
+module load szip
 module list
 set -x
 
@@ -28,15 +28,18 @@ export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
-gitHDFgrp="https://bitbucket.hdfgroup.org/scm/hdffv"
+gitURL="https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git"
 
 cd ${PKGDIR:-"../pkg"}
-[[ -d $name ]] && cd $name || (git clone -b "$name-$version" $gitHDFgrp/$name.git && cd $name || (echo "git clone failed, ABORT!"; exit 1))
 
+software=$name-$version
+[[ -d $software ]] || ( git clone -b $software $gitURL $software )
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
 [[ -z $mpi ]] || extra_conf="--enable-parallel --enable-unsupported"
 
