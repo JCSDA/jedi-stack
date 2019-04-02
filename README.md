@@ -45,6 +45,7 @@ export MPI="mpich-3.2.1"
 ### Installation path
 Specify the installation path for packages.
 `export PREFIX="$HOME/opt"`
+If PREFIX is anything other than `/opt`, the user will have to define an environment variable `OPT=$PREFIX` in order for the modulefiles to correctly define the installation path of the packages.
 
 ### Verify installation
 Check the installation; will execute ctest or make check
