@@ -40,7 +40,7 @@ mkdir -p build && cd build
 prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
 [[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
-./configure --prefix=$prefix --enable-doc=no
+../configure --prefix=$prefix --enable-doc=no
 
 make -j${NTHREADS:-4}
 [[ "$CHECK" = "YES" ]] && make check

@@ -1,2 +1,12 @@
+# Ignore these files anywhere in the tree
+*.o
+*.a
+*.so
+*.mod
+*.x
+*.pyc
+*.odb
+*.swp
+*~
 # Ignore the contents of these directories
 build/
