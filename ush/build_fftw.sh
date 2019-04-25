@@ -5,6 +5,8 @@ set -ex
 name="fftw"
 version=$1
 
+software=$name-$version
+
 compiler=${COMPILER:-"gnu-7.3.0"}
 mpi=${MPI:-""}
 
@@ -23,7 +25,6 @@ url="http://fftw.org/${software}.tar.gz"
 
 cd ${PKGDIR:-"../pkg"}
 
-software=$name-$version
 [[ -d $software ]] || ( wget $url; tar -xf $software.tar.gz )
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
