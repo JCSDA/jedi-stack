@@ -16,7 +16,7 @@ always_load("netcdf")
 prereq("hdf5")
 prereq("netcdf")
 
-local opt = os.getenv("OPT") or "/opt"
+local opt = os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 

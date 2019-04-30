@@ -14,7 +14,7 @@ conflict(pkgName)
 always_load("szip")
 prereq("szip")
 
-local opt = os.getenv("OPT") or "/opt"
+local opt = os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 

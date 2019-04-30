@@ -10,3 +10,4 @@
 *~
 # Ignore the contents of these directories
 build/
+buildscripts/log

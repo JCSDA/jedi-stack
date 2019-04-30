@@ -17,7 +17,7 @@ always_load("eckit")
 
 prereq("eckit")
 
-local opt = os.getenv("OPT") or "/opt"
+local opt = os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
@@ -33,4 +33,4 @@ setenv( "FCKIT_VERSION", pkgVersion)
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: Toolkit")
-whatis("Description: ECMWF C++ Toolkit")
+whatis("Description: ECMWF fckit Fortran Toolkit")

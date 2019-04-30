@@ -13,13 +13,12 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("eigen")
-always_load("boost")
+always_load("netcdf")
+always_load("boost-headers","eigen")
 
-prereq("eigen")
-prereq("boost")
+prereq("netcdf","boost-headers","eigen")
 
-local opt = os.getenv("OPT") or "/opt"
+local opt = os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
@@ -35,4 +34,4 @@ setenv( "ECKIT_VERSION", pkgVersion)
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: Toolkit")
-whatis("Description: ECMWF C++ Toolkit")
+whatis("Description: ECMWF ecbuild and eckit libraries")

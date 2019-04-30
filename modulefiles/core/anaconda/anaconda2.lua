@@ -7,7 +7,7 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-local opt = os.getenv("OPT") or "/opt"
+local opt = os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,pkgVersion)
 

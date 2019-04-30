@@ -15,16 +15,12 @@ local compNameVerD = compNameVer:gsub("/","-")
 family("mpi")
 
 conflict(pkgName)
-conflict("openmpi")
+conflict("openmpi","impi")
 
 always_load("szip")
 prereq("szip")
 
-local opt = os.getenv("OPT") or "/opt"
-
-local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,pkgName,pkgVersion)
-prepend_path("MODULEPATH", mpath)
-
+local opt = os.getenv("OPT") or "/opt/modules"
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))
