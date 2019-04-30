@@ -1,22 +1,22 @@
 #!/bin/bash
 
-# This script creates a module file for a given package 
+# This script creates a module file for a given package
 # based on a pre-existing template
 #
 # Arguments:
-# $1 = module path: valid options are core, compiler, or mpi 
+# $1 = module path: valid options are core, compiler, or mpi
 # $2 = package name
 # $3 = package version
 
 case $1 in
     core     )
-        tmpl_file=$JEDI_STACK_ROOT/modulefiles/core/$2/$2.lua.tmpl
-	to_dir=$OPT/modulefiles/core ;;
+        tmpl_file=$JEDI_STACK_ROOT/modulefiles/core/$2/$2.lua
+        to_dir=$OPT/modulefiles/core ;;
     compiler )
-        tmpl_file=$JEDI_STACK_ROOT/modulefiles/compiler/compilerName/compilerVersion/$2/$2.lua.tmpl
+        tmpl_file=$JEDI_STACK_ROOT/modulefiles/compiler/compilerName/compilerVersion/$2/$2.lua
         to_dir=$OPT/modulefiles/compiler/$COMPILER ;;
     mpi      )
-        tmpl_file=$JEDI_STACK_ROOT/modulefiles/mpi/compilerName/compilerVersion/mpiName/mpiVersion/$2/$2.lua.tmpl
+        tmpl_file=$JEDI_STACK_ROOT/modulefiles/mpi/compilerName/compilerVersion/mpiName/mpiVersion/$2/$2.lua
         to_dir=$OPT/modulefiles/mpi/$COMPILER/$MPI ;;
     *) echo "ERROR: INVALID MODULE PATH, ABORT!"; exit 1 ;;
 esac
