@@ -24,6 +24,7 @@ prepend_path("LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+setenv("PNETCDF", base)
 setenv("PNETCDF_ROOT", base)
 setenv("PNETCDF_INCLUDES", pathJoin(base,"include"))
 setenv("PNETCDF_LIBRARIES", pathJoin(base,"lib"))

@@ -7,6 +7,8 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
+try_load("boost_headers")
+
 local opt = os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,"core",pkgName,pkgVersion)

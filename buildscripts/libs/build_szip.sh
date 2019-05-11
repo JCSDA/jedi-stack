@@ -8,14 +8,27 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-
 # manage package dependencies here
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module list
-set -x
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module list
+    set -x
+    
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+
+else
+    prefix="/usr/local"
+fi
+
+export CC=$SERIAL_CC
+export CXX=$SERIAL_CXX
+export FC=$SERIAL_FC
 
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
@@ -30,12 +43,6 @@ url=https://support.hdfgroup.org/ftp/lib-external/szip/$version/src/$software.ta
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
-if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-fi
-
 ../configure --prefix=$prefix
 
 make -j${NTHREADS:-4} 
@@ -43,7 +50,6 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh compiler $name $version
+$MODULES && update_modules compiler $name $version
 
 exit 0

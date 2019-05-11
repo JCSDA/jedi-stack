@@ -18,6 +18,12 @@ set -ex
 # root directory for the repository
 export JEDI_STACK_ROOT=$PWD/..
 
+# define update_modules function
+source libs/update_modules.sh
+
+# create build directory if needed
+mkdir -p ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
 #===============================================================================
 # First get the compiler+mpi names and versions from the config file
 
@@ -47,40 +53,8 @@ echo $compilerVersion
 echo $mpiName
 echo $mpiVersion
 
-#===============================================================================
-# Make sure compiler is available
-#
-# The compilers are typically set up seperately, either by package installs
-# (e.g. gnu, clang) or by install scripts (e.g. intel).  In the case of gnu,
-# we can optionally install the compiler from source if it is not already there
-#
-
-case $compilerName in
-    gnu   ) CC=gcc ;;
-    intel ) CC=icc ;;
-    clang ) CC=cc ;;
-    *     ) echo "Invalid compiler option = $compilerName, ABORT!"; exit 1 ;;
-esac
-
-if [[ $(module load $COMPILER) ]]; then
-    echo "USING NATIVE COMPILER MODULE"
-    compilerInstallation="native-module"
-elif [[ $($CC --version) ]]; then
-     # The compiler may already be available via a package install
-    echo "USING NATIVE COMPILER"
-    compilerInstallation="native-pkg"
-else    
-    if [[ -n $(grep -i gnu <<< $COMPILER) ]]; then
-	echo "GNU COMPILERS NOT FOUND: INSTALL FROM SOURCE? ENTER Y OR N"
-	read ans < /dev/stdin
-	[[ $ans =~ ([^YyTt]) ]] && exit 1
-	libs/build_gnu.sh $compilerVersion  
-	compilerInstallation="from-source"
-    else
-	echo "ERROR: COMPILER $COMPILER NOT FOUND: ABORT!"
-	exit 1
-    fi
-fi
+# install with root permissions?
+[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 
 #===============================================================================
 # Deploy directory structure for modulefiles
@@ -92,30 +66,62 @@ $SUDO mkdir -p $OPT/modulefiles/compiler/$compilerName/$compilerVersion
 $SUDO mkdir -p $OPT/modulefiles/mpi/$compilerName/$compilerVersion/$mpiName/$mpiVersion
 
 $SUDO mkdir -p $OPT/modulefiles/core/jedi-$compilerName
-$SUDO cp $JEDI_STACK_ROOT/modulefiles/core/jedi-$compilerName/jedi-$compilerName.lua.tmpl \
+$SUDO cp $JEDI_STACK_ROOT/modulefiles/core/jedi-$compilerName/jedi-$compilerName.lua \
          $OPT/modulefiles/core/jedi-$compilerName/$compilerVersion.lua
 
 $SUDO mkdir -p $OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName
-$SUDO cp $JEDI_STACK_ROOT/modulefiles/compiler/compilerName/compilerVersion/jedi-$mpiName/jedi-$mpiName.lua.tmpl \
+$SUDO cp $JEDI_STACK_ROOT/modulefiles/compiler/compilerName/compilerVersion/jedi-$mpiName/jedi-$mpiName.lua \
          $OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName/$mpiVersion.lua
+
+#===============================================================================
+# Make sure compiler is available
+#
+# The compilers are typically set up seperately, either by package installs
+# (e.g. gnu, clang) or by install scripts (e.g. intel).  In the case of gnu,
+# we can optionally install the compiler from source if it is not already there
+#
+
+case ${COMPILER_BUILD} in
+    "native-module")
+	echo "USING NATIVE COMPILER MODULE"
+	module load $COMPILER
+	;;
+    "native-pkg")
+	echo "USING NATIVE COMPILER"
+	cd $OPT/modulefiles/core/jedi-$compilerName            
+	$SUDO sed -i '/load(compiler)/d' $compilerVersion.lua
+	$SUDO sed -i '/prereq(compiler)/d' $compilerVersion.lua
+	;;
+    "from-source")
+	echo "INSTALLING COMPILER FROM SOURCE"
+	if [[ -n $(grep -i gnu <<< $COMPILER) ]]; then
+	    libs/build_gnu.sh $compilerVersion  
+	else
+	    echo "ERROR: COMPILER $COMPILER NOT FOUND: ABORT!"
+	    exit 1
+	fi
+	;;
+esac
 
 #===============================================================================
 # Set up compiler modules
 
 # Check that the compiler version number given by the user is consistent
 # with what is actually installed
+
+case $compilerName in
+    gnu   ) CC=gcc ;;
+    intel ) CC=icc ;;
+    clang ) CC=cc ;;
+    *     ) echo "Invalid compiler option = $compilerName, ABORT!"; exit 1 ;;
+esac
+
 if [[ -z $($CC --version | grep $compilerVersion) ]]; then
     echo "WARNING: COMPILER VERSION $COMPILER APPEARS TO BE INCORRECT!"
     echo "CONTINUE ANYWAY? ANSWER Y OR N"
     read ans < /dev/stdin
     echo $ans
     [[ $ans =~ ([^YyTt]) ]] && exit 1
-fi
-
-if [[ $compilerInstallation = "native-pkg" ]]; then
-    cd $OPT/modulefiles/core/jedi-$compilerName            
-    $SUDO sed -i '/load(compiler)/d' $compilerVersion.lua
-    $SUDO sed -i '/prereq(compiler)/d' $compilerVersion.lua
 fi
 
 #===============================================================================
@@ -133,20 +139,26 @@ cd $JEDI_STACK_ROOT/buildscripts
 # Now build the MPI library from source, if needed.  However, if there is
 # a native installation available, it's usually better to use that
 
-if [[ $(module load $MPI) ]]; then
-    echo "USING NATIVE MPI MODULE"
-    mpiInstallation="native-module"
-else
-    cd $JEDI_STACK_ROOT/buildscripts
-    libs/build_mpi.sh $mpiName $mpiVersion 2>&1 | tee "$logdir/$mpiName.log"
-    mpiInstallation="from-source"
-fi
+case ${MPI_BUILD} in
+    "native-module")
+	echo -e "==========================\n USING NATIVE MPI MODULE"
+	module load $MPI
+	;;
+    "native-pkg")
+	echo -e "===========================\n USING NATIVE MPI"
+	cd $OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName
+	$SUDO sed -i '/load(mpi)/d' $mpiVersion.lua
+	$SUDO sed -i '/prereq(mpi)/d' $mpiVersion.lua
+	;;
+    "from-source")
+	echo -e "============================\n INSTALLING MPI FROM SOURCE"
+	cd $JEDI_STACK_ROOT/buildscripts
+	libs/build_mpi.sh $mpiName $mpiVersion 2>&1 | tee "$logdir/$mpiName.log"
+esac
 
 #===============================================================================
-# Now clean up the package build directory
-# you may wish to comment this out if you're debugging and want to keep the 
-# source code around
-#cd $JEDI_STACK_ROOT/$PKGDIR; rm -rf *
+# optionally clean up
+[[ $MAKE_CLEAN =~ [yYtT] ]] && rm -rf ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 #===============================================================================
 

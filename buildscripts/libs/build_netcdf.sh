@@ -11,22 +11,31 @@ cxx_version=$3
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module load szip
+    module load hdf5
+    module load pnetcdf
+    module list
+    set -x
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load jedi-$MPI
-module load szip
-module load hdf5
-module load pnetcdf
-module list
-set -x
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$c_version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+
+else
+    prefix="/usr/local"
+fi
 
 if [[ ! -z $mpi ]]; then
-    export FC=mpif90
-    export CC=mpicc
-    export CXX=mpicxx
+    export FC=$MPI_FC
+    export CC=$MPI_CC
+    export CXX=$MPI_CXX
 fi
 
 export F77=$FC
@@ -37,12 +46,6 @@ export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
 gitURLroot="https://github.com/Unidata"
-
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$c_version"
-if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-fi
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 curr_dir=$(pwd)
@@ -75,13 +78,21 @@ export LDFLAGS+=" -L$prefix/lib"
 export CFLAGS+=" -I$prefix/include"
 export CXXFLAGS+=" -I$prefix/include"
 
-cd $curr_dir
+# generate modulefile from template
+[[ -z $mpi ]] && modpath=compiler || modpath=mpi
+$MODULES && update_modules $modpath $name $c_version
 
 set +x
 echo "################################################################################"
 echo "BUILDING NETCDF-Fortran"
 echo "################################################################################"
+
+# Load netcdf-c before building netcdf-fortran
+$MODULES && module load netcdf
+
 set -x
+
+cd $curr_dir
 
 version=$f_version
 software=$name-"fortran"-$version
@@ -116,9 +127,5 @@ mkdir -p build && cd build
 make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
-
-# generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh mpi $name $c_version
 
 exit 0

@@ -8,8 +8,6 @@ set -ex
 name="gnu"
 version=$1
 
-$USE_SUDO && SUDO="sudo" || unset SUDO
-
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 curr_dir=$(pwd)
 
@@ -113,7 +111,6 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh core $name $version
+update_modules core $name $version
 
 exit 0

@@ -17,13 +17,15 @@ esac
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-
 set +x
 source $MODULESHOME/init/bash
 module load jedi-$COMPILER
 module list
 set -x
+
+export CC=$SERIAL_CC
+export CXX=$SERIAL_CXX
+export FC=$SERIAL_FC
 
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
@@ -55,7 +57,6 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh compiler $name $version
+$MODULES update_modules compiler $name $version
 
 exit 0

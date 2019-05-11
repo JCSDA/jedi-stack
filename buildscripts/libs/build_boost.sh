@@ -6,8 +6,6 @@ name="boost"
 version=$1
 [[ $# -lt 2 ]] && level="full" || level=$2
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 software=$name\_$(echo $version | sed 's/\./_/g')
 url="https://dl.bintray.com/boostorg/release/$version/source/$software.tar.gz"
@@ -19,13 +17,13 @@ url="https://dl.bintray.com/boostorg/release/$version/source/$software.tar.gz"
 
 if [[ $level = "headers-only" ]]; then
 
-    prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
+    $MODULES && prefix="${PREFIX:-"/opt/modules"}/core/$name/$version" \
+	     || prefix="/usr/local"
     $SUDO mkdir -p $prefix $prefix/include
     $SUDO cp -R boost $prefix/include
 
     # generate modulefile from template
-    cd $JEDI_STACK_ROOT/buildscripts
-    libs/update_modules.sh core "boost-headers" $version
+    update_modules core "boost-headers" $version
 
     exit 0
 fi
@@ -38,12 +36,22 @@ mpi=$(echo $MPI | sed 's/\//-/g')
 
 debug="--debug-configuration"
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load jedi-$MPI
-module list
-set -x
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module list
+    set -x
+    prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
+    [[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+else
+    prefix="/usr/local"
+fi
 
 BoostRoot=$(pwd)
 BoostBuild=$BoostRoot/BoostBuild
@@ -73,9 +81,6 @@ EOF
 rm -f $HOME/user-config.jam
 [[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
 
-prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
-[[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
-
 ./bootstrap.sh --with-toolset=$toolset
 ./b2 install $debug --prefix=$BoostBuild
 
@@ -88,5 +93,9 @@ $SUDO cp -R boost $prefix/include
 $SUDO mv stage/lib $prefix
 
 rm -f $HOME/user-config.jam
+
+# generate modulefile from template
+[[ -z $mpi ]] && modpath=compiler || modpath=mpi
+$MODULES && update_modules $modpath $name $version
 
 exit 0

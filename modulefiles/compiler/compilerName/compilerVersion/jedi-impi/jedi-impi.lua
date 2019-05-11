@@ -23,9 +23,9 @@ local opt = os.getenv("OPT") or "/opt/modules"
 local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,"impi",pkgVersion)
 prepend_path("MODULEPATH", mpath)
 
-setenv("FC",  "mpiifort")
-setenv("CC",  "mpiicc")
-setenv("CXX", "mpiicpc")
+setenv("MPI_FC",  "mpiifort")
+setenv("MPI_CC",  "mpiicc")
+setenv("MPI_CXX", "mpiicpc")
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)

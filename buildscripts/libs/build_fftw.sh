@@ -11,14 +11,16 @@ software=$name-$version
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-
 set +x
 source $MODULESHOME/init/bash
 module load jedi-$COMPILER
 module load jedi-$MPI
 module list
 set -x
+
+export FC=$MPI_FC
+export CC=$MPI_CC
+export CXX=$MPI_CXX
 
 export F77=$FC
 export FFLAGS="-fPIC"
@@ -38,7 +40,7 @@ if [[ -d $prefix ]]; then
                       || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
 fi
 
-[[ -z $mpi ]] || ( export MPICC=mpicc; extra_conf="--enable-mpi" )
+[[ -z $mpi ]] || ( export MPICC=$MPI_CC; extra_conf="--enable-mpi" )
 
 ../configure --prefix=$prefix --enable-openmp --enable-threads $extra_conf
 
@@ -47,9 +49,7 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-
-[[ -z $mpi ]] && libs/update_modules.sh compiler $name $version \
-	      || libs/update_modules.sh mpi $name $version
+[[ -z $mpi ]] && modpath=mpi || modpath=compiler
+$MODULES update_modules $modpath $name $c_version
 
 exit 0

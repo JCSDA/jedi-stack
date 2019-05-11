@@ -8,14 +8,27 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-
 # manage package dependencies here
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module list
-set -x
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module list
+    set -x
+
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+
+else
+    prefix="/usr/local"
+fi
+
+export FC=$SERIAL_FC
+export CC=$SERIAL_CC
+export CXX=$SERIAL_CXX
 
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
@@ -30,22 +43,15 @@ url="http://www.netlib.org/lapack/$software.tgz"
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
-if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-fi
-
 # Add CMAKE_INSTALL_LIBDIR to make sure it will be installed under lib not lib64
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR:PATH=$prefix/lib \
-      -DCMAKE_Fortran_COMPILER=$FC -DCMAKE_Fortran_FLAGS=$FCFLAGS ..
+      -DCMAKE_Fortran_COMPILER=$SERIAL_FC -DCMAKE_Fortran_FLAGS=$FCFLAGS ..
 
 make -j${NTHREADS:-4} 
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh compiler $name $version
+$MODULES && update_modules compiler $name $version
 
 exit 0

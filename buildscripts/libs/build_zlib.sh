@@ -8,13 +8,24 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module list
+    set -x
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+else
+    prefix="/usr/local"
+fi
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module list
-set -x
+export FC=$SERIAL_FC
+export CC=$SERIAL_CC
+export CXX=$SERIAL_CXX
 
 export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
@@ -29,9 +40,6 @@ url=http://www.zlib.net/$software.tar.gz
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
-[[ -d $prefix ]] && ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-
 ../configure --prefix=$prefix
 
 make -j${NTHREADS:-4}
@@ -39,7 +47,6 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh compiler $name $version
+$MODULES && update_modules compiler $name $version
 
 exit 0

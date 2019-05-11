@@ -8,14 +8,31 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load szip
-module load hdf5
-module load netcdf
-module list
-set -x
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module load cmake
+    module load szip
+    module load hdf5
+    module load netcdf
+    module list
+    set -x
+
+    prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+
+else
+    prefix="/usr/local"
+fi
+
+export FC=$MPI_FC
+export CC=$MPI_CC
+export CXX=$MPI_CXX
 
 export FCFLAGS="-fPIC"
 export CFLAGS="-fPIC"
@@ -31,12 +48,6 @@ software=$name-$version
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
-if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-fi
-
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DENABLE_NETCDF=ON -DENABLE_FORTRAN=ON ..
 
 make -j${NTHREADS:-4}
@@ -44,7 +55,6 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh compiler $name $version
+$MODULES && update_modules compiler $name $version
 
 exit 0

@@ -12,26 +12,32 @@ compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
 [[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
+[[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load jedi-$MPI
-module load ecbuild eckit
-module list
-set -x
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module load ecbuild eckit
+    module list
+    set -x
 
-export FC=mpif90
-export CC=mpicc
-export CXX=mpicxx
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$source-$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
 
+else
+    prefix="/usr/local"
+fi
+
+    
+export FC=$MPI_FC
+export CC=$MPI_CC
+export CXX=$MPI_CXX
 export F9X=$FC
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
-export FCFLAGS="$FFLAGS"
-
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$source-$version"
 
 software=fckit
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
@@ -45,10 +51,9 @@ mkdir -p build && cd build
 
 ecbuild -DCMAKE_INSTALL_PREFIX=$prefix --build=Release ..
 make -j${NTHREADS:-4}
-$SUDO make install
+$SUDO $verb make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh mpi $name $source-$version
+$MODULES && update_modules mpi $name $source-$version
 
 exit 0

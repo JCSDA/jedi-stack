@@ -9,20 +9,33 @@ version=$1
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module load szip zlib
+    module list
+    set -x
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load jedi-$MPI
-module load szip zlib
-module list
-set -x
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+
+else
+    prefix="/usr/local"
+fi    
 
 if [[ ! -z $mpi ]]; then
-    export FC=mpif90
-    export CC=mpicc
-    export CXX=mpicxx
+    export FC=$MPI_FC
+    export CC=$MPI_CC
+    export CXX=$MPI_CXX
+else
+    export FC=$SERIAL_FC
+    export CC=$SERIAL_CC
+    export CXX=$SERIAL_CXX
 fi
 
 export F9X=$FC
@@ -41,12 +54,6 @@ software=$name-$(echo $version | sed 's/\./_/g')
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
-if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-fi
-
 [[ -z $mpi ]] || extra_conf="--enable-parallel --enable-unsupported"
 
 ../configure --prefix=$prefix --enable-fortran --enable-fortran2003 --enable-cxx --enable-hl --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
@@ -57,7 +64,7 @@ make -j${NTHREADS:-4}
 	                  || make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh mpi $name $version
+[[ -z $mpi ]] && modpath=compiler || modpath=mpi
+$MODULES && update_modules $modpath $name $version
 
 exit 0

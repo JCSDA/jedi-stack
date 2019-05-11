@@ -24,6 +24,7 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+setenv("NETCDF", base)
 setenv("NETCDF_ROOT", base)
 setenv("NETCDF_INCLUDES", pathJoin(base,"include"))
 setenv("NETCDF_LIBRARIES", pathJoin(base,"lib"))

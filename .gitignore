@@ -9,5 +9,5 @@
 *.swp
 *~
 # Ignore the contents of these directories
-build/
+pkg
 buildscripts/log

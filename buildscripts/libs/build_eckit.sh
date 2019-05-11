@@ -9,30 +9,35 @@ version=$1
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
+[[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load jedi-$MPI
-module load zlib udunits
-module load netcdf
-module load boost-headers eigen
-module load ecbuild
-module list
-set -x
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module try-load cmake
+    module load zlib udunits
+    module load netcdf
+    module load boost-headers eigen
+    module load ecbuild
+    module list
+    set -x
 
-export FC=mpif90
-export CC=mpicc
-export CXX=mpicxx
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
 
+else
+    prefix="/usr/local"
+fi
+
+export FC=$MPI_FC
+export CC=$MPI_CC
+export CXX=$MPI_CXX
 export F9X=$FC
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
-export FCFLAGS="$FFLAGS"
-
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
 
 software=$name
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
@@ -44,11 +49,10 @@ sed -i -e 's/project( eckit CXX/project( eckit CXX Fortran/' CMakeLists.txt
 mkdir -p build && cd build
 
 ecbuild -DCMAKE_INSTALL_PREFIX=$prefix --build=Release ..
-make -j${NTHREADS:-4}
+make $verb -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh mpi $name $version
+$MODULES && update_modules mpi $name $version
 
 exit 0

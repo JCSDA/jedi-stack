@@ -9,18 +9,28 @@ version=$1
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
+if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load jedi-$MPI
+    module list
+    set -x
 
-set +x
-source $MODULESHOME/init/bash
-module load jedi-$COMPILER
-module load jedi-$MPI
-module list
-set -x
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+    if [[ -d $prefix ]]; then
+	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
+    
+else
+    prefix="/usr/local"
+fi
+    
 
-export FC=mpif90
-export CC=mpicc
-export CXX=mpicxx
+export FC=$MPI_FC
+export CC=$MPI_CC
+export CXX=$MPI_CXX
 
 export F9X=$FC
 export FFLAGS="-fPIC"
@@ -37,12 +47,6 @@ url="https://parallel-netcdf.github.io/Release/$software.tar.gz"
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
-if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-fi
-
 ../configure --prefix=$prefix
 
 make -j${NTHREADS:-4}
@@ -50,7 +54,6 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-cd $JEDI_STACK_ROOT/buildscripts
-libs/update_modules.sh mpi $name $version
+$MODULES && update_modules mpi $name $version
 
 exit 0

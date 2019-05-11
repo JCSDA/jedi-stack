@@ -11,6 +11,8 @@ Building the JEDI software stack is a **Four-Step process**, as described in the
 
 This is the most context-dependent part of the build process.  How you proceed depends on the system you are on.  Regardless of how you proceed, this step only needs to be done once for each system.
 
+Note - you can skip this step and move on to Step 2 if you are building a JEDI software container because all of the required software packages are already built into the jcsda/docker_base container, which you can just pull from Docker Hub.
+
 This step is most important for bare linux/unix systems, as you would get with a new cloud computing instance, a container build, or a virtual machine (e.g. [vagrant](https://www.vagrantup.com)).  For such systems, Step 1 consists of running the following script (all paths are relative to the base path of the jedi-stack repository):
 ```
 cd buildscripts
@@ -48,6 +50,7 @@ OPT needs to be set in order to complete Steps 2-4.  But, it also needs to be se
 ## Step 2: Configure Build
 
 The next step is to choose what components of the stack you wish to build and to specify any other aspects of the build that you would like.  This is normally done by editing the file `buildscripts/config/config_custom.sh`.  Here we describe some of the parameter settings available.
+
 
 **COMPILER** This defines the vendor and version of the compiler you wish to use for this build.  The format is the same as what you would typically use in a module load command:
 ```
@@ -94,6 +97,7 @@ The remaining items enable or disable builds of each software package.  The foll
   - Boost (Headers only)
   - Eigen3
   - ncccmp
+  - nco
   - ecbuild, eckit, fckit
   - ODB
  
@@ -105,6 +109,7 @@ The remaining items enable or disable builds of each software package.  The foll
   - ecCodes
   - ESMF
   - ESMA-Baselibs
+  - nceplibs
 
 **IMPORTANT: Steps 2, 3, and 4 need to be repeated for each compiler/mpi combination that you wish to install.**  The new packages will be installed alongside any previously-exising packages that may already exist and that are built from other compiler/mpi combinations.
 
@@ -118,7 +123,7 @@ where `<configuration>` points to the configuration script that you wish to use,
 ```
 ./setup_modules.sh custom
 ```
-If no arguments are specified, the default is `custom`.
+If no arguments are specified, the default is `custom`.  Note that you can skip this step as well for container builds because we currenly include only one compiler/mpi combination in each container.  So, each package is only build once and there is no need for modules.
 
 This script sets up the module directory tree in `$OPT`.  It also sets up the compiler and mpi modules.  The compiler and mpi modules are handled separately from the rest of the build because, when possible, we wish to exploit site-specific installations that maximize performance.
 
@@ -142,4 +147,10 @@ Now all that remains is to build the stack:
 Here `<configuration>` is the same as in Step 3, namely a reference to the corresponding configuration file in the `config` directory.  As in Step 2, if this argument is omitted, the default is to use `config/config_custom.sh`.
 
 
+# Adding a New library/package
 
+If you want to add a new library to the stack you need to follow these steps:
+1. write a new build script in buildscripts/libs, using exising scripts as a template
+2. define a new control flag and add it to the config files in buildscripts/config
+3. Add a call to the new build script in buildscripts/build\_stack.sh
+4. Create a new module template at the appropriate place in the modulefiles directory, using exising files as a template

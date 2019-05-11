@@ -2,13 +2,15 @@
 
 # The purpose of this script is to install lmod (if needed)
 # along with some other fundamental tools such as:
-# git, wget, cmake, curl, etc. For an up-to-date list, see the README.md
+# git, wget, curl, etc. For an up-to-date list, see the README.md
 # file at the top level of this repository.
+#
+# build cmake seperately as part of the module setup
 # 
 # These installations are typically done my means of package installs, 
 # Basically, anything that you may want to install with package installers
 # belongs here as opposed to build_stack.sh.
-# However, there are a few packages such as Lmod and CMake that you might
+# However, there are a few packages such as Lmod that you might
 # want to install from source because the versions available from the
 # package managers are too old or otherwise insufficient.  For these
 # cases you can use the corresponding build scripts (see below for examples).
@@ -19,6 +21,10 @@
 # Lmod and supporting applications manually through package installers
 # (such as Homebrew).
 #
+# This script can be bypassed if you are building a container because
+# all the software packages installed here are installed in the
+# jcsda/docker_base container via the Dockerfile
+#
 # Arguments:
 # configuration name (leave blank to print list of supported values)
 # 
@@ -27,7 +33,7 @@
 #
 
 # currently supported options
-supported_options=("docker-devel" "ubuntu/18.04")
+supported_options=("ubuntu/18.04","cheyenne")
 
 export JEDI_STACK_ROOT=$PWD/..
 
@@ -36,95 +42,6 @@ set -ex
 #================================================================================
 
 case $1 in
-"docker-devel")
-    
-    # this is currently configured for use with the JEDI Docker container,
-    # which is built from ubuntu 16.04.  It is run with root privileges
-    # so no need for sudo's.
-    #
-    # This includes developer tools such as gnu compilers and debuggers
-    # That makes it a "devel" container, as opposed to a more streamlined
-    # application container, which we will call "docker-release"
-
-    set +x; echo "Installing JEDI environment for docker"; set -x
-    
-    apt-get clean
-    apt-get update
-
-    # Add external repos here
-
-    # This one provides some package builds for gcc, doxygen
-    apt-add-repository ppa:ubuntu-toolchain-r/test    
-
-    # this repo is used for cmake but it hasn't been updated since 2016
-    # only goes up to v 3.5 - it may be worth reconsidering
-    apt-add-repository ppa:george-edison55/cmake-3.x
-
-    apt-get update
-    
-    # useful system tools 
-    # libexpat is required by udunits
-    apt-get install -y --no-install-recommends software-properties-common
-    apt-get install -y --no-install-recommends build-essential tcsh csh ksh \	    
-                    openssh-server libncurses-dev libssl-dev libx11-dev less \
-                    man-db tk tcl swig bc locales file flex bison \
-                    libexpat1-dev libxml2-dev unzip wish
-		    
-    # editors
-    apt-get install -y --no-install-recommends emacs vim nedit
-    
-    # curl and wget
-    apt-get install -y --no-install-recommends curl wget libcurl4-openssl-dev 
-    
-    # This is needed because the default gnu compilers and other tools are ancient
-    # we might want to purge other installations first to keep the size of the
-    # docker image down.
-    apt-get install gcc-7 gfortran-7 g++-7
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 10
-    update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-7 10
-    update-alternatives --set gcc /usr/bin/gcc-7
-    update-alternatives --set g++ /usr/bin/g++-7
-    update-alternatives --set gfortran /usr/bin/gfortran-7
-
-    # autoconfig
-    apt-get install -y --no-install-recommends autoconf pkg-config
-    		
-    # cmake
-    apt-get install -y --no-install-recommends cmake
-    
-    # git and git-lfs
-    apt-get install -y --no-install-recommends git git-flow
-    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash 
-    apt-get install -y --no-install-recommends git-lfs 
-    git lfs install 
-
-    # python
-    apt-get install -y --no-install-recommends python-pip python-dev python-yaml \
-	            python-numpy python-scipy
-    apt-get install -y --no-install-recommends python3-pip python3-dev \
-	            python3-yaml python3-numpy python3-scipy
-    
-    # for documentation
-    apt-get install -y --no-install-recommends graphviz doxygen
-
-    # latex
-    apt-get install -y --no-install-recommends texlive-latex-recommended texinfo
-    
-    # for debugging
-    apt-get install -y --no-install-recommends ddd gdb kdbg valgrind   
-        
-    # lynx non-graphical web browser - we may want to get rid of this
-    apt-get install -y --no-install-recommends lynx
-
-    # tkdiff diff viewer, editor, and merge preparer
-    libs/build_tkdiff.sh 
-    
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
-
-    ;;
-#==========================================================================================
 "ubuntu/18.04")
 
     set +x; echo "Installing JEDI environment for ubuntu/18.04"; set -x
@@ -149,7 +66,6 @@ case $1 in
                     libexpat1-dev libxml2-dev unzip wish
     sudo apt-get install -y --no-install-recommends curl wget libcurl4-openssl-dev
     sudo apt-get install -y --no-install-recommends autoconf pkg-config
-    sudo apt-get install -y --no-install-recommends cmake
 
     # git and git-lfs
     sudo apt-get install -y git git-flow
@@ -185,6 +101,21 @@ case $1 in
     sudo ln -s $MODULESHOME/init/cshrc   /etc/profile.d/z00_lmod.csh
     echo "setenv OPT $OPT" | sudo tee -a /etc/profile.d/z00_lmod.csh
     echo "module use $OPT/modulefiles/core" | sudo tee -a /etc/profile.d/z00_lmod.csh
+
+    ;;
+#==========================================================================================
+"cheyenne")
+
+    # Cheyenne compiler modules define the environment variable MODULE so in order for
+    # the build scripts to function properly we need to replace it with something else
+    cd ${JEDI_STACK_ROOT}/buildscripts
+    sed -i -e 's/COMPILER/JEDI_COMPILER/g' setup_modules.sh build_stack.sh
+    cd libs
+    sed -i -e 's/COMPILER/JEDI_COMPILER/g' *.sh
+
+    export OPT="/glade/work/miesch/modules"
+    echo "export OPT=$OPT" >> $HOME/.bashrc
+    echo "module use $OPT/modulefiles/core" >> $HOME/.bashrc
 
     ;;
 #==========================================================================================
