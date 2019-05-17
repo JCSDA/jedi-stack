@@ -51,7 +51,7 @@ mkdir -p build && cd build
 
 ecbuild -DCMAKE_INSTALL_PREFIX=$prefix --build=Release ..
 make -j${NTHREADS:-4}
-$SUDO $verb make install
+$SUDO make $verb install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $source-$version

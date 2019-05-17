@@ -112,7 +112,7 @@ esac
 case $compilerName in
     gnu   ) CC=gcc ;;
     intel ) CC=icc ;;
-    clang ) CC=cc ;;
+    clang ) CC=clang ;;
     *     ) echo "Invalid compiler option = $compilerName, ABORT!"; exit 1 ;;
 esac
 
@@ -142,6 +142,7 @@ cd $JEDI_STACK_ROOT/buildscripts
 case ${MPI_BUILD} in
     "native-module")
 	echo -e "==========================\n USING NATIVE MPI MODULE"
+        module load jedi-$COMPILER
 	module load $MPI
 	;;
     "native-pkg")

@@ -51,9 +51,12 @@ software=odb_api_bundle-$version-Source
 sed -i -e '/^ecbuild_bundle.* ecbuild /s/^/#/' CMakeLists.txt
 sed -i -e '/^ecbuild_bundle.* eckit /s/^/#/' CMakeLists.txt
 sed -i -e '/^ecbuild_bundle.* metkit /s/^/#/' CMakeLists.txt
+[[ -d build_metkit ]] && $SUDO rm -rf build_metkit
+[[ -d build_odb ]] && $SUDO rm -rf build_odb
 mkdir -p build_metkit build_odb
 cd build_metkit
-ecbuild --build=Release --prefix=$prefix -DENABLE_GRIB=OFF -DCMAKE_CXX_FLAGS=${CXXFLAGS} ../metkit
+ecbuild --build=Release --prefix=$prefix -DENABLE_GRIB=OFF -DCMAKE_CXX_FLAGS=${CXXFLAGS} \
+         -DHAVE_CXX11=1 ../metkit
 make $verb -j${NTHREADS:-4}
 $SUDO make install
 cd ../build_odb

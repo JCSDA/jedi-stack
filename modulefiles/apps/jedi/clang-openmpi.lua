@@ -1,5 +1,5 @@
 help([[
-Load environment for running JEDI applications with GNU compilers and OpenMPI.
+Load environment for running JEDI applications with clang/gfortran compilers and OpenMPI.
 ]])
 
 local pkgName    = myModuleName()
@@ -8,7 +8,7 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-load("jedi-gnu/7.4.0")
+load("jedi-clang/6.0.1")
 load("szip/2.1.1")
 load("jedi-openmpi/3.1.2")
 
@@ -27,8 +27,9 @@ load("fckit/jcsda-develop")
 setenv("CC","mpicc")
 setenv("FC","mpifort")
 setenv("CXX","mpicxx")
+setenv("LD","mpicc")
 
 whatis("Name: ".. pkgName)
 whatis("Version: ".. pkgVersion)
 whatis("Category: Application")
-whatis("Description: JEDI Environment with OpenMPI")
+whatis("Description: JEDI Environment with clang/OpenMPI")

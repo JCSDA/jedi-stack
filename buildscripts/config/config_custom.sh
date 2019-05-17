@@ -1,9 +1,15 @@
 #!/bin/bash
 
 # Compiler/MPI combination
-export COMPILER="gnu/7.4.0"
-export MPI="openmpi/3.1.2"
+#export COMPILER="gnu/7.4.0"
+#export MPI="openmpi/3.1.2"
 #export MPI="mpich/3.2.1"
+
+#export COMPILER="intel/17.0.1"
+#export MPI="impi/17.0.1"
+
+export COMPILER="clang/6.0.1"
+export MPI="openmpi/3.1.2"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -42,10 +48,10 @@ export        STACK_BUILD_NCO=N
 export    STACK_BUILD_ECBUILD=N
 export      STACK_BUILD_ECKIT=N
 export      STACK_BUILD_FCKIT=N
-export        STACK_BUILD_ODB=N
+export        STACK_BUILD_ODB=Y
 
 # Optional Additions
-export           STACK_BUILD_PIO=Y
+export           STACK_BUILD_PIO=N
 export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
 export        STACK_BUILD_JASPER=N
