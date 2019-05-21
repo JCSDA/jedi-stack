@@ -111,7 +111,7 @@ $MODULES && (set +x; module purge; set -x)
     libs/build_fckit.sh "jcsda" "develop" 2>&1 | tee "$logdir/fckit.log"
 
 [[ $STACK_BUILD_ODB      =~ [yYtT] ]] && \
-    libs/build_odb.sh "0.17.6" 2>&1 | tee "$logdir/odb.log"
+    libs/build_odb.sh "0.18.1" 2>&1 | tee "$logdir/odb.log"
 
 # ===============================================================================
 # Optional Extensions to the JEDI Stack
