@@ -87,8 +87,9 @@ $MODULES && (set +x; module purge; set -x)
 [[ $STACK_BUILD_EIGEN3 =~ [yYtT] ]] && \
     libs/build_eigen.sh "3.3.5" 2>&1 | tee "$logdir/eigen3.log"
 
+# The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_ECBUILD =~ [yYtT] ]] && \
-    libs/build_ecbuild.sh "2.9.0" 2>&1 | tee "$logdir/ecbuild.log"
+    libs/build_ecbuild.sh "ecmwf" "2.9.0" 2>&1 | tee "$logdir/ecbuild.log"
 
 #----------------------
 # These must be rebuilt for each MPI implementation

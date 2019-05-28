@@ -20,7 +20,7 @@ load("lapack/3.7.0")
 load("boost-headers/1.68.0")
 load("eigen/3.3.5")
 
-load("ecbuild/2.9.0")
+load("ecbuild/ecmwf-2.9.0")
 load("eckit/0.23.0")
 load("fckit/jcsda-develop")
 

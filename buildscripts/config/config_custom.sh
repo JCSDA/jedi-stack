@@ -45,10 +45,10 @@ export    STACK_BUILD_PNETCDF=N
 export     STACK_BUILD_NETCDF=N
 export      STACK_BUILD_NCCMP=N
 export        STACK_BUILD_NCO=N
-export    STACK_BUILD_ECBUILD=N
+export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=N
 export      STACK_BUILD_FCKIT=N
-export        STACK_BUILD_ODB=Y
+export        STACK_BUILD_ODB=N
 
 # Optional Additions
 export           STACK_BUILD_PIO=N
