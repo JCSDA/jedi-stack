@@ -37,6 +37,26 @@ Many of these are installed with package managers such as [apt-get](https://linu
 
 If you are using your own laptop or workstation, it is likely that most of these basic packages are already installed.  If any of these packages are missing from your system (such as Lmod), you can manually install them with a package manager or with the build scripts.  The items near the bottom of the list are not essential - if you don't have them on your system there is no need to install them.
 
+If you are building on Mac OSX with Clang, then do not run the setup_environments.sh script, and instead use [HomeBrew](https://brew.sh/) to manually install the basic software packages. Follow the instructions at the HomeBrew website for installing HomeBrew itself, then run the following brew commands:
+~~~~~~~~
+brew install gcc@7     # install version 7 GNU compilers, don't install version 8 GNU as it
+                       # has known problems with JEDI
+brew install lmod
+brew install git
+brew install git-lfs
+brew install git-flow-avh
+brew install wget
+brew install cmake
+brew install doxygen
+brew install graphviz
+
+# brew can be used to install any other basic tools that you want such as tkdiff, gdb, etc.
+~~~~~~~~
+
+See the [section below](#MacPython) for instructions to install python on the Mac.
+
+Your Mac should have come with Clang compilers for C and C++ pre-installed, so in this scheme you are adding in gfortran (GNU) for compiling Fortran code. Once you have finished with the brew install commands, make sure to set OPT in your environment as described below.
+
 If you're on an HPC system you can largely skip this step (but you still need to set the **OPT** environment variable, see below) because most of these packages are probably already installed and available.  However, there are a few items that you may wish to add by loading the appropriate modules (if they exist) - for example:
 ```
 module load doxygen git-lfs
@@ -51,6 +71,7 @@ OPT needs to be set in order to complete Steps 2-4.  But, it also needs to be se
 
 The next step is to choose what components of the stack you wish to build and to specify any other aspects of the build that you would like.  This is normally done by editing the file `buildscripts/config/config_custom.sh`.  Here we describe some of the parameter settings available.
 
+For building on Mac OSX, a configuration file (config_mac.sh) is provided. This configuration is set up to build using Clang 10.0.0 with gfortran 7.4.0 and OpenMPI 3.1.2. You may wish to edit this file for building with a different compiler/mpi set. Note that at this time, the combination of Clang 10.0.0, gfortran 7.4.0 and OpenMPI 3.1.2 is the only one tested with JEDI.
 
 **COMPILER** This defines the vendor and version of the compiler you wish to use for this build.  The format is the same as what you would typically use in a module load command:
 ```
@@ -125,6 +146,11 @@ where `<configuration>` points to the configuration script that you wish to use,
 ```
 If no arguments are specified, the default is `custom`.  Note that you can skip this step as well for container builds because we currenly include only one compiler/mpi combination in each container.  So, each package is only build once and there is no need for modules.
 
+For building on Mac OSX, use:
+~~~~~~~
+./setup_modules.sh mac
+~~~~~~~
+
 This script sets up the module directory tree in `$OPT`.  It also sets up the compiler and mpi modules.  The compiler and mpi modules are handled separately from the rest of the build because, when possible, we wish to exploit site-specific installations that maximize performance.
 
 **For this reason, the compiler and mpi modules are preceded by a `jedi-` label**.  For example, to load the gnu compiler module and the openmpi software library, you would enter this:
@@ -145,6 +171,55 @@ Now all that remains is to build the stack:
 ./build_stack.sh [<configuration>]
 ```
 Here `<configuration>` is the same as in Step 3, namely a reference to the corresponding configuration file in the `config` directory.  As in Step 2, if this argument is omitted, the default is to use `config/config_custom.sh`.
+
+For building on Mac OSX, use:
+~~~~~~~~
+./build_stack.sh mac
+~~~~~~~~
+
+# <a name="MacPython"></a>Setting up python for Mac OSX
+It is recommended for now to skip the automatic build of the pyjedi package. This has been shut off by default in the mac configuration file. It is also recommended to use miniconda for python2 and python3.
+
+For miniconda, get the downloads on the site: https://docs.conda.io/en/latest/miniconda.html. Select the 64-bit bash installer for both python 2.7 and 3.7. These each download a script to install miniconda on your Mac. Run each script as:
+~~~~~~~
+sh Miniconda2-latest-MacOSX-x86_64.sh
+sh Miniconda3-latest-MacOSX-x86_64.sh
+~~~~~~~
+
+When prompted allow the install to go into your home directory, and allow the script to modify your .bash_profile file. Edit your .bash_profile file and make sure that your PATH is being set the way you want it. Keep in mind that for now the ODB API python interface only works with python 2.7 (so you should make sure that "python" will be found in your miniconda2 area).
+
+Once you have miniconda2 and 3 installed, run the conda command to install extra python packages you will need for JEDI. For both miniconda2 and 3, run:
+~~~~~~~
+conda install setuptools
+conda install wheel
+conda install netcdf4
+conda install matplotlib
+conda install pycodestyle
+conda install autopep8
+conda install swig
+conda install numpy
+conda install scipy
+conda install pyyaml
+conda install sphinx
+~~~~~~~
+
+Then, build the ncepbufr python packages. Again for both miniconda2 and 3, run:
+~~~~~~~
+git clone https://github.com/JCSDA/py-ncepbufr.git # Only need to do this once. The build/install processes for both
+                                                   # python2 and 3 can be run from the same clone of py-ncepbufr.
+
+cd py-ncepbufr
+python setup.py build
+python setup.py install
+~~~~~~~
+
+# Mac OSX Clang environment module
+One result of the build process for Mac OSX is that a module script has been installed for setting up your environment for using Clang on the Mac. This can be accessed by running:
+~~~~~~~
+module purge                            # clear out the environment
+module load jedi/clang-mac-openmpi      # set environment for subsequent JEDI builds on the Mac using Clang and OpenMPI
+module list
+~~~~~~~
 
 
 # Adding a New library/package

@@ -25,6 +25,7 @@ prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
+prepend_path("PYTHONPATH", pathJoin(base, "lib/python2.7/site-packages"))
 
 setenv( "ODB_API_PATH", base)
 setenv( "ODB_API_VERSION", pkgVersion)

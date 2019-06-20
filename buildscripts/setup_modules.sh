@@ -89,8 +89,8 @@ case ${COMPILER_BUILD} in
     "native-pkg")
 	echo "USING NATIVE COMPILER"
 	cd $OPT/modulefiles/core/jedi-$compilerName            
-	$SUDO sed -i '/load(compiler)/d' $compilerVersion.lua
-	$SUDO sed -i '/prereq(compiler)/d' $compilerVersion.lua
+	$SUDO sed -i -e '/load(compiler)/d' $compilerVersion.lua
+	$SUDO sed -i -e '/prereq(compiler)/d' $compilerVersion.lua
 	;;
     "from-source")
 	echo "INSTALLING COMPILER FROM SOURCE"
@@ -148,8 +148,8 @@ case ${MPI_BUILD} in
     "native-pkg")
 	echo -e "===========================\n USING NATIVE MPI"
 	cd $OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName
-	$SUDO sed -i '/load(mpi)/d' $mpiVersion.lua
-	$SUDO sed -i '/prereq(mpi)/d' $mpiVersion.lua
+	$SUDO sed -i -e '/load(mpi)/d' $mpiVersion.lua
+	$SUDO sed -i -e '/prereq(mpi)/d' $mpiVersion.lua
 	;;
     "from-source")
 	echo -e "============================\n INSTALLING MPI FROM SOURCE"

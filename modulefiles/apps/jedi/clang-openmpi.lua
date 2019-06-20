@@ -8,7 +8,7 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-load("jedi-clang/6.0.1")
+load("jedi-clang")
 load("szip/2.1.1")
 load("jedi-openmpi/3.1.2")
 
@@ -23,6 +23,9 @@ load("eigen/3.3.5")
 load("ecbuild/ecmwf-2.9.0")
 load("eckit/0.23.0")
 load("fckit/jcsda-develop")
+
+load("odb-api/0.18.1")
+load("nccmp/1.8.2.1")
 
 setenv("CC","mpicc")
 setenv("FC","mpifort")

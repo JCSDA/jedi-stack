@@ -45,12 +45,9 @@ export FCFLAGS="$FFLAGS"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
-software=odb_api_bundle-$version-Source
-[[ -d $software ]] || ( curl -s https://confluence-test.ecmwf.int/download/attachments/61117379/$software.tar.gz | tar xvz )
+software=odb_api_bundle-$version-Source_Jedi
+[[ -d $software ]] || ( curl -s http://data.jcsda.org/downloads/odb_api_bundle-$version-Source_Jedi.tar.gz | tar xvz )
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-sed -i -e '/^ecbuild_bundle.* ecbuild /s/^/#/' CMakeLists.txt
-sed -i -e '/^ecbuild_bundle.* eckit /s/^/#/' CMakeLists.txt
-sed -i -e '/^ecbuild_bundle.* metkit /s/^/#/' CMakeLists.txt
 [[ -d build_metkit ]] && $SUDO rm -rf build_metkit
 [[ -d build_odb ]] && $SUDO rm -rf build_odb
 mkdir -p build_metkit build_odb
