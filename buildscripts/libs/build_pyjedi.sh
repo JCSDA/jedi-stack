@@ -6,8 +6,8 @@ set -ex
 
 name="pyjedi"
 
-[[ $USE_SUDO =~ [yYtT] ]] && prefix="/usr/local/lib" \
-	                  || prefix="$HOME/.local/lib"
+[[ $USE_SUDO =~ [yYtT] ]] || ! $MODULES && prefix="/usr/local" \
+	                  || prefix="$HOME/.local"
 
 #####################################################################
 # Python Package installs
@@ -25,18 +25,15 @@ $SUDO python3 -m pip install autopep8
 # ncepbufr for python
 #####################################################################
 
-[[ $USE_SUDO =~ [yYtT] ]] && unset args || args="--user"
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 git clone https://github.com/JCSDA/py-ncepbufr.git 
 cd py-ncepbufr 
 
 CC=gcc python setup.py build 
-[[ $USE_SUDO =~ [yYtT] ]] && sudo python setup.py install \
-                          || python setup.py --user install 
+$SUDO python setup.py install 
 
 CC=gcc python3 setup.py build 
-[[ $USE_SUDO =~ [yYtT] ]] && sudo python setup.py install \
-                          || python setup.py --user install 
+$SUDO python3 setup.py install 
 
 $SUDO cp src/libbufr.a $prefix/lib 
 
