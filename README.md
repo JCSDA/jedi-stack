@@ -216,8 +216,8 @@ python setup.py install
 # Mac OSX Clang environment module
 One result of the build process for Mac OSX is that a module script has been installed for setting up your environment for using Clang on the Mac. This can be accessed by running:
 ~~~~~~~
-module purge                            # clear out the environment
-module load jedi/clang-mac-openmpi      # set environment for subsequent JEDI builds on the Mac using Clang and OpenMPI
+module purge                        # clear out the environment
+module load jedi/clang-openmpi      # set environment for subsequent JEDI builds on the Mac using Clang and OpenMPI
 module list
 ~~~~~~~
 
