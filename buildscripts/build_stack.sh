@@ -102,7 +102,7 @@ $MODULES && (set +x; module purge; set -x)
 
 # enter versions for C, Fortran, anc CXX
 [[ $STACK_BUILD_NETCDF =~ [yYtT] ]] && \
-    libs/build_netcdf.sh "4.6.1" "4.4.4" "4.3.0" 2>&1 | tee "$logdir/netcdf.log"
+    libs/build_netcdf.sh "4.6.3" "4.4.4" "4.3.0" 2>&1 | tee "$logdir/netcdf.log"
 
 [[ $STACK_BUILD_ECKIT =~ [yYtT] ]] && \
     libs/build_eckit.sh "0.23.0" 2>&1 | tee "$logdir/eckit.log"

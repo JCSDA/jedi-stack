@@ -14,9 +14,11 @@ name="pyjedi"
 #####################################################################
 
 $SUDO python -m pip install -U pip setuptools
+$SUDO python -m pip install -U numpy
 $SUDO python -m pip install wheel netCDF4 matplotlib
 
 $SUDO python3 -m pip install -U pip setuptools
+$SUDO python3 -m pip install -U numpy
 $SUDO python3 -m pip install wheel netCDF4 matplotlib
 $SUDO python3 -m pip install pycodestyle
 $SUDO python3 -m pip install autopep8
