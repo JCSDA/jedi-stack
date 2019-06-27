@@ -20,8 +20,8 @@ load("ecbuild/2.9.3")
 load("eckit/0.23.0")
 load("fckit/jcsda-develop")
 
-load("hdf5/1_10_3")
-load("netcdf/4.6.1")
+load("hdf5/1.10.3")
+load("netcdf/4.6.3")
 
 whatis("Name: ".. pkgName)
 whatis("Version: ".. pkgVersion)
