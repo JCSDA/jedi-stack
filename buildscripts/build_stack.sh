@@ -87,6 +87,9 @@ $MODULES && (set +x; module purge; set -x)
 [[ $STACK_BUILD_EIGEN3 =~ [yYtT] ]] && \
     libs/build_eigen.sh "3.3.5" 2>&1 | tee "$logdir/eigen3.log"
 
+[[ $STACK_BUILD_BUFRLIB =~ [yYtT] ]] && \
+    libs/build_bufrlib.sh "master" 2>&1 | tee "$logdir/bufrlib.log"
+
 # The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_ECBUILD =~ [yYtT] ]] && \
     libs/build_ecbuild.sh "jcsda" "release/stable" 2>&1 | tee "$logdir/ecbuild.log"

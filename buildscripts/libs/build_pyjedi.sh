@@ -37,6 +37,4 @@ $SUDO python setup.py install
 CC=gcc python3 setup.py build 
 $SUDO python3 setup.py install 
 
-$SUDO cp src/libbufr.a $prefix/lib 
-
 exit 0

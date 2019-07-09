@@ -19,6 +19,7 @@ load("netcdf/4.6.3")
 load("lapack/3.7.0")
 load("boost-headers/1.68.0")
 load("eigen/3.3.5")
+load("bufrlib/master")
 
 load("ecbuild/jcsda-release-stable")
 load("eckit/0.23.0")
