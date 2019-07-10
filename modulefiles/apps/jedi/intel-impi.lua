@@ -12,9 +12,9 @@ load("jedi-intel/17.0.1")
 load("szip/2.1.1")
 load("jedi-impi/17.0.1")
 
-load("hdf5/1.10.3")
-load("pnetcdf/1.11.1")
-load("netcdf/4.6.3")
+load("hdf5/1.10.5")
+load("pnetcdf/1.11.2")
+load("netcdf/4.7.0")
 
 load("lapack/3.7.0")
 load("boost-headers/1.68.0")

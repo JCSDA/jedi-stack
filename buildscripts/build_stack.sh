@@ -98,14 +98,14 @@ $MODULES && (set +x; module purge; set -x)
 # These must be rebuilt for each MPI implementation
 
 [[ $STACK_BUILD_HDF5  =~ [yYtT] ]] && \
-    libs/build_hdf5.sh "1.10.3" 2>&1 | tee "$logdir/hdf5.log"
+    libs/build_hdf5.sh "1.10.5" 2>&1 | tee "$logdir/hdf5.log"
 
 [[ $STACK_BUILD_PNETCDF =~ [yYtT] ]] && \
-    libs/build_pnetcdf.sh "1.11.1" 2>&1 | tee "$logdir/pnetcdf.log"
+    libs/build_pnetcdf.sh "1.11.2" 2>&1 | tee "$logdir/pnetcdf.log"
 
 # enter versions for C, Fortran, anc CXX
 [[ $STACK_BUILD_NETCDF =~ [yYtT] ]] && \
-    libs/build_netcdf.sh "4.6.3" "4.4.4" "4.3.0" 2>&1 | tee "$logdir/netcdf.log"
+    libs/build_netcdf.sh "4.7.0" "4.4.5" "4.3.0" 2>&1 | tee "$logdir/netcdf.log"
 
 [[ $STACK_BUILD_ECKIT =~ [yYtT] ]] && \
     libs/build_eckit.sh "0.23.0" 2>&1 | tee "$logdir/eckit.log"
