@@ -38,7 +38,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git checkout $version
 
-./tools/build.sh $prefix -DBUILD_SHARED_LIBS=1
+$SUDO ./tools/build.sh $prefix -DBUILD_SHARED_LIBS=1
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version
