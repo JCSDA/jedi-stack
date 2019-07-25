@@ -47,6 +47,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=odb_api_bundle-$version-Source_Jedi
 [[ -d $software ]] || ( curl -s http://data.jcsda.org/downloads/odb_api_bundle-$version-Source_Jedi.tar.gz | tar xvz )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build_metkit ]] && $SUDO rm -rf build_metkit
 [[ -d build_odb ]] && $SUDO rm -rf build_odb

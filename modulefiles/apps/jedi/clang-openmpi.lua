@@ -22,10 +22,10 @@ load("eigen/3.3.5")
 load("bufrlib/master")
 
 load("ecbuild/jcsda-release-stable")
-load("eckit/0.23.0")
+load("eckit/1.1.0")
 load("fckit/jcsda-develop")
 
-load("odb-api/0.18.1")
+load("odb-api/0.18.1.r2")
 load("nccmp/1.8.2.1")
 
 setenv("CC","mpicc")

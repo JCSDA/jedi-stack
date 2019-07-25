@@ -17,7 +17,7 @@ load("boost/1_68_0")
 
 load("ecbuild/2.9.3")
 
-load("eckit/0.23.0")
+load("eckit/1.1.0")
 load("fckit/jcsda-develop")
 
 load("hdf5/1.10.3")

@@ -27,6 +27,7 @@ software=$name-$version
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 url="https://cmake.org/files/v${version%.*}/$software.tar.gz"
 [[ -d $software ]] || ( wget $url; tar -xf $software.tar.gz )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
 export CC=SERIAL_CC

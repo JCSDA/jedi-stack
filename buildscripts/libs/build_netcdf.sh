@@ -54,6 +54,29 @@ export LDFLAGS="-L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
 cd $curr_dir
 
+##################################################
+# Download only
+
+if [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]]; then
+
+    version=$c_version
+    software=$name-"c"-$version
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-c.git $software )
+
+    version=$f_version
+    software=$name-"fortran"-$version
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-fortran.git $software )
+
+    version=$cxx_version
+    software=$name-"cxx4"-$version
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-cxx4.git $software )    
+
+    exit 0
+    
+fi
+
+##################################################
+
 set +x
 echo "################################################################################"
 echo "BUILDING NETCDF-C"

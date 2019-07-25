@@ -66,6 +66,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software="ESMF_$version"
 [[ -d $software ]] || ( git clone -b $software $gitURL $software )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 export ESMF_DIR=$PWD
 

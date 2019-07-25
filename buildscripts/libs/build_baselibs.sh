@@ -37,6 +37,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=$name-$version
 [[ -d $software ]] || ( git clone -b $version $gitURL $software )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
 compilerD=$(echo $compiler | sed 's/-/_/g')

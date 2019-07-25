@@ -43,7 +43,7 @@ software=fckit
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 [[ -d $software ]] || git clone https://github.com/$source/$software.git
-
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git checkout $fckit_version
 [[ -d build ]] && $SUDO rm -rf build

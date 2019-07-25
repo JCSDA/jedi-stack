@@ -42,6 +42,7 @@ export F9X=$FC
 software=$name
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 [[ -d $software ]] || git clone https://github.com/ecmwf/$software.git
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git checkout $version
 sed -i -e 's/project( eckit CXX/project( eckit CXX Fortran/' CMakeLists.txt

@@ -22,7 +22,7 @@ load("eigen/3.3.5")
 load("bufrlib/master")
 
 load("ecbuild/jcsda-release-stable")
-load("eckit/0.23.0")
+load("eckit/1.1.0")
 load("fckit/jcsda-develop")
 
 setenv("CC","mpiicc")
