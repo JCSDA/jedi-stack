@@ -15,13 +15,21 @@ name="pyjedi"
 
 $SUDO python -m pip install -U pip setuptools
 $SUDO python -m pip install -U numpy
-$SUDO python -m pip install wheel netCDF4 matplotlib
+$SUDO python -m pip install -U scipy
+$SUDO python -m pip install -U pyyaml
+$SUDO python -m pip install -U wheel netCDF4 matplotlib
 
 $SUDO python3 -m pip install -U pip setuptools
 $SUDO python3 -m pip install -U numpy
-$SUDO python3 -m pip install wheel netCDF4 matplotlib
-$SUDO python3 -m pip install pycodestyle
-$SUDO python3 -m pip install autopep8
+$SUDO python3 -m pip install -U scipy
+$SUDO python3 -m pip install -U pyyaml
+$SUDO python3 -m pip install -U wheel netCDF4 matplotlib
+$SUDO python3 -m pip install -U pandas
+$SUDO python3 -m pip install -U pycodestyle
+$SUDO python3 -m pip install -U autopep8
+$SUDO python3 -m pip install -U cffi
+$SUDO python3 -m pip install -U pycparser
+$SUDO python3 -m pip install -U pytest
 
 #####################################################################
 # ncepbufr for python

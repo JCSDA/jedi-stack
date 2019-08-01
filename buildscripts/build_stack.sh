@@ -107,6 +107,9 @@ $MODULES && (set +x; module purge; set -x)
 [[ $STACK_BUILD_NETCDF =~ [yYtT] ]] && \
     libs/build_netcdf.sh "4.7.0" "4.4.5" "4.3.0" 2>&1 | tee "$logdir/netcdf.log"
 
+[[ $STACK_BUILD_NCCMP     =~ [yYtT] ]] && \
+    libs/build_nccmp.sh "1.8.2.1" 2>&1 | tee "$logdir/nccmp.log"
+
 [[ $STACK_BUILD_ECKIT =~ [yYtT] ]] && \
     libs/build_eckit.sh "1.1.0" 2>&1 | tee "$logdir/eckit.log"
 
@@ -122,9 +125,6 @@ $MODULES && (set +x; module purge; set -x)
 
 #----------------------
 # MPI-independent
-[[ $STACK_BUILD_NCCMP     =~ [yYtT] ]] && \
-    libs/build_nccmp.sh "1.8.2.1" 2>&1 | tee "$logdir/nccmp.log"
-
 [[ $STACK_BUILD_JASPER    =~ [yYtT] ]] && \
     libs/build_jasper.sh "1.900.1" 2>&1 | tee "$logdir/jasper.log"
 
