@@ -23,7 +23,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${EIGEN_ROOT:-"/usr/local"}
 fi    
 
 cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}

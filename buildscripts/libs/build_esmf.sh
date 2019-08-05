@@ -32,7 +32,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${ESMF_ROOT:-"/usr/local"}
 fi
 
 if [[ ! -z $mpi ]]; then

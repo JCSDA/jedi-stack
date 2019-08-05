@@ -6,7 +6,7 @@ set -ex
 
 name="pyjedi"
 
-[[ $USE_SUDO =~ [yYtT] ]] || ! $MODULES && prefix="/usr/local" \
+[[ $USE_SUDO =~ [yYtT] ]] || ! $MODULES && prefix=${PYJEDI_ROOT:-"/usr/local"} \
 	                  || prefix="$HOME/.local"
 
 #####################################################################
@@ -15,14 +15,10 @@ name="pyjedi"
 
 $SUDO python -m pip install -U pip setuptools
 $SUDO python -m pip install -U numpy
-$SUDO python -m pip install -U scipy
-$SUDO python -m pip install -U pyyaml
 $SUDO python -m pip install -U wheel netCDF4 matplotlib
 
 $SUDO python3 -m pip install -U pip setuptools
 $SUDO python3 -m pip install -U numpy
-$SUDO python3 -m pip install -U scipy
-$SUDO python3 -m pip install -U pyyaml
 $SUDO python3 -m pip install -U wheel netCDF4 matplotlib
 $SUDO python3 -m pip install -U pandas
 $SUDO python3 -m pip install -U pycodestyle

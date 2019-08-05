@@ -15,7 +15,7 @@ if $MODULES; then
             || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
-    prefix="/usr/local"
+    prefix=${TKDIFF_ROOT:-"/usr/local"}
 fi
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}

@@ -36,4 +36,69 @@ function update_modules {
 
 }
 
+function no_modules {
+
+    # this function defines environment variables that are
+    # normally done by the modules.  It's mainly intended
+    # for use in generating the containers    
+    
+    compilerName=$(echo $COMPILER | cut -d/ -f1)
+    mpiName=$(echo $MPI | cut -d/ -f1)
+
+    # these can be specified in the config file
+    # so these should be considered defaults
+    
+    case $compilerName in
+	gnu   )
+	    export SERIAL_CC=${SERIAL_CC:-"gcc"}
+	    export SERIAL_CXX=${SERIAL_CXX:-"g++"}
+	    export SERIAL_FC=${SERIAL_FC:-"gfortran"}
+	    ;;
+	intel )
+	    export SERIAL_CC=${SERIAL_CC:-"icc"}
+	    export SERIAL_CXX=${SERIAL_CXX:-"icpc"}
+	    export SERIAL_FC=${SERIAL_FC:-"ifort"}
+	    ;;
+	clang )
+	    export SERIAL_CC=${SERIAL_CC:-"clang"}
+	    export SERIAL_CXX=${SERIAL_CXX:-"clang++"}
+	    export SERIAL_FC=${SERIAL_FC:-"gfortran"}
+	    ;;
+	*     ) echo "Unknown compiler option = $compilerName, ABORT!"; exit 1 ;;
+    esac    
+
+    case $mpiName in
+	openmpi)
+	    export MPI_CC=${MPI_CC:-"mpicc"}
+	    export MPI_CXX=${MPI_CXX:-"mpicxx"}
+	    export MPI_FC=${MPI_FC:-"mpifort"}
+	    ;;
+	mpich  )
+	    export MPI_CC=${MPI_CC:-"mpicc"}
+	    export MPI_CXX=${MPI_CXX:-"mpicxx"}
+	    export MPI_FC=${MPI_FC:-"mpifort"}
+	    ;;
+	impi   )
+	    export MPI_CC=${MPI_CC:-"mpiicc"}
+	    export MPI_CXX=${MPI_CXX:-"mpiicpc"}
+	    export MPI_FC=${MPI_FC:-"mpiifort"}
+	    ;;
+	*     ) echo "Unknown MPI option = $MPIName, ABORT!"; exit 1 ;;
+    esac    
+
+    config_file="${JEDI_STACK_ROOT}/buildscripts/config/config_${1:-"container"}.sh"
+
+    set +x
+    # look for build items that are set in the config file
+    while IFS= read -r line ; do
+        if [[ $(echo $line | grep "STACK_BUILD" | cut -d= -f2) =~ [yYtT] ]]; then
+            pkg=$(echo $line | cut -d= -f1 | cut -d_ -f3)
+            eval export ${pkg}_ROOT="/usr/local"
+        fi
+    done < $config_file    
+    set -x
+    
+}
+
 export -f update_modules
+export -f no_modules    

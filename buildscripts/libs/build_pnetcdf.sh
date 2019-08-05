@@ -24,7 +24,7 @@ if $MODULES; then
     fi
     
 else
-    prefix="/usr/local"
+    prefix=${PNETCDF_ROOT:-"/usr/local"}
 fi
     
 

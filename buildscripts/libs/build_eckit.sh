@@ -31,7 +31,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${ECKIT_ROOT:-"/usr/local"}
 fi
 
 export FC=$MPI_FC

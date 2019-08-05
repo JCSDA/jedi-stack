@@ -25,7 +25,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${HDF5_ROOT:-"/usr/local"}
 fi    
 
 if [[ ! -z $mpi ]]; then

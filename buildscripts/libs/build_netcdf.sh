@@ -29,7 +29,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${NETCDF_ROOT:-"/usr/local"}
 fi
 
 if [[ ! -z $mpi ]]; then

@@ -24,7 +24,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${BASELIBS_ROOT:-"/usr/local"}
 fi
 
 export FC=$MPI_FC

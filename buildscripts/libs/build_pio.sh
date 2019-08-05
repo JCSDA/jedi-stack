@@ -3,7 +3,7 @@
 set -ex
 
 name="pio"
-version="develop"
+version=$1
 
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
@@ -27,7 +27,7 @@ if $MODULES; then
     fi
     
 else
-    prefix="/usr/local"
+    prefix=${PIO_ROOT:-"/usr/local"}
 fi
     
 export FC=$MPI_FC
@@ -43,9 +43,11 @@ export FCFLAGS="$FFLAGS"
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=ParallelIO
+branch=pio$(echo $version | sed -e 's/\./_/g')
 [[ -d $software ]] || git clone https://github.com/NCAR/$software
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+git checkout $branch
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 cmake -DNetCDF_C_PATH=$NETCDF -DNetCDF_Fortran_PATH=$NETCDF -DPnetCDF_PATH=$PNETCDF -DHDF5_PATH=$HDF5_ROOT -DCMAKE_INSTALL_PREFIX=$prefix -DPIO_USE_MALLOC=ON -DCMAKE_VERBOSE_MAKEFILE=1 -DPIO_ENABLE_TIMING=OFF ..

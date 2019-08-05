@@ -19,7 +19,7 @@ url="https://dl.bintray.com/boostorg/release/$version/source/$software.tar.gz"
 if [[ $level = "headers-only" ]]; then
 
     $MODULES && prefix="${PREFIX:-"/opt/modules"}/core/$name/$version" \
-	     || prefix="/usr/local"
+	     || prefix=${BOOST_ROOT:-"/usr/local"}
     $SUDO mkdir -p $prefix $prefix/include
     $SUDO cp -R boost $prefix/include
 
@@ -51,7 +51,7 @@ if $MODULES; then
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
-    prefix="/usr/local"
+    prefix=${BOOST_ROOT:-"/usr/local"}
 fi
 
 BoostRoot=$(pwd)

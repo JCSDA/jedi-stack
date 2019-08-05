@@ -23,7 +23,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${BUFRLIB_ROOT:-"/usr/local"}
 fi
 
 export FC=$SERIAL_FC

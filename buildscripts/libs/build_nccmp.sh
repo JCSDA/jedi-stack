@@ -28,7 +28,7 @@ if $MODULES; then
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
-    prefix="/usr/local"
+    prefix=${NCCMP_ROOT:-"/usr/local"}
 fi
 
 export FC=$MPI_FC

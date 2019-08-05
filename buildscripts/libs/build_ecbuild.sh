@@ -17,7 +17,7 @@ if $MODULES; then
             || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
-    prefix="/usr/local"
+    prefix=${ECBUILD_ROOT:-"/usr/local"}
 fi
 
 software=ecbuild

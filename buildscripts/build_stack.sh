@@ -47,6 +47,12 @@ else
 
 fi    
 
+# Optionally exit on failure
+[[ $STACK_EXIT_ON_FAIL =~ [yYtT] ]] && set -e
+
+# this is needed to set environment variables if modules are not used
+$MODULES || no_modules $1
+
 # This is for the log files
 logdir=$JEDI_STACK_ROOT/$LOGDIR
 mkdir -p $logdir
@@ -149,7 +155,7 @@ $MODULES && (set +x; module purge; set -x)
     libs/build_nco.sh "4.7.9" 2>&1 | tee "$logdir/nco.log"
 
 [[ $STACK_BUILD_PIO      =~ [yYtT] ]] && \
-    libs/build_pio.sh 2>&1 | tee "$logdir/pio.log"
+    libs/build_pio.sh "2.4.2" 2>&1 | tee "$logdir/pio.log"
 
 [[ $STACK_BUILD_FFTW     =~ [yYtT] ]] && \
     libs/build_fftw.sh "3.3.8" 2>&1 | tee "$logdir/fftw.log"

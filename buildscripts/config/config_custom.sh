@@ -31,7 +31,8 @@ export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=Y
 export   MAKE_CLEAN=N
-export DOWNLOAD_ONLY=F
+export DOWNLOAD_ONLY=N
+export STACK_EXIT_ON_FAIL=Y
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=N

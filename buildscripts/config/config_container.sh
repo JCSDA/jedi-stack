@@ -26,6 +26,7 @@ export   MAKE_CHECK=N
 export MAKE_VERBOSE=N
 export   MAKE_CLEAN=Y
 export DOWNLOAD_ONLY=F
+export STACK_EXIT_ON_FAIL=T
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=N

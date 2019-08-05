@@ -23,7 +23,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${SZIP:-"/usr/local"}
 fi
 
 export CC=$SERIAL_CC

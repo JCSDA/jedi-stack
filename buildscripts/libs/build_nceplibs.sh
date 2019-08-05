@@ -26,7 +26,7 @@ if $MODULES; then
     fi
 
 else
-    prefix="/usr/local"
+    prefix=${NCEPLIBS:-"/usr/local"}
 fi
 
 cd ${JEDI_STACK_ROOT}/buildscripts/libs/nceplibs
