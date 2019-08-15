@@ -43,7 +43,7 @@ else
     fi
 
     # Currently we do not use modules in the containers
-    [[ $1 == "container" ]] && export MODULES=false || export MODULES=true
+    [[ $1 =~ ^container ]] && export MODULES=false || export MODULES=true
 
 fi    
 
