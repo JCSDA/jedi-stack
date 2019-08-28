@@ -169,6 +169,12 @@ $MODULES && (set +x; module purge; set -x)
 [[ $STACK_BUILD_BASELIBS =~ [yYtT] ]] && \
     libs/build_baselibs.sh "5.2.2" 2>&1 | tee "$logdir/baselibs.log"
 
+[[ $STACK_BUILD_PDTOOLKIT =~ [yYtT] ]] && \
+    libs/build_pdtoolkit.sh "3.25.1" 2>&1 | tee "$logdir/pdtoolkit.log"
+
+[[ $STACK_BUILD_TAU2 =~ [yYtT] ]] && \
+    libs/build_tau2.sh "3.25.1" 2>&1 | tee "$logdir/tau2.log"
+
 # ===============================================================================
 # optionally clean up
 [[ $MAKE_CLEAN =~ [yYtT] ]] && \
