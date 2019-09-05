@@ -30,7 +30,7 @@ cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
 
 software="eigen-eigen-b3f3d4950030"
 url="https://bitbucket.org/eigen/eigen/get/$version.tar.gz"
-[[ -d $software ]] || ( wget $url; tar -xf $version.tar.gz )
+[[ -d $software ]] || ( $WGET $url; tar -xf $version.tar.gz )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build

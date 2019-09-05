@@ -29,7 +29,7 @@ lmod_version="8.0"
 #sudo luarocks install luafilesystem
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-wget https://sourceforge.net/projects/lmod/files/lua-$lua_version.tar.bz2
+$WGET https://sourceforge.net/projects/lmod/files/lua-$lua_version.tar.bz2
 bzip2 -d lua-$lua_version.tar.bz2; tar xvf lua-$lua_version.tar
 cd lua-$lua_version
 [[ -d build ]] && rm -rf build
@@ -44,7 +44,7 @@ sudo ln -s $mods_path/lua/$lua_version/bin/* /usr/local/bin
 # install lmod
 # this installs in $MODULESHOME, which is set to $mods_path/lmod/lmod
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-wget https://sourceforge.net/projects/lmod/files/Lmod-$lmod_version.tar.bz2
+$WGET https://sourceforge.net/projects/lmod/files/Lmod-$lmod_version.tar.bz2
 bzip2 -d Lmod-$lmod_version.tar.bz2; tar xvf Lmod-$lmod_version.tar
 cd Lmod-$lmod_version
 [[ -d build ]] && rm -rf build

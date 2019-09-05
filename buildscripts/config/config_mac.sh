@@ -29,6 +29,7 @@ export MAKE_VERBOSE=Y
 export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
+export WGET="wget -nv"
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=N
