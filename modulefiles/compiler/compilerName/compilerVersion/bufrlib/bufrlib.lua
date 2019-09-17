@@ -1,5 +1,4 @@
-help([[
-]])
+help([[ Module: NCEP bufrlib library for reading binary BUFR format files ]])
 
 local pkgName    = myModuleName()
 local pkgVersion = myModuleVersion()
@@ -19,14 +18,14 @@ prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("LIBRARY_PATH", pathJoin(base,"lib"))
 
-setenv("BUFRLIB_ROOT", base)
-setenv("BUFRLIB_PATH", base)
-setenv("BUFRLIB_DIR", base)
-setenv("BUFRLIB_INCLUDES", pathJoin(base,"include","bufrlib"))
-setenv("BUFRLIB_LIBRARIES", pathJoin(base,"lib"))
-setenv("BUFRLIB_VERSION", pkgVersion)
+setenv("bufrlib_ROOT", base)
+setenv("bufrlib_PATH", base)
+setenv("bufrlib_DIR", pathJoin(base,"share","bufrlib","cmake"))
+setenv("bufrlib_INCLUDES", pathJoin(base,"include","bufrlib"))
+setenv("bufrlib_LIBRARIES", pathJoin(base,"lib"))
+setenv("bufrlib_VERSION", pkgVersion)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: library")
-whatis("Description: NCEP BUFRLIB library for reading binary BUFR format files")
+whatis("Description: NCEP bufrlib library for reading binary BUFR format files")
