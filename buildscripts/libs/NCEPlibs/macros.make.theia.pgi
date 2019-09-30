@@ -1,0 +1,55 @@
+# Settings for LIBRARY BUILD ONLY: theia.pgi
+#
+# Flags common to all
+RM         = rm -f
+AR         = ar
+ARFLAGS    =
+FC         = mpif90
+FCserial   = pgfortran
+CC         = pgcc
+
+ifeq ($(OPENMP),1)
+  OMPFLAGS= -mp
+else
+  OMPFLAGS=
+endif
+
+# Number of parallel tasks for gmake
+GMAKEMINUSJ = -j24
+
+# Flags for bacio library
+BACIO_FFLAGS  = $(OMPFLAGS) -O3 -traceback -fPIC
+BACIO_CFLAGS  = $(OMPFLAGS) -O3 -DLINUX -fPIC
+
+# Flags for gfsio library
+GFSIO_FFLAGS  = $(OMPFLAGS) -g -traceback -byteswapio -I$(INCMOD) -Mfree -fPIC
+GFSIO_ARFLAGS = -rv
+
+# Flags for ip library
+IP_FFLAGS     = $(OMPFLAGS) -traceback -O3 -Mipa=fast -Kieee -r8 -i4 -fPIC
+IP_ARFLAGS    = -ruv
+
+# Flags for landsfcutil library
+LAND_FFLAGS   = $(OMPFLAGS) -traceback -O3 -I$(MOD_DIR) -Mipa=fast -Kieee -r8 -i4 -Mfree -fPIC
+LAND_ARFLAGS  = -rv
+
+# Flags for nemsio library
+NEMSIO_FFLAGS  = $(OMPFLAGS) -O -g -traceback -fPIC
+NEMSIO_ARFLAGS = -rvu
+
+# Flags for sigio library
+SIGIO_FFLAGS  = $(OMPFLAGS) -O0 -g -traceback -Mfree -byteswapio  -c -fPIC
+SIGIO_ARFLAGS = crvs
+
+# Flags for sp library
+SP_FFLAGS  = $(OMPFLAGS) -traceback -O3 -Mrecursive -i4 -r8 -byteswapio -Kieee -Mpreprocess -DLINUX -fPIC
+SP_ARFLAGS = -ruv
+
+# Flags for w3emc library
+W3EMC_FFLAGS = $(OMPFLAGS) -O2 -g -traceback -Mfixed -c -fPIC
+W3EMC_ARFLAGS = ruv
+
+# Flags for w3nco library
+W3NCO_FFLAGS  = $(OMPFLAGS) -O0 -g -traceback -r8 -Mfixed -fPIC
+W3NCO_CFLAGS  = $(OMPFLAGS) -O0 -DLINUX
+W3NCO_ARFLAGS = -ruv

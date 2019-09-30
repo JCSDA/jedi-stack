@@ -1,0 +1,433 @@
+make -j24 -C src/bacio/v2.0.1/src
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/bacio/v2.0.1/src'
+mpicc -c  -g -O3 -DUNDERSCORE -DLINUX -fPIC bacio.c
+gfortran -c  -g -O3 -fbacktrace -fPIC baciof.f
+gfortran -c  -g -O3 -fbacktrace -fPIC bafrio.f
+mpicc -c  -g -O3 -DUNDERSCORE -DLINUX -fPIC byteswap.c
+gfortran -c  -g -O3 -fbacktrace -fPIC chk_endianc.f
+ar -rv  ../../../../libbacio_4.a bacio.o baciof.o bafrio.o byteswap.o chk_endianc.o
+ar: creating ../../../../libbacio_4.a
+a - bacio.o
+a - baciof.o
+a - bafrio.o
+a - byteswap.o
+a - chk_endianc.o
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/bacio/v2.0.1/src'
+make -j24 -C src/ip/v2.0.0/src
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/ip/v2.0.0/src'
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswiz.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzdca.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polatev1.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipxwafs2.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipolatev.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswizcd.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polates2.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswiz01.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polfixv.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswiz04.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipmerge2.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polateg4.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polates0.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polatev2.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipolates.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ijkgds1.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipspaste.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gausslat.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gcdist.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswizcb.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzd04.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC makgds.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polates3.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdsawt.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswizc9.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipxwafs3.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipsector.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzdcb.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzd01.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC movect.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polates4.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswiz03.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzdc9.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polateg0.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswiz05.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipxwafs.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polatev4.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polates6.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzd00.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzdcd.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzd05.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polfixs.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ijkgds0.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ijkgds.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswiz00.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polatev3.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzd.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswzd03.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polates1.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC ipxetas.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polatev6.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC gdswizca.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polatev0.f
+gfortran -c  -g -O3 -fdefault-real-8 -fPIC polateg1.f
+ar -ruv ../../../../libip_d.a gdswiz.o gdswzdca.o polatev1.o ipxwafs2.o ipolatev.o gdswizcd.o polates2.o gdswiz01.o polfixv.o gdswiz04.o ipmerge2.o polateg4.o polates0.o polatev2.o ipolates.o ijkgds1.o ipspaste.o gausslat.o gcdist.o gdswizcb.o gdswzd04.o makgds.o polates3.o gdsawt.o gdswizc9.o ipxwafs3.o ipsector.o gdswzdcb.o gdswzd01.o movect.o polates4.o gdswiz03.o gdswzdc9.o polateg0.o gdswiz05.o ipxwafs.o polatev4.o polates6.o gdswzd00.o gdswzdcd.o gdswzd05.o polfixs.o ijkgds0.o ijkgds.o gdswiz00.o polatev3.o gdswzd.o gdswzd03.o polates1.o ipxetas.o polatev6.o gdswizca.o polatev0.o polateg1.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: creating ../../../../libip_d.a
+a - gdswiz.o
+a - gdswzdca.o
+a - polatev1.o
+a - ipxwafs2.o
+a - ipolatev.o
+a - gdswizcd.o
+a - polates2.o
+a - gdswiz01.o
+a - polfixv.o
+a - gdswiz04.o
+a - ipmerge2.o
+a - polateg4.o
+a - polates0.o
+a - polatev2.o
+a - ipolates.o
+a - ijkgds1.o
+a - ipspaste.o
+a - gausslat.o
+a - gcdist.o
+a - gdswizcb.o
+a - gdswzd04.o
+a - makgds.o
+a - polates3.o
+a - gdsawt.o
+a - gdswizc9.o
+a - ipxwafs3.o
+a - ipsector.o
+a - gdswzdcb.o
+a - gdswzd01.o
+a - movect.o
+a - polates4.o
+a - gdswiz03.o
+a - gdswzdc9.o
+a - polateg0.o
+a - gdswiz05.o
+a - ipxwafs.o
+a - polatev4.o
+a - polates6.o
+a - gdswzd00.o
+a - gdswzdcd.o
+a - gdswzd05.o
+a - polfixs.o
+a - ijkgds0.o
+a - ijkgds.o
+a - gdswiz00.o
+a - polatev3.o
+a - gdswzd.o
+a - gdswzd03.o
+a - polates1.o
+a - ipxetas.o
+a - polatev6.o
+a - gdswizca.o
+a - polatev0.o
+a - polateg1.o
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/ip/v2.0.0/src'
+make  -C src/sp/v2.0.2/src
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/sp/v2.0.2/src'
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrungv.o sptrungv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptez.o sptez.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptezd.o sptezd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptranv.o sptranv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptranf0.o sptranf0.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sppad.o sppad.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgpsd.o sptgpsd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrand.o sptrand.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrunv.o sptrunv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrun.o sptrun.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrunm.o sptrunm.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spvar.o spvar.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptran.o sptran.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spgrady.o spgrady.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrund.o sptrund.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptezm.o sptezm.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgps.o sptgps.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgpmd.o sptgpmd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgpm.o sptgpm.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgpt.o sptgpt.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o speps.o speps.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptruns.o sptruns.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrung.o sptrung.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spsynth.o spsynth.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spgradx.o spgradx.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptezv.o sptezv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spffte.o spffte.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spgradq.o spgradq.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spfftpt.o spfftpt.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spfft.o spfft.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrunmv.o sptrunmv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptranfv.o sptranfv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptezmd.o sptezmd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o splaplac.o splaplac.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrunsv.o sptrunsv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgptvd.o sptgptvd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o splegend.o splegend.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spanaly.o spanaly.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spdz2uv.o spdz2uv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spuv2dz.o spuv2dz.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgptsd.o sptgptsd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptranf.o sptranf.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptranf1.o sptranf1.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spwget.o spwget.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptezmv.o sptezmv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgpsv.o sptgpsv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptrunl.o sptrunl.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgptd.o sptgptd.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o spfft1.o spfft1.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgptv.o sptgptv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC  -c -o sptgpmv.o sptgpmv.f
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC   -c -o lapack_gen.o lapack_gen.F
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC   -c -o ncpus.o ncpus.F
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC   -c -o fftpack.o fftpack.F
+fftpack.F:192:72:
+
+       CALL RFFTI1 (N,WSAVE(N+1),WSAVE(2*N+1))
+                                                                        1
+Warning: Type mismatch in argument ‘ifac’ at (1); passed REAL(8) to INTEGER(4) [-Wargument-mismatch]
+fftpack.F:186:72:
+
+       CALL RFFTB1 (N,R,WSAVE,WSAVE(N+1),WSAVE(2*N+1))
+                                                                        1
+Warning: Type mismatch in argument ‘ifac’ at (1); passed REAL(8) to INTEGER(4) [-Wargument-mismatch]
+fftpack.F:180:72:
+
+       CALL RFFTF1 (N,R,WSAVE,WSAVE(N+1),WSAVE(2*N+1))
+                                                                        1
+Warning: Type mismatch in argument ‘ifac’ at (1); passed REAL(8) to INTEGER(4) [-Wargument-mismatch]
+gfortran  -g -O3 -fdefault-real-8 -fconvert=big-endian -cpp -DLINUX -fPIC   -c -o splat.o splat.F
+ar -ruv ../../../../libsp_v2.0.2_d.a sptrungv.o sptez.o sptezd.o sptranv.o sptranf0.o sppad.o sptgpsd.o sptrand.o sptrunv.o sptrun.o sptrunm.o spvar.o sptran.o spgrady.o sptrund.o sptezm.o sptgps.o sptgpmd.o sptgpm.o sptgpt.o speps.o sptruns.o sptrung.o spsynth.o spgradx.o sptezv.o spffte.o spgradq.o spfftpt.o spfft.o sptrunmv.o sptranfv.o sptezmd.o splaplac.o sptrunsv.o sptgptvd.o splegend.o spanaly.o spdz2uv.o spuv2dz.o sptgptsd.o sptranf.o sptranf1.o spwget.o sptezmv.o sptgpsv.o sptrunl.o sptgptd.o spfft1.o sptgptv.o sptgpmv.o lapack_gen.o ncpus.o fftpack.o splat.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: creating ../../../../libsp_v2.0.2_d.a
+a - sptrungv.o
+a - sptez.o
+a - sptezd.o
+a - sptranv.o
+a - sptranf0.o
+a - sppad.o
+a - sptgpsd.o
+a - sptrand.o
+a - sptrunv.o
+a - sptrun.o
+a - sptrunm.o
+a - spvar.o
+a - sptran.o
+a - spgrady.o
+a - sptrund.o
+a - sptezm.o
+a - sptgps.o
+a - sptgpmd.o
+a - sptgpm.o
+a - sptgpt.o
+a - speps.o
+a - sptruns.o
+a - sptrung.o
+a - spsynth.o
+a - spgradx.o
+a - sptezv.o
+a - spffte.o
+a - spgradq.o
+a - spfftpt.o
+a - spfft.o
+a - sptrunmv.o
+a - sptranfv.o
+a - sptezmd.o
+a - splaplac.o
+a - sptrunsv.o
+a - sptgptvd.o
+a - splegend.o
+a - spanaly.o
+a - spdz2uv.o
+a - spuv2dz.o
+a - sptgptsd.o
+a - sptranf.o
+a - sptranf1.o
+a - spwget.o
+a - sptezmv.o
+a - sptgpsv.o
+a - sptrunl.o
+a - sptgptd.o
+a - spfft1.o
+a - sptgptv.o
+a - sptgpmv.o
+a - lapack_gen.o
+a - ncpus.o
+a - fftpack.o
+a - splat.o
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/sp/v2.0.2/src'
+make  -C src/sigio/v2.0.1/src
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/sigio/v2.0.1/src'
+gfortran   -O0 -g -fbacktrace -ffree-form -fconvert=big-endian -c -fPIC sigio_module.f
+gfortran   -O0 -g -fbacktrace -ffree-form -fconvert=big-endian -c -fPIC sigio_r_module.f
+ar crvs libsigio.a sigio_module.o sigio_r_module.o
+a - sigio_module.o
+a - sigio_r_module.o
+ranlib libsigio.a
+cp libsigio.a ../../../../libsigio_v2.0.1_4.a
+mkdir -p ../incmod
+cp *.mod ../incmod
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/sigio/v2.0.1/src'
+make  -C src/w3emc/v2.2.0/src # Depends on sigio 2.0.1
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/w3emc/v2.2.0/src'
+cp libw3emc_d.a ../../../..
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/w3emc/v2.2.0/src'
+make  -C src/w3nco/v2.0.6/src
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/w3nco/v2.0.6/src'
+gfortran -c  -O0 -g -fdefault-real-8 -fno-range-check -ffixed-form -fPIC w3locdat.f
+ar -ruv ../../../../libw3nco_d.a w3kind.o w3locdat.o putgbn.o fparsei.o w3fi76.o w3ai00.o ixgb.o w3movdat.o w3fs15.o gbyte.o w3fi71.o w3ai38.o putgbex.o idsdef.o sbytesc.o w3fi75.o w3fi59.o getgb1re.o w3tagb.o w3difdat.o iw3pds.o w3ai08.o w3fp12.o r63w72.o w3pradat.o w3fi04.o getgbe.o getgbep.o gtbits.o errmsg.o getgbemp.o gbytesc.o w3fi63.o instrument.o w3ai39.o mkfldsep.o getgbeh.o w3unpk77.o w3fi92.o makwmo.o w3fi68.o w3fi82.o getgbmp.o getgb1r.o w3fi62.o fparser.o w3ai18.o w3ft32.o w3fi88.o w3fi01.o w3doxdat.o putgb.o getgbexm.o w3fi83.o w3fp13.o getgb.o getgi.o getgbp.o w3reddat.o getgbmh.o w3nogds.o xmovex.o w3fp11.o skgb.o w3trnarg.o w3fi58.o w3fs13.o q9ie32.o gbytes.o getgbex.o getgbemn.o w3fi74.o w3ymdh4.o lengds.o pdseup.o getgbemh.o sbytes.o putgben.o getgb1.o w3fi69.o w3valdat.o w3ai15.o errexit.o w3ai24.o getgbh.o w3fs26.o pdsens.o xstore.o w3aq15.o aea.o w3ai01.o getgir.o sbytec.o getgbem.o getbit.o sbyte.o w3fi72.o w3fi64.o iw3jdn.o getgb1s.o w3fs21.o gbytec.o w3fi73.o putgbe.o w3utcdat.o getgbm.o w3as00.o w3ai19.o iw3unp29.o summary.o mova2i.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: creating ../../../../libw3nco_d.a
+a - w3kind.o
+a - w3locdat.o
+a - putgbn.o
+a - fparsei.o
+a - w3fi76.o
+a - w3ai00.o
+a - ixgb.o
+a - w3movdat.o
+a - w3fs15.o
+a - gbyte.o
+a - w3fi71.o
+a - w3ai38.o
+a - putgbex.o
+a - idsdef.o
+a - sbytesc.o
+a - w3fi75.o
+a - w3fi59.o
+a - getgb1re.o
+a - w3tagb.o
+a - w3difdat.o
+a - iw3pds.o
+a - w3ai08.o
+a - w3fp12.o
+a - r63w72.o
+a - w3pradat.o
+a - w3fi04.o
+a - getgbe.o
+a - getgbep.o
+a - gtbits.o
+a - errmsg.o
+a - getgbemp.o
+a - gbytesc.o
+a - w3fi63.o
+a - instrument.o
+a - w3ai39.o
+a - mkfldsep.o
+a - getgbeh.o
+a - w3unpk77.o
+a - w3fi92.o
+a - makwmo.o
+a - w3fi68.o
+a - w3fi82.o
+a - getgbmp.o
+a - getgb1r.o
+a - w3fi62.o
+a - fparser.o
+a - w3ai18.o
+a - w3ft32.o
+a - w3fi88.o
+a - w3fi01.o
+a - w3doxdat.o
+a - putgb.o
+a - getgbexm.o
+a - w3fi83.o
+a - w3fp13.o
+a - getgb.o
+a - getgi.o
+a - getgbp.o
+a - w3reddat.o
+a - getgbmh.o
+a - w3nogds.o
+a - xmovex.o
+a - w3fp11.o
+a - skgb.o
+a - w3trnarg.o
+a - w3fi58.o
+a - w3fs13.o
+a - q9ie32.o
+a - gbytes.o
+a - getgbex.o
+a - getgbemn.o
+a - w3fi74.o
+a - w3ymdh4.o
+a - lengds.o
+a - pdseup.o
+a - getgbemh.o
+a - sbytes.o
+a - putgben.o
+a - getgb1.o
+a - w3fi69.o
+a - w3valdat.o
+a - w3ai15.o
+a - errexit.o
+a - w3ai24.o
+a - getgbh.o
+a - w3fs26.o
+a - pdsens.o
+a - xstore.o
+a - w3aq15.o
+a - aea.o
+a - w3ai01.o
+a - getgir.o
+a - sbytec.o
+a - getgbem.o
+a - getbit.o
+a - sbyte.o
+a - w3fi72.o
+a - w3fi64.o
+a - iw3jdn.o
+a - getgb1s.o
+a - w3fs21.o
+a - gbytec.o
+a - w3fi73.o
+a - putgbe.o
+a - w3utcdat.o
+a - getgbm.o
+a - w3as00.o
+a - w3ai19.o
+a - iw3unp29.o
+a - summary.o
+a - mova2i.o
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/w3nco/v2.0.6/src'
+make  -C src/nemsio/v2.2.3/src
+make[1]: Entering directory '/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src'
+echo `pwd`
+/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src
+mpif90  -O -g -fPIC -I. -c nemsio_openclose.f90
+echo `pwd`
+/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src
+mpif90  -O -g -fPIC -I. -c nemsio_read.f90
+echo `pwd`
+/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src
+mpif90  -O -g -fPIC -I. -c nemsio_write.f90
+echo `pwd`
+/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src
+mpif90  -O -g -fPIC -I. -c nemsio_module.f90
+echo `pwd`
+/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src
+mpif90  -O -g -fPIC -I. -c nemsio_module_mpi.f90
+ar -rvu ../../../../libnemsio_d.a nemsio_openclose.o nemsio_read.o nemsio_write.o nemsio_module.o nemsio_module_mpi.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: creating ../../../../libnemsio_d.a
+a - nemsio_openclose.o
+a - nemsio_read.o
+a - nemsio_write.o
+a - nemsio_module.o
+a - nemsio_module_mpi.o
+mkdir -vp ../../../../include
+mv -v *.mod ../../../../include
+renamed 'nemsio_module.mod' -> '../../../../include/nemsio_module.mod'
+renamed 'nemsio_module_mpi.mod' -> '../../../../include/nemsio_module_mpi.mod'
+renamed 'nemsio_openclose.mod' -> '../../../../include/nemsio_openclose.mod'
+renamed 'nemsio_read.mod' -> '../../../../include/nemsio_read.mod'
+renamed 'nemsio_write.mod' -> '../../../../include/nemsio_write.mod'
+rm -vf *.o
+removed 'nemsio_module.o'
+removed 'nemsio_module_mpi.o'
+removed 'nemsio_openclose.o'
+removed 'nemsio_read.o'
+removed 'nemsio_write.o'
+make[1]: Leaving directory '/data/fv3_aws/NCEPlibs/src/nemsio/v2.2.3/src'

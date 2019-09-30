@@ -1,0 +1,55 @@
+# Settings for LIBRARY BUILD ONLY: cheyenne.intel
+#
+# Flags common to all
+RM         = rm -f
+AR         = ar
+ARFLAGS    =
+FC         = mpif90
+FCserial   = ifort
+CC         = icc
+
+ifeq ($(OPENMP),1)
+  OMPFLAGS= -qopenmp
+else
+  OMPFLAGS=
+endif
+
+# Number of parallel tasks for gmake
+GMAKEMINUSJ = -j24
+
+# Flags for bacio library
+BACIO_FFLAGS  = $(OMPFLAGS) -O3 -xHOST -traceback -fPIC
+BACIO_CFLAGS  = $(OMPFLAGS) -O3 -DUNDERSCORE -DLINUX -fPIC
+
+# Flags for gfsio library
+GFSIO_FFLAGS  = $(OMPFLAGS) -traceback -g -xHOST -convert big_endian -assume byterecl  -I$(INCMOD) -FR -fPIC
+GFSIO_ARFLAGS = -rv
+
+# Flags for ip library
+IP_FFLAGS     = $(OMPFLAGS) -O3 -ip -fp-model strict -real-size 64 -integer-size 32 -fPIC
+IP_ARFLAGS    = -ruv
+
+# Flags for landsfcutil library
+LAND_FFLAGS   = $(OMPFLAGS) -O3 -I$(MOD_DIR) -ip -fp-model strict -real-size 64 -integer-size 32 -FR -fPIC
+LAND_ARFLAGS  = -rv
+
+# Flags for nemsio library
+NEMSIO_FFLAGS  = $(OMPFLAGS) -O -g -fPIC
+NEMSIO_ARFLAGS = -rvu
+
+# Flags for sigio library
+SIGIO_FFLAGS  = $(OMPFLAGS) -O0 -g -xHOST -traceback -free -convert big_endian -assume byterecl -c -fPIC
+SIGIO_ARFLAGS = crvs
+
+# Flags for sp library
+SP_FFLAGS  = $(OMPFLAGS) -O3 -auto -i4 -r8 -convert big_endian -assume byterecl -fp-model strict -fpp -DLINUX -fPIC
+SP_ARFLAGS = -ruv
+
+# Flags for w3emc library
+W3EMC_FFLAGS = $(OMPFLAGS) -O2 -g -traceback -fixed -c -fPIC
+W3EMC_ARFLAGS = ruv
+
+# Flags for w3nco library
+W3NCO_FFLAGS  = $(OMPFLAGS) -O0 -g -r8 -fixed -fPIC
+W3NCO_CFLAGS  = $(OMPFLAGS) -O0 -DLINUX
+W3NCO_ARFLAGS = -ruv

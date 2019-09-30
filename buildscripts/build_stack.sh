@@ -141,7 +141,7 @@ $MODULES && (set +x; module purge; set -x)
     libs/build_xerces.sh "3.1.4" 2>&1 | tee "$logdir/xerces.log"
 
 [[ $STACK_BUILD_NCEPLIBS  =~ [yYtT] ]] && \
-    libs/build_nceplibs.sh 2>&1 | tee "$logdir/nceplibs.log"
+    libs/build_nceplibs.sh "fv3" 2>&1 | tee "$logdir/nceplibs.log"
 
 [[ $STACK_BUILD_TKDIFF    =~ [yYtT] ]] && \
     libs/build_tkdiff.sh "4.3.5" 2>&1 | tee "$logdir/tkdiff.log"
@@ -164,7 +164,7 @@ $MODULES && (set +x; module purge; set -x)
     libs/build_boost.sh "1.68.0" 2>&1 | tee "$logdir/boost.log"
 
 [[ $STACK_BUILD_ESMF     =~ [yYtT] ]] && \
-    libs/build_esmf "7_1_0r" 2>&1 | tee "$logdir/esmf.log"
+    libs/build_esmf.sh "7_1_0r" 2>&1 | tee "$logdir/esmf.log"
 
 [[ $STACK_BUILD_BASELIBS =~ [yYtT] ]] && \
     libs/build_baselibs.sh "5.2.2" 2>&1 | tee "$logdir/baselibs.log"

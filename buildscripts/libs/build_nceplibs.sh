@@ -7,6 +7,7 @@
 set -ex
 
 name="nceplibs"
+version=$1
 
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
@@ -29,8 +30,22 @@ else
     prefix=${NCEPLIBS:-"/usr/local"}
 fi
 
-cd ${JEDI_STACK_ROOT}/buildscripts/libs/nceplibs
-./nceplibs.bash
+cd ${JEDI_STACK_ROOT}/buildscripts/libs/NCEPlibs
+rm -f *.a
+rm macros.make
+
+if [[ $(echo $compiler | cut -d- -f1) = "gnu" ]]; then
+    ln -s macros.make.cheyenne.gnu macros.make
+elif [[ $(echo $compiler | cut -d- -f1) = "intel" ]]; then
+    ln -s macros.make.aws.intel macros.make
+fi
+make
+
+# install
+$SUDO mkdir -p $prefix/lib
+$SUDO mv *.a $prefix/lib
+$SUDO rm -rf $prefix/include
+$SUDO mv include $prefix
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version
