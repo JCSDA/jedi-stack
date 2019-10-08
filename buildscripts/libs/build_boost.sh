@@ -24,7 +24,8 @@ if [[ $level = "headers-only" ]]; then
     $SUDO cp -R boost $prefix/include
 
     # generate modulefile from template
-    update_modules core "boost-headers" $version
+    update_modules core "boost-headers" $version \
+	 || echo "boost-headers" $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log		   
 
     exit 0
 fi
@@ -97,6 +98,7 @@ rm -f $HOME/user-config.jam
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
-$MODULES && update_modules $modpath $name $version
+$MODULES && update_modules $modpath $name $version \
+	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

@@ -53,6 +53,7 @@ esac
 $SUDO make install F90=$FC ESMF_COMM=$ESMF_COMM CONFIG="${compilerD}-${mpiD}" prefix=$prefix
 
 # generate modulefile from template
-$MODULES && update_modules mpi $name $version
+$MODULES && update_modules mpi $name $version \
+	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
 
 exit 0

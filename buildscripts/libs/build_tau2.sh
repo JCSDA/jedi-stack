@@ -58,6 +58,7 @@ $SUDO ./configure -prefix=$prefix -c++=$CXX -cc=$CC -fortran=$FC -mpi -ompt -bfd
 $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules mpi $name $version
+$MODULES && update_modules mpi $name $version \
+	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

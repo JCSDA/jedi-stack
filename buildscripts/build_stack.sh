@@ -116,8 +116,9 @@ $MODULES && (set +x; module purge; set -x)
 [[ $STACK_BUILD_NCCMP     =~ [yYtT] ]] && \
     libs/build_nccmp.sh "1.8.2.1" 2>&1 | tee "$logdir/nccmp.log"
 
+# The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_ECKIT =~ [yYtT] ]] && \
-    libs/build_eckit.sh "1.1.0" 2>&1 | tee "$logdir/eckit.log"
+    libs/build_eckit.sh "jcsda" "1.4.0.jcsda1" 2>&1 | tee "$logdir/eckit.log"
 
 # The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_FCKIT =~ [yYtT] ]] && \

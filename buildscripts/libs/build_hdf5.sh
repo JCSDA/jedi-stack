@@ -66,6 +66,7 @@ make -j${NTHREADS:-4}
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
-$MODULES && update_modules $modpath $name $version
+$MODULES && update_modules $modpath $name $version \
+	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
 
 exit 0

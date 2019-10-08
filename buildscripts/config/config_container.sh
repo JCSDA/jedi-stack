@@ -51,7 +51,7 @@ export    STACK_BUILD_BUFRLIB=Y
 # Optional Additions
 export           STACK_BUILD_PIO=Y
 export        STACK_BUILD_PYJEDI=Y
-export      STACK_BUILD_NCEPLIBS=Y
+export      STACK_BUILD_NCEPLIBS=N
 export        STACK_BUILD_JASPER=N
 export     STACK_BUILD_ARMADILLO=N
 export        STACK_BUILD_XERCES=N

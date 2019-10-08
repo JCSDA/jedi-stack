@@ -51,6 +51,7 @@ $SUDO make install
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=mpi || modpath=compiler
-$MODULES update_modules $modpath $name $c_version
+$MODULES update_modules $modpath $name $version \
+	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log	 
 
 exit 0

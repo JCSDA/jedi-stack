@@ -103,7 +103,8 @@ export CXXFLAGS+=" -I$prefix/include"
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
-$MODULES && update_modules $modpath $name $c_version
+$MODULES && update_modules $modpath $name $c_version \
+	 || echo $software >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 set +x
 echo "################################################################################"
@@ -132,6 +133,8 @@ $SUDO make install
 
 cd $curr_dir
 
+$MODULES || echo $software >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+
 set +x
 echo "################################################################################"
 echo "BUILDING NETCDF-CXX"
@@ -150,5 +153,7 @@ mkdir -p build && cd build
 make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
+
+$MODULES || echo $software >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

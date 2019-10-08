@@ -3,7 +3,9 @@
 set -ex
 
 name="eckit"
-version=$1
+# source should be either ecmwf or jcsda (fork)
+source=$1
+version=$2
 
 # Hyphenated version used for install prefix
 compiler=$(echo $COMPILER | sed 's/\//-/g')
@@ -24,7 +26,7 @@ if $MODULES; then
     module list
     set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$source-$version"
     if [[ -d $prefix ]]; then
 	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
@@ -41,7 +43,7 @@ export F9X=$FC
 
 software=$name
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-[[ -d $software ]] || git clone https://github.com/ecmwf/$software.git
+[[ -d $software ]] || git clone https://github.com/$source/$software.git
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git checkout $version
@@ -54,6 +56,7 @@ make $verb -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules mpi $name $version
+$MODULES && update_modules mpi $name $source-$version \
+	 || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

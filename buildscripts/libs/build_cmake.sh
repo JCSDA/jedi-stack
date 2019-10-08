@@ -39,6 +39,7 @@ $SUDO make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules core $name $version
+$MODULES && update_modules core $name $version \
+ 	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0
