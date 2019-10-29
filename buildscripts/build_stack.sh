@@ -98,7 +98,7 @@ $MODULES && (set +x; module purge; set -x)
 
 # The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_ECBUILD =~ [yYtT] ]] && \
-    libs/build_ecbuild.sh "jcsda" "release/stable" 2>&1 | tee "$logdir/ecbuild.log"
+    libs/build_ecbuild.sh "ecmwf" "3.1.0" 2>&1 | tee "$logdir/ecbuild.log"
 
 #----------------------
 # These must be rebuilt for each MPI implementation
