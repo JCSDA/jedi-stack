@@ -127,6 +127,14 @@ $MODULES && (set +x; module purge; set -x)
 [[ $STACK_BUILD_ODB      =~ [yYtT] ]] && \
     libs/build_odb.sh "0.18.1.r2" 2>&1 | tee "$logdir/odb.log"
 
+# The first argument is the source, either "ecmwf" or "jcsda" (fork)
+[[ $STACK_BUILD_ODC =~ [yYtT] ]] && \
+    libs/build_odc.sh "jcsda" "develop" 2>&1 | tee "$logdir/odc.log"
+
+# This needs to follow the build of ODC so that the module odc can be loaded.
+[[ $STACK_BUILD_ODYSSEY =~ [yYtT] ]] && \
+    libs/build_odyssey.sh "jcsda" "develop" 2>&1 | tee "$logdir/odyssey.log"
+
 # ===============================================================================
 # Optional Extensions to the JEDI Stack
 

@@ -2,7 +2,9 @@
 
 # Compiler/MPI combination
 export COMPILER="clang/10.0.0"
+#export COMPILER="clang/10.0.1"
 export MPI="openmpi/3.1.2"
+#export MPI="mpich/3.3.1"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -48,6 +50,8 @@ export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=Y
 export        STACK_BUILD_ODB=Y
+export        STACK_BUILD_ODC=Y
+export    STACK_BUILD_ODYSSEY=Y
 export    STACK_BUILD_BUFRLIB=Y
 
 # Optional Additions

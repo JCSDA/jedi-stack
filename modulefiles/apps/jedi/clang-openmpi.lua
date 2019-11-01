@@ -26,6 +26,8 @@ load("eckit/1.1.0")
 load("fckit/jcsda-develop")
 
 load("odb-api/0.18.1.r2")
+load("odc/jcsda-develop")
+load("odyssey/jcsda-develop")
 load("nccmp/1.8.2.1")
 
 setenv("CC","mpicc")
