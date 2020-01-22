@@ -13,8 +13,8 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("netcdf")
-always_load("boost-headers","eigen")
+load("netcdf")
+load("boost-headers","eigen")
 
 prereq("netcdf","boost-headers","eigen")
 

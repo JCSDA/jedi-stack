@@ -98,7 +98,7 @@ $MODULES && (set +x; module purge; set -x)
 
 # The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_ECBUILD =~ [yYtT] ]] && \
-    libs/build_ecbuild.sh "jcsda" "3.1.0.jcsda1" 2>&1 | tee "$logdir/ecbuild.log"
+    libs/build_ecbuild.sh "jcsda" "3.1.0.jcsda2" 2>&1 | tee "$logdir/ecbuild.log"
 
 #----------------------
 # These must be rebuilt for each MPI implementation
@@ -118,7 +118,7 @@ $MODULES && (set +x; module purge; set -x)
 
 # The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_ECKIT =~ [yYtT] ]] && \
-    libs/build_eckit.sh "jcsda" "1.4.0.jcsda2" 2>&1 | tee "$logdir/eckit.log"
+    libs/build_eckit.sh "jcsda" "1.4.0.jcsda3" 2>&1 | tee "$logdir/eckit.log"
 
 # The first argument is the source, either "ecmwf" or "jcsda" (fork)
 [[ $STACK_BUILD_FCKIT =~ [yYtT] ]] && \
@@ -164,7 +164,7 @@ $MODULES && (set +x; module purge; set -x)
     libs/build_nco.sh "4.7.9" 2>&1 | tee "$logdir/nco.log"
 
 [[ $STACK_BUILD_PIO      =~ [yYtT] ]] && \
-    libs/build_pio.sh "2.4.2" 2>&1 | tee "$logdir/pio.log"
+    libs/build_pio.sh "2.4.4" 2>&1 | tee "$logdir/pio.log"
 
 [[ $STACK_BUILD_FFTW     =~ [yYtT] ]] && \
     libs/build_fftw.sh "3.3.8" 2>&1 | tee "$logdir/fftw.log"

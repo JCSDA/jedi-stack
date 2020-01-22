@@ -13,7 +13,7 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("ecbuild","netcdf","eckit")
+load("ecbuild","netcdf","eckit")
 prereq("ecbuild","netcdf","eckit")
 
 local opt = os.getenv("OPT") or "/opt/modules"

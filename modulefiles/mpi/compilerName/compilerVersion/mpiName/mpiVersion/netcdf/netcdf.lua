@@ -13,7 +13,7 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("hdf5","pnetcdf")
+load("hdf5","pnetcdf")
 prereq("hdf5","pnetcdf")
 
 local opt = os.getenv("OPT") or "/opt/modules"
