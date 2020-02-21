@@ -6,8 +6,8 @@
 # file at the top level of this repository.
 #
 # build cmake seperately as part of the module setup
-# 
-# These installations are typically done my means of package installs, 
+#
+# These installations are typically done my means of package installs,
 # Basically, anything that you may want to install with package installers
 # belongs here as opposed to build_stack.sh.
 # However, there are a few packages such as Lmod that you might
@@ -27,13 +27,13 @@
 #
 # Arguments:
 # configuration name (leave blank to print list of supported values)
-# 
+#
 # sample usage
 # ./setup_environment.sh "ubuntu/18.04"
 #
 
 # currently supported options
-supported_options=("ubuntu/18.04","cheyenne")
+supported_options=("ubuntu/18.04","cheyenne","orion")
 
 export JEDI_STACK_ROOT=$PWD/..
 
@@ -50,7 +50,7 @@ case $1 in
 
     # this is currently configured for AWS where standard AMIs come with some basic
     # software pre-installed, such as git, make, wget, curl, etc.
-    
+
     # package install of gnu compilers
     # needed here to install lmod from source
     # the defaults are sufficiently up-to-date (v7.3 as of April, 2018) but we may want
@@ -77,16 +77,16 @@ case $1 in
     sudo apt-get install -y --no-install-recommends graphviz doxygen
 
     # for debugging
-    sudo apt-get install -y --no-install-recommends ddd gdb kdbg valgrind   
+    sudo apt-get install -y --no-install-recommends ddd gdb kdbg valgrind
 
     # python
     sudo apt-get install -y --no-install-recommends python-pip python-dev python-yaml \
-	                 python-numpy python-scipy
+                   python-numpy python-scipy
     sudo apt-get install -y --no-install-recommends python3-pip python3-dev \
-	                 python3-yaml python3-numpy python3-scipy
-    
+                   python3-yaml python3-numpy python3-scipy
+
     # install and deploy lmod from source
-    sudo apt-get install -y tcllib tcl-dev 
+    sudo apt-get install -y tcllib tcl-dev
     prefix=/opt
     libs/build_lmod.sh $prefix
     source $prefix/lmod/lmod/init/profile
@@ -119,6 +119,21 @@ case $1 in
 
     ;;
 #==========================================================================================
+"orion")
+
+    # Orion compiler modules define the environment variable COMPILER so in order for
+    # the build scripts to function properly we need to replace it with something else
+    cd ${JEDI_STACK_ROOT}/buildscripts
+    sed -i -e 's/COMPILER/JEDI_COMPILER/g' setup_modules.sh build_stack.sh
+    cd libs
+    sed -i -e 's/COMPILER/JEDI_COMPILER/g' *.sh
+
+    export OPT="$HOME/opt"
+    echo "export OPT=$OPT" >> $HOME/.bashrc
+    echo "module use $OPT/modulefiles/core" >> $HOME/.bashrc
+
+    ;;
+#==========================================================================================
 *)
     set +x
     echo "supported options:"
@@ -126,5 +141,5 @@ case $1 in
     set -x
     ;;
 esac
-    
+
 exit 0
