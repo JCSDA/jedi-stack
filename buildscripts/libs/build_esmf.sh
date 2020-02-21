@@ -12,31 +12,32 @@ compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
 if $MODULES; then
-    set +x
-    source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load szip
-    module load jedi-$MPI
-    module load hdf5
-    module load netcdf
-    module load udunits
-    module list
-    set -x
+  set +x
+  source $MODULESHOME/init/bash
+  module load jedi-$COMPILER
+  module load szip
+  module load jedi-$MPI
+  module load hdf5
+  module load netcdf
+  module load udunits
+  module load pnetcdf
+  module list
+  set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
-    if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-    fi
+  prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+  if [[ -d $prefix ]]; then
+    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                               || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+  fi
 
 else
     prefix=${ESMF_ROOT:-"/usr/local"}
 fi
 
 if [[ ! -z $mpi ]]; then
-    export FC=$MPI_FC
-    export CC=$MPI_CC
-    export CXX=$MPI_CXX
+  export FC=$MPI_FC
+  export CC=$MPI_CC
+  export CXX=$MPI_CXX
 fi
 
 export F9X=$FC
@@ -47,21 +48,23 @@ export FCFLAGS="$FFLAGS"
 
 if [[ ! -z $mpi ]]; then
 
-    if [[ $(echo $mpi | cut -d- -f1) = "openmpi" ]]; then
-        export ESMF_COMM="openmpi"
-    elif [[ $(echo $mpi | cut -d- -f1) = "mpich" ]]; then
-        export ESMF_COMM="mpich3"
-    elif [[ $(echo $mpi | cut -d- -f1) = "impi" ]]; then
-        export ESMF_COMM="intelmpi"
-    fi
+  if [[ $(echo $mpi | cut -d- -f1) = "openmpi" ]]; then
+      export ESMF_COMM="openmpi"
+  elif [[ $(echo $mpi | cut -d- -f1) = "mpich" ]]; then
+      export ESMF_COMM="mpich3"
+  elif [[ $(echo $mpi | cut -d- -f1) = "impi" ]]; then
+      export ESMF_COMM="intelmpi"
+  fi
 
 fi
 
 export ESMF_COMPILER=$(echo $compiler | cut -d- -f1)
 
 if [[ $ESMF_COMPILER = "intel" ]]; then
-    export ESMF_F90COMPILEOPTS="-g -traceback -fp-model precise"
-    export ESMF_CXXCOMPILEOPTS="-g -traceback -fp-model precise"
+  export ESMF_F90COMPILEOPTS="-g -traceback -fp-model precise"
+  export ESMF_CXXCOMPILEOPTS="-g -traceback -fp-model precise"
+elif [[ $ESMF_COMPILER = "gnu" ]]; then
+  export ESMF_COMPILER="gfortran"
 fi
 
 export ESMF_CXXCOMPILER=$MPI_CXX
@@ -69,6 +72,7 @@ export ESMF_CXXLINKER=$MPI_CXX
 export ESMF_F90COMPILER=$MPI_FC
 export ESMF_F90LINKER=$MPI_FC
 export ESMF_NETCDF=nc-config
+export ESMF_PNETCDF=pnetcdf-config
 export ESMF_BOPT=O
 export ESMF_OPTLEVEL=2
 export ESMF_INSTALL_PREFIX=$prefix
@@ -93,7 +97,7 @@ $SUDO make install
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
-$MODULES update_modules $modpath $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log	 
+$MODULES && update_modules $modpath $name $version \
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

@@ -1,116 +1,39 @@
 #!/bin/bash
 
-# Installation instructions from:
-# https://solarianprogrammer.com/2017/05/21/compiling-gcc-macos/
-
 set -ex
 
 name="gnu"
 version=$1
 
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-curr_dir=$(pwd)
+software="gcc-$version"
 
-# GNU compilers and dependencies
-if [[ "$version" = "7.3.0" ]]; then
+[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 
-    gmp=gmp-6.1.2
-    mpfr=mpfr-4.0.1
-    mpc=mpc-1.1.0
-    isl=isl-0.18
-    gcc=gcc-7.3.0
-
-elif [[ "$version" = "8.3.0" ]]; then
-
-    url="ftp://gcc.gnu.org/pub/gcc"
-
-    gmp=gmp-6.1.0;   #curl -L $url/infrastructure/$gmp.tar.gz2  | tar xf -
-    mpfr=mpfr-3.1.4; #curl -L $url/infrastructure/$mpfr.tar.bz2 | tar xf -
-    mpc=mpc-1.0.3;   #curl -L $url/infrastructure/$mpc.tar.gz   | tar xf -
-    isl=isl-0.18;    #curl -L $url/infrastructure/$isl.tar.bz2  | tar xf -
-    gcc=gcc-8.3.0;   #curl -L $url/releases/$gcc/$gcc.tar.gz    | tar xf -
-
-else
-
-    echo "Unknown GCC $version, ABORT!"; exit 1
-
-fi
-
-# Installation path
 prefix="${PREFIX:-"$HOME/opt"}/$name/$version"
 [[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
 
-cd $curr_dir
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
-# 1. install gmp
-echo "BUILDING ... $gmp"
-software=$gmp
+url="https://mirrors.tripadvisor.com/gnu/gcc/$software/$software.tar.gz"
+[[ -d $software ]] || ( $WGET $url; tar -xf $software.tar.gz )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+contrib/download_prerequisites
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
-../configure --prefix=$prefix
-make -j${NTHREADS:-4}
-$SUDO make install
 
-cd $curr_dir
+extra_conf="--disable-multilib"
 
-# 2. install mpfr
-echo "BUILDING ... $mpfr"
-software=$mpfr
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-[[ -d build ]] && rm -rf build
-mkdir -p build && cd build
-../configure --prefix=$prefix \
-             --with-gmp=$prefix
-make -j${NTHREADS:-4}
-$SUDO make install
-
-cd $curr_dir
-
-# 3. install mpc
-echo "BUILDING ... $mpc"
-software=$mpc
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-[[ -d build ]] && rm -rf build
-mkdir -p build && cd build
-../configure --prefix=$prefix \
-             --with-gmp=$prefix \
-             --with-mpfr=$prefix
-make -j${NTHREADS:-4}
-$SUDO make install
-
-cd $curr_dir
-
-# 4. install isl
-echo "BUILDING ... $isl"
-software=$isl
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-[[ -d build ]] && rm -rf build
-mkdir -p build && cd build
-../configure --prefix=$prefix \
-             --with-gmp=$prefix
-make -j${NTHREADS:-4}
-$SUDO make install
-
-cd $curr_dir
-
-# Finally install GNU compilers
-echo "BUILDING ... $gcc"
-software=$gcc
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-[[ -d build ]] && rm -rf build
-mkdir -p build && cd build
-../configure --prefix=$prefix \
+../configure -v \
+             --prefix=$prefix \
              --enable-checking=release \
-              --with-gmp=$prefix \
-              --with-mpfr=$prefix \
-              --with-mpc=$prefix \
-              --enable-languages=c,c++,fortran \
-              --with-isl=$prefix
+             --enable-languages=c,c++,fortran $extra_conf
+
 make -j${NTHREADS:-4}
-$SUDO make install
+$SUDO make install-strip
 
 # generate modulefile from template
-update_modules core $name $version
+$MODULES && update_modules core $name $version \
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

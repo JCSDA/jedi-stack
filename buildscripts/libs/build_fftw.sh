@@ -37,8 +37,8 @@ mkdir -p build && cd build
 
 prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
 if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                      || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+  [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                             || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
 fi
 
 [[ -z $mpi ]] || ( export MPICC=$MPI_CC; extra_conf="--enable-mpi" )
@@ -51,7 +51,7 @@ $SUDO make install
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=mpi || modpath=compiler
-$MODULES update_modules $modpath $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log	 
+$MODULES && update_modules $modpath $name $version \
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

@@ -9,9 +9,6 @@ local hierA        = hierarchyA(pkgNameVer,1)
 local compNameVer  = hierA[1]
 local compNameVerD = compNameVer:gsub("/","-")
 
---io.stderr:write("compNameVer: ",compNameVer,"\n")
---io.stderr:write("compNameVerD: ",compNameVerD,"\n")
-
 family("mpi")
 
 conflict(pkgName)
@@ -21,6 +18,10 @@ always_load("szip")
 prereq("szip")
 
 local opt = os.getenv("OPT") or "/opt/modules"
+
+local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,pkgName,pkgVersion)
+prepend_path("MODULEPATH", mpath)
+
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 
 prepend_path("PATH", pathJoin(base,"bin"))

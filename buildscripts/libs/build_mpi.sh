@@ -43,7 +43,7 @@ mkdir -p build && cd build
 prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
 if [[ -d $prefix ]]; then
     [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-		      || ( echo "ERROR: $prefix EXISTS, ABORT!"; exit 1 )
+                               || ( echo "ERROR: $prefix EXISTS, ABORT!"; exit 1 )
 fi
 
 case "$name" in
@@ -58,6 +58,7 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-$MODULES update_modules compiler $name $version
+$MODULES && update_modules compiler $name $version \
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

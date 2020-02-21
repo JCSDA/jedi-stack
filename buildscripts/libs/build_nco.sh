@@ -10,31 +10,31 @@ compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
 # Since NCO depends on the netcdf installation, and since
-# the JEDI netcdf use case is usually compiled with 
+# the JEDI netcdf use case is usually compiled with
 # parallel support, let's put NCO in the mpi module path
 # for now.  If there is a reason in the future to add
 # it also to the compiler module path (i.e. netcdf without
 # parallel support), then we can do this when we need it.
 
 if $MODULES; then
-    set +x
-    source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
-    module load szip
-    module load hdf5
-    module load netcdf
-    module load udunits
-    module list
-    set -x
+  set +x
+  source $MODULESHOME/init/bash
+  module load jedi-$COMPILER
+  module load jedi-$MPI
+  module load szip
+  module load hdf5
+  module load netcdf
+  module load udunits
+  module list
+  set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+  prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
 
-    if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-    fi
-    
+  if [[ -d $prefix ]]; then
+    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                               || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+  fi
+
 else
     prefix=${NCO_ROOT:-"/usr/local"}
 fi
@@ -70,7 +70,7 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-$MODULES update_modules mpi $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+$MODULES && update_modules mpi $name $version \
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# The purpose of this script is to define the compiler and MPI library to be 
+# The purpose of this script is to define the compiler and MPI library to be
 # used and to set up and deploy the associated modules.  This needs to be each
 # time a different compiler/MPI build is initiated.
 #
 # Arguments:
 # compiler name/version and MPI Library/version: these are the names of the
-# modules that this script is responsible for creating and that build_stack.sh 
+# modules that this script is responsible for creating and that build_stack.sh
 # will use to build the software stack.
 #
 # sample usage
-# setup_modules.sh "custom" 
+# setup_modules.sh "custom"
 #
 
 set -ex
@@ -28,19 +28,19 @@ mkdir -p ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 # First get the compiler+mpi names and versions from the config file
 
 if [[ $# -ne 1 ]]; then
-    source config/config_custom.sh
+  source config/config_custom.sh
 else
-    config_file="config/config_$1.sh"
-    if [[ -e $config_file ]]; then
-	source $config_file
-    else
-	set +x
-	echo "ERROR: CONFIG FILE $config_file DOES NOT EXIST!"
-	echo "Currently supported options: "
-	echo ${supported_options[*]}
-	exit 1
-    fi
-fi    
+  config_file="config/config_$1.sh"
+  if [[ -e $config_file ]]; then
+    source $config_file
+  else
+    set +x
+    echo "ERROR: CONFIG FILE $config_file DOES NOT EXIST!"
+    echo "Currently supported options: "
+    echo ${supported_options[*]}
+    exit 1
+  fi
+fi
 
 compilerName=$(echo $COMPILER | cut -d/ -f1)
 compilerVersion=$(echo $COMPILER | cut -d/ -f2)
@@ -82,25 +82,29 @@ $SUDO cp $JEDI_STACK_ROOT/modulefiles/compiler/compilerName/compilerVersion/jedi
 #
 
 case ${COMPILER_BUILD} in
-    "native-module")
-	echo "USING NATIVE COMPILER MODULE"
-	module load $COMPILER
-	;;
-    "native-pkg")
-	echo "USING NATIVE COMPILER"
-	cd $OPT/modulefiles/core/jedi-$compilerName            
-	$SUDO sed -i -e '/load(compiler)/d' $compilerVersion.lua
-	$SUDO sed -i -e '/prereq(compiler)/d' $compilerVersion.lua
-	;;
-    "from-source")
-	echo "INSTALLING COMPILER FROM SOURCE"
-	if [[ -n $(grep -i gnu <<< $COMPILER) ]]; then
-	    libs/build_gnu.sh $compilerVersion  
-	else
-	    echo "ERROR: COMPILER $COMPILER NOT FOUND: ABORT!"
-	    exit 1
-	fi
-	;;
+  "native-module")
+    echo -e "==========================\n USING NATIVE COMPILER MODULE"
+    set +x
+    source $MODULESHOME/init/bash
+    module load $COMPILER
+    module list
+    set -x
+    ;;
+  "native-pkg")
+    echo -e "==========================\n USING NATIVE COMPILER"
+    cd $OPT/modulefiles/core/jedi-$compilerName
+    $SUDO sed -i -e '/load(compiler)/d' $compilerVersion.lua
+    $SUDO sed -i -e '/prereq(compiler)/d' $compilerVersion.lua
+    ;;
+  "from-source")
+    echo -e "==========================\n INSTALLING COMPILER FROM SOURCE"
+    if [[ -n $(grep -i gnu <<< $COMPILER) ]]; then
+        libs/build_gnu.sh $compilerVersion
+    else
+        echo "ERROR: COMPILER $COMPILER NOT FOUND: ABORT!"
+        exit 1
+    fi
+    ;;
 esac
 
 #===============================================================================
@@ -140,21 +144,26 @@ cd $JEDI_STACK_ROOT/buildscripts
 # a native installation available, it's usually better to use that
 
 case ${MPI_BUILD} in
-    "native-module")
-	echo -e "==========================\n USING NATIVE MPI MODULE"
-        module load jedi-$COMPILER
-	module load $MPI
-	;;
-    "native-pkg")
-	echo -e "===========================\n USING NATIVE MPI"
-	cd $OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName
-	$SUDO sed -i -e '/load(mpi)/d' $mpiVersion.lua
-	$SUDO sed -i -e '/prereq(mpi)/d' $mpiVersion.lua
-	;;
-    "from-source")
-	echo -e "============================\n INSTALLING MPI FROM SOURCE"
-	cd $JEDI_STACK_ROOT/buildscripts
-	libs/build_mpi.sh $mpiName $mpiVersion 2>&1 | tee "$logdir/$mpiName.log"
+  "native-module")
+    set +x
+    echo -e "==========================\n USING NATIVE MPI MODULE"
+    source $MODULESHOME/init/bash
+    module load jedi-$COMPILER
+    module load $MPI
+    module list
+    set -x
+    ;;
+  "native-pkg")
+    echo -e "===========================\n USING NATIVE MPI"
+    cd $OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName
+    $SUDO sed -i -e '/load(mpi)/d' $mpiVersion.lua
+    $SUDO sed -i -e '/prereq(mpi)/d' $mpiVersion.lua
+    ;;
+  "from-source")
+    echo -e "============================\n INSTALLING MPI FROM SOURCE"
+    cd $JEDI_STACK_ROOT/buildscripts
+    libs/build_mpi.sh $mpiName $mpiVersion 2>&1 | tee "$logdir/$mpiName.log"
+    ;;
 esac
 
 #===============================================================================

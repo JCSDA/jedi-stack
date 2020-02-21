@@ -15,7 +15,8 @@ load(compiler)
 prereq(compiler)
 
 local opt = os.getenv("OPT") or "/opt/modules"
-local mpath = pathJoin(opt,"modulefiles/compiler","gnu",pkgVersion)
+
+local mpath = pathJoin(opt,"modulefiles/compiler",pkgName,pkgVersion)
 prepend_path("MODULEPATH", mpath)
 
 setenv("FC",  "gfortran")

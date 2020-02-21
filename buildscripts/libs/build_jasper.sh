@@ -25,12 +25,14 @@ export CFLAGS="-fPIC"
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=$name-$version
-url=http://www.ece.uvic.ca/~frodo/jasper/software/$software.tar.gz
-[[ -d $software ]] || ( $WGET $url; tar -xf $software.tar.gz )
+gitURL="https://github.com/mdadams/jasper"
+[[ -d $software ]] || ( git clone -b "version-$version" $gitURL $software )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-[[ -d build ]] && rm -rf build
-mkdir -p build && cd build
+sourceDir=$PWD
+[[ -d build_jasper ]] && rm -rf build_jasper
+mkdir -p build_jasper && cd build_jasper
+buildDir=$PWD
 
 prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
 if [[ -d $prefix ]]; then
@@ -38,14 +40,32 @@ if [[ -d $prefix ]]; then
                       || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
 fi
 
-../configure --prefix=$prefix --enable-libjpeg
+# Starting w/ version-2.0.0, jasper is built using cmake
+cmakeVer="2.0.0"
+if [ "$(printf '%s\n' "$cmakeVer" "$version" | sort -V | head -n1)" = "$cmakeVer" ]; then
+    useCmake=YES
+else
+    useCmake=NO
+fi
+
+if [[ "$useCmake" == "YES" ]]; then
+    cd $sourceDir
+    cmake -G "Unix Makefiles" \
+      -H$sourceDir -B$buildDir \
+      -DCMAKE_INSTALL_PREFIX=$prefix \
+      -DCMAKE_BUILD_TYPE=RELEASE \
+      -DJAS_ENABLE_DOC=FALSE
+    cd $buildDir
+else
+    ../configure --prefix=$prefix --enable-libjpeg
+fi
 
 make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
 # generate modulefile from template
-$MODULES update_modules compiler $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+$MODULES && update_modules compiler $name $version \
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

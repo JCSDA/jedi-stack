@@ -19,13 +19,13 @@ url="https://dl.bintray.com/boostorg/release/$version/source/$software.tar.gz"
 if [[ $level = "headers-only" ]]; then
 
     $MODULES && prefix="${PREFIX:-"/opt/modules"}/core/$name/$version" \
-	     || prefix=${BOOST_ROOT:-"/usr/local"}
+             || prefix=${BOOST_ROOT:-"/usr/local"}
     $SUDO mkdir -p $prefix $prefix/include
     $SUDO cp -R boost $prefix/include
 
     # generate modulefile from template
-    update_modules core "boost-headers" $version \
-	 || echo "boost-headers" $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log		   
+    $MODULES && update_modules core "boost-headers" $version \
+             || echo "boost-headers" $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
     exit 0
 fi
@@ -48,8 +48,8 @@ if $MODULES; then
     prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
     [[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+      [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                 || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
     prefix=${BOOST_ROOT:-"/usr/local"}
@@ -99,6 +99,6 @@ rm -f $HOME/user-config.jam
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
 $MODULES && update_modules $modpath $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0
