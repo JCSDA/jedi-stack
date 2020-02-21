@@ -20,7 +20,7 @@ export MPI_BUILD="from-source"
 export MKDIR_P="mkdir -p"
 
 # Build options
-export PREFIX=/opt/modules 
+export PREFIX=/opt/modules
 export USE_SUDO=Y
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -49,6 +49,7 @@ export        STACK_BUILD_NCO=Y
 export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=Y
+export      STACK_BUILD_ATLAS=Y
 export        STACK_BUILD_ODB=Y
 export        STACK_BUILD_ODC=Y
 export    STACK_BUILD_ODYSSEY=Y

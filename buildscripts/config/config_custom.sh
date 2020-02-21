@@ -22,7 +22,7 @@ export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="from-source"
 
 # Build options
-export PREFIX=/opt/modules 
+export PREFIX=/opt/modules
 export USE_SUDO=Y
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -50,6 +50,7 @@ export        STACK_BUILD_NCO=N
 export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=N
 export      STACK_BUILD_FCKIT=N
+export      STACK_BUILD_ATLAS=N
 export        STACK_BUILD_ODB=N
 export        STACK_BUILD_ODC=Y
 export    STACK_BUILD_ODYSSEY=Y
