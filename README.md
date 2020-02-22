@@ -20,7 +20,7 @@ cd buildscripts
 ```
 where `<platform>` depends on your operating system and the context of the build (for example, if you're in a container or on the cloud or on an HPC system).  Examples include `docker-devel` or `ubuntu/18.04`.  To see a list of supported options, run the script without any arguments:
 ```
-./setup_environment.sh 
+./setup_environment.sh
 ```
 **Warning: for some (not all) options, running this script requires root privileges.**
 
@@ -33,11 +33,23 @@ The purpose of this script is to install some basic software packages, the most 
 * [doxygen](http://www.doxygen.nl) and [graphviz](https://www.graphviz.org)
 * Debugging tools, including [kdbg](http://www.kdbg.org/) and valgrind
 
-Many of these are installed with package managers such as [apt-get](https://linux.die.net/man/8/apt-get) for Linux and [HomeBrew](https://brew.sh/) for Mac OSX.  A few scripts are also provided in the libs directory for such packages as `Lmod` and `CMake`if you would rather install these from source.
+Many of these are installed with package managers such as [apt-get](https://linux.die.net/man/8/apt-get) for Linux or [HomeBrew on Linux](https://docs.brew.sh/Homebrew-on-Linux) and [HomeBrew](https://brew.sh/) for Mac OSX.  A few scripts are also provided in the libs directory for such packages as `Lmod` and `CMake` if you would rather install these from source.
 
 If you are using your own laptop or workstation, it is likely that most of these basic packages are already installed.  If any of these packages are missing from your system (such as Lmod), you can manually install them with a package manager or with the build scripts.  The items near the bottom of the list are not essential - if you don't have them on your system there is no need to install them.
 
-If you are building on Mac OSX with Clang, then do not run the setup_environments.sh script, and instead use [HomeBrew](https://brew.sh/) to manually install the basic software packages. Follow the instructions at the HomeBrew website for installing HomeBrew itself, then run the following brew commands:
+If you are building on a EMC RHEL7 workstation, use [HomeBrew on Linux](https://docs.brew.sh/Homebrew-on-Linux) to manually install the basic software packages. Follow the instructions at the HomeBrew on Linux website for installing HomeBrew itself, then run the following brew commands:
+~~~~~~~~
+brew install lmod
+brew install git
+brew install git-lfs
+brew install git-flow-avh
+brew install cmake
+brew install doxygen
+brew install graphviz
+brew install sphinx-doc
+~~~~~~~~
+
+If you are building on Mac OSX with Clang, then do not run the `setup_environments.sh` script, and instead use [HomeBrew](https://brew.sh/) to manually install the basic software packages. Follow the instructions at the HomeBrew website for installing HomeBrew itself, then run the following brew commands:
 ~~~~~~~~
 brew install gcc@7     # install version 7 GNU compilers, don't install version 8 GNU as it
                        # has known problems with JEDI
@@ -65,23 +77,25 @@ Note, however, if you are using [JEDI Modules](https://jointcenterforsatelliteda
 
 **IMPORTANT:** Another reponsibility of the `setup_environment.sh` script is to define the OPT environment variable.  This is needed both for the build and to allow users to load the JEDI modules after you build them.  This specifies where the modules will be installed, with a default value of `OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `OPT=$HOME/opt/modules`.
 
-OPT needs to be set in order to complete Steps 2-4.  But, it also needs to be set in order for users to use the modules.  For this reason, the `module_setup.sh` script also modifies bash and cshrc intialization scripts so that OPT is defined and Lmod is initialized properly when users log in.
+OPT needs to be set in order to complete Steps 2-4.  But, it also needs to be set in order for users to use the modules.  For this reason, the `module_setup.sh` script also modifies bashrc and cshrc initialization scripts so that OPT is defined and Lmod is initialized properly when users log in.
 
 ## Step 2: Configure Build
 
 The next step is to choose what components of the stack you wish to build and to specify any other aspects of the build that you would like.  This is normally done by editing the file `buildscripts/config/config_custom.sh`.  Here we describe some of the parameter settings available.
 
-For building on Mac OSX, a configuration file (config_mac.sh) is provided. This configuration is set up to build using Clang 10.0.0 with gfortran 7.4.0 and OpenMPI 3.1.2. You may wish to edit this file for building with a different compiler/mpi set. Note that at this time, the combination of Clang 10.0.0, gfortran 7.4.0 and OpenMPI 3.1.2 is the only one tested with JEDI.
+For building on Mac OSX, a configuration file (`config_mac.sh`) is provided. This configuration is set up to build using Clang 10.0.0 with gfortran 7.4.0 and OpenMPI 3.1.2. You may wish to edit this file for building with a different compiler/mpi set.
+
+For building on an EMC RHEL7 workstation, a configuration file (`config_rhel7emc.sh`) is provided.  This configuration is set up to build using GCC 9.2.0 and OpenMPI 3.1.5.
 
 **COMPILER** This defines the vendor and version of the compiler you wish to use for this build.  The format is the same as what you would typically use in a module load command:
 ```
 export COMPILER=<name>/<version>
 ```
-For eample, `COMPILER=gnu/7.3.0`.
+For example, `COMPILER=gnu/7.3.0`.
 
 **MPI** is the MPI library you wish to use for this build.  The format is the same as for `COMPILER`, for example: `export MPI=openmpi/3.1.2`.
 
-**PREFIX** is the directory where the sofware packages will be installed.  Normally this is set to be the same as the `OPT` environment variable (default value `/opt/modules`), though this is not required.  If OPT and PREFIX are both the same, then the software installation trees (the top level of each being is the compiler, e.g. `gnu-7.3.0`) will branch directly off of $OPT while the module files will be located in the `modulefiles subdirectory.
+**PREFIX** is the directory where the software packages will be installed.  Normally this is set to be the same as the `OPT` environment variable (default value `/opt/modules`), though this is not required.  If OPT and PREFIX are both the same, then the software installation trees (the top level of each being is the compiler, e.g. `gnu-7.3.0`) will branch directly off of $OPT while the module files will be located in the `modulefiles subdirectory.
 
 **USE_SUDO** If `PREFIX` is set to a value that requires root permission to write to, such as `/opt/modules`, then this flag should be enabled.
 
@@ -121,7 +135,7 @@ The remaining items enable or disable builds of each software package.  The foll
   - nco
   - ecbuild, eckit, fckit
   - ODB
- 
+
 * Supplementary Libraries
   - Jasper
   - Armadillo
@@ -160,7 +174,7 @@ module load jedi-openmpi/3.2.1
 ```
 These `jedi-` modules are really meta-modules that will both load the compiler/mpi library and modify the `MODULEPATH` so the user has access to the software packages that will be built in Step 4.  On HPC systems, these meta-modules will load the native modules provided by the system administrators.  For example, `module load jedi-openmpi/3.2.1` will first load the native `openmpi/3.2.1` module and then modify the `MODULEPATH` accordingly to allow users to access the JEDI libraries.  If this module is not available (e.g. in a container or in the cloud), then the `openmpi/3.2.1` module will be built from source and installed into `$OPT`.
 
-So, in short, you should never load the compiler or MPI modules directly.  Instead, you should always load the `jedi-` meta-modules as demonstrated above - they will provide everything you need to load and then use the JEDI software libraries.  
+So, in short, you should never load the compiler or MPI modules directly.  Instead, you should always load the `jedi-` meta-modules as demonstrated above - they will provide everything you need to load and then use the JEDI software libraries.
 
 Another job of the `setup_modules.sh` script is to install the [SZip library](https://support.hdfgroup.org/doc_resource/SZIP/).  This is done in Step 3 rather than Step 4 because some MPI implementations may make use of SZip compression to boost performance.  If, in the future, the compiler or MPI libraries have any new dependencies, then they should likewise be incorporated into either `setup_modules.sh` or `setup_environment.sh`.
 
