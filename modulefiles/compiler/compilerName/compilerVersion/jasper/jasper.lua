@@ -20,6 +20,7 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+setenv("Jasper_ROOT", base)
 setenv("JASPER_ROOT", base)
 setenv("JASPER_INCLUDES", pathJoin(base,"include"))
 setenv("JASPER_LIBRARIES", pathJoin(base,"lib"))

@@ -15,7 +15,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$COMPILER
-    module load jedi-$MPI
+    [[ -z $mpi ]] || module load jedi-$MPI
     module load szip
     module load hdf5
     module load netcdf
@@ -24,16 +24,22 @@ if $MODULES; then
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
     prefix=${NCCMP_ROOT:-"/usr/local"}
 fi
 
-export FC=$MPI_FC
-export CC=$MPI_CC
-export CXX=$MPI_CXX
+if [[ ! -z $mpi ]]; then
+    export FC=$MPI_FC
+    export CC=$MPI_CC
+    export CXX=$MPI_CXX
+else
+    export FC=$SERIAL_FC
+    export CC=$SERIAL_CC
+    export CXX=$SERIAL_CXX
+fi
 
 export CFLAGS="-fPIC"
 export LDFLAGS="-L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
@@ -58,7 +64,8 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules mpi $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
+[[ -z $mpi ]] && modpath=compiler || modpath=mpi
+$MODULES && update_modules $modpath $name $version \
+   || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

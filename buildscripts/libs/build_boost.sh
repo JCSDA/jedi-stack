@@ -42,11 +42,10 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$COMPILER
-    module load jedi-$MPI
+    [[ -z $mpi ]] || module load jedi-$MPI
     module list
     set -x
     prefix="${PREFIX:-"$HOME/opt"}/$compiler/$mpi/$name/$version"
-    [[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
     if [[ -d $prefix ]]; then
       [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                  || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )

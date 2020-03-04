@@ -14,13 +14,19 @@ mpi=$(echo $MPI | sed 's/\//-/g')
 set +x
 source $MODULESHOME/init/bash
 module load jedi-$COMPILER
-module load jedi-$MPI
+[[ -z $mpi ]] || module load jedi-$MPI
 module list
 set -x
 
-export FC=$MPI_FC
-export CC=$MPI_CC
-export CXX=$MPI_CXX
+if [[ ! -z $mpi ]]; then
+  export FC=$MPI_FC
+  export CC=$MPI_CC
+  export CXX=$MPI_CXX
+else
+  export FC=$SERIAL_FC
+  export CC=$SERIAL_CC
+  export CXX=$SERIAL_CXX
+fi
 
 export F77=$FC
 export FFLAGS="-fPIC"
@@ -50,7 +56,7 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-[[ -z $mpi ]] && modpath=mpi || modpath=compiler
+[[ -z $mpi ]] && modpath=compiler || modpath=mpi
 $MODULES && update_modules $modpath $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 

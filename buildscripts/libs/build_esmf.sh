@@ -16,11 +16,11 @@ if $MODULES; then
   source $MODULESHOME/init/bash
   module load jedi-$COMPILER
   module load szip
-  module load jedi-$MPI
+  [[ -z $mpi ]] || module load jedi-$MPI
   module load hdf5
+  [[ -z $mpi ]] || module load pnetcdf
   module load netcdf
   module load udunits
-  module load pnetcdf
   module list
   set -x
 
@@ -31,13 +31,17 @@ if $MODULES; then
   fi
 
 else
-    prefix=${ESMF_ROOT:-"/usr/local"}
+  prefix=${ESMF_ROOT:-"/usr/local"}
 fi
 
 if [[ ! -z $mpi ]]; then
   export FC=$MPI_FC
   export CC=$MPI_CC
   export CXX=$MPI_CXX
+else
+  export FC=$SERIAL_FC
+  export CC=$SERIAL_CC
+  export CXX=$SERIAL_CXX
 fi
 
 export F9X=$FC
@@ -47,15 +51,15 @@ export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
 
 if [[ ! -z $mpi ]]; then
-
   if [[ $(echo $mpi | cut -d- -f1) = "openmpi" ]]; then
-      export ESMF_COMM="openmpi"
+    export ESMF_COMM="openmpi"
   elif [[ $(echo $mpi | cut -d- -f1) = "mpich" ]]; then
-      export ESMF_COMM="mpich3"
+    export ESMF_COMM="mpich3"
   elif [[ $(echo $mpi | cut -d- -f1) = "impi" ]]; then
-      export ESMF_COMM="intelmpi"
+    export ESMF_COMM="intelmpi"
   fi
-
+else
+  export ESMF_COMM="mpiuni"
 fi
 
 export ESMF_COMPILER=$(echo $compiler | cut -d- -f1)
@@ -67,12 +71,12 @@ elif [[ $ESMF_COMPILER = "gnu" ]]; then
   export ESMF_COMPILER="gfortran"
 fi
 
-export ESMF_CXXCOMPILER=$MPI_CXX
-export ESMF_CXXLINKER=$MPI_CXX
-export ESMF_F90COMPILER=$MPI_FC
-export ESMF_F90LINKER=$MPI_FC
+export ESMF_CXXCOMPILER=$CXX
+export ESMF_CXXLINKER=$CXX
+export ESMF_F90COMPILER=$FC
+export ESMF_F90LINKER=$FC
 export ESMF_NETCDF=nc-config
-export ESMF_PNETCDF=pnetcdf-config
+[[ -z $mpi ]] || export ESMF_PNETCDF=pnetcdf-config
 export ESMF_BOPT=O
 export ESMF_OPTLEVEL=2
 export ESMF_INSTALL_PREFIX=$prefix

@@ -15,17 +15,17 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$COMPILER
-    module load jedi-$MPI
+    [[ -z $mpi ]] || module load jedi-$MPI
     module load szip
     module load hdf5
-    module load pnetcdf
+    [[ -z $mpi ]] || module load pnetcdf
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$c_version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
 else
@@ -36,6 +36,10 @@ if [[ ! -z $mpi ]]; then
     export FC=$MPI_FC
     export CC=$MPI_CC
     export CXX=$MPI_CXX
+else
+    export FC=$SERIAL_FC
+    export CC=$SERIAL_CC
+    export CXX=$SERIAL_CXX
 fi
 
 export F77=$FC
@@ -69,10 +73,10 @@ if [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]]; then
 
     version=$cxx_version
     software=$name-"cxx4"-$version
-    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-cxx4.git $software )    
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-cxx4.git $software )
 
     exit 0
-    
+
 fi
 
 ##################################################
@@ -90,8 +94,8 @@ software=$name-"c"-$version
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-[[ -z $mpi ]] || extra_conf="--enable-pnetcdf --enable-netcdf-4 --enable-parallel-tests"
-../configure --prefix=$prefix $extra_conf
+[[ -z $mpi ]] || extra_conf="--enable-pnetcdf --enable-parallel-tests"
+../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
 
 make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
@@ -104,7 +108,7 @@ export CXXFLAGS+=" -I$prefix/include"
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
 $MODULES && update_modules $modpath $name $c_version \
-	 || echo $software >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+         || echo $software >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 set +x
 echo "################################################################################"
@@ -125,7 +129,7 @@ software=$name-"fortran"-$version
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-../configure --prefix=$prefix $extra_conf
+../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
 
 make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check

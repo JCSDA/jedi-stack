@@ -9,18 +9,11 @@ version=$1
 compiler=$(echo $COMPILER | sed 's/\//-/g')
 mpi=$(echo $MPI | sed 's/\//-/g')
 
-# Since NCO depends on the netcdf installation, and since
-# the JEDI netcdf use case is usually compiled with
-# parallel support, let's put NCO in the mpi module path
-# for now.  If there is a reason in the future to add
-# it also to the compiler module path (i.e. netcdf without
-# parallel support), then we can do this when we need it.
-
 if $MODULES; then
   set +x
   source $MODULESHOME/init/bash
   module load jedi-$COMPILER
-  module load jedi-$MPI
+  [[ -z $mpi ]] || module load jedi-$MPI
   module load szip
   module load hdf5
   module load netcdf
@@ -39,9 +32,15 @@ else
     prefix=${NCO_ROOT:-"/usr/local"}
 fi
 
-export FC=$MPI_FC
-export CC=$MPI_CC
-export CXX=$MPI_CXX
+if [[ ! -z $mpi ]]; then
+    export FC=$MPI_FC
+    export CC=$MPI_CC
+    export CXX=$MPI_CXX
+else
+    export FC=$SERIAL_FC
+    export CC=$SERIAL_CC
+    export CXX=$SERIAL_CXX
+fi
 
 export FFLAGS="-fPIC"
 export CFLAGS="-fPIC"
@@ -70,7 +69,8 @@ make -j${NTHREADS:-4}
 $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules mpi $name $version \
+[[ -z $mpi ]] && modpath=compiler || modpath=mpi
+$MODULES && update_modules $modpath $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0
