@@ -8,19 +8,19 @@ version=$1
 software=${name}_$version
 
 # Hyphenated versions used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
   set +x
   source $MODULESHOME/init/bash
-  module load jedi-$COMPILER
-  module load szip
-  [[ -z $mpi ]] || module load jedi-$MPI
+  module load jedi-$JEDI_COMPILER
+  module try-load szip
+  [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
   module load hdf5
   [[ -z $mpi ]] || module load pnetcdf
   module load netcdf
-  module load udunits
+  module try-load udunits
   module list
   set -x
 
@@ -103,5 +103,3 @@ $SUDO make install
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
 $MODULES && update_modules $modpath $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

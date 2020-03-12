@@ -31,10 +31,8 @@ git checkout $version
 mkdir -p build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=$prefix ..
-$SUDO make install
+VERBOSE="$MAKE_VERBOSE" $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $source-$dash_version \
-	 || echo $name $source-$dash_version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
-
-exit 0
+         || echo $name $source-$dash_version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   

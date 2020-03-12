@@ -11,20 +11,20 @@ version=$1
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
+    module load jedi-$JEDI_COMPILER
     module load boost-headers
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
 else
     prefix=${EIGEN_ROOT:-"/usr/local"}
-fi    
+fi
 
 cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
 
@@ -42,6 +42,6 @@ $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0

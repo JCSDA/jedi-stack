@@ -8,8 +8,8 @@ source=$1
 version=$2
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 [[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 [[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
@@ -17,8 +17,8 @@ mpi=$(echo $MPI | sed 's/\//-/g')
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI
     module load ecbuild eckit fckit
     module list
     set -x

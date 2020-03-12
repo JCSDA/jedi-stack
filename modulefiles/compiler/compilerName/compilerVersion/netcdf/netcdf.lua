@@ -14,7 +14,7 @@ conflict(pkgName)
 always_load("hdf5")
 prereq("hdf5")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 
@@ -24,11 +24,11 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
-setenv("NETCDF", base)
-setenv("NETCDF_ROOT", base)
-setenv("NETCDF_INCLUDES", pathJoin(base,"include"))
-setenv("NETCDF_LIBRARIES", pathJoin(base,"lib"))
-setenv("NETCDF_VERSION", pkgVersion)
+setenv("NetCDF", base)
+setenv("NetCDF_ROOT", base)
+setenv("NetCDF_INCLUDES", pathJoin(base,"include"))
+setenv("NetCDF_LIBRARIES", pathJoin(base,"lib"))
+setenv("NetCDF_VERSION", pkgVersion)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)

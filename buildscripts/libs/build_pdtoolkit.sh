@@ -6,20 +6,20 @@ name="pdtoolkit"
 version="3.25.1"
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
 # manage package dependencies here
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
+    module load jedi-$JEDI_COMPILER
     module load zlib
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
     if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
@@ -48,6 +48,4 @@ $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

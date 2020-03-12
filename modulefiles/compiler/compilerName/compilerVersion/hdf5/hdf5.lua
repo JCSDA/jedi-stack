@@ -11,10 +11,9 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("szip")
-prereq("szip")
+try_load("szip")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 

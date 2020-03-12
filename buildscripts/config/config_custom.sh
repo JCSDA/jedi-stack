@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Compiler/MPI combination
-#export COMPILER="gnu/7.4.0"
-#export MPI="openmpi/3.1.2"
+export JEDI_COMPILER="gnu/9.2.0"
+export JEDI_MPI="openmpi/4.0.1"
 #export MPI="mpich/3.2.1"
 
 #export COMPILER="intel/17.0.1"
 #export MPI="impi/17.0.1"
 
-export COMPILER="clang/6.0.1"
-export MPI="openmpi/3.1.2"
+#export JEDI_COMPILER="clang/6.0.1"
+#export JEDI_MPI="openmpi/3.1.2"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -33,6 +33,7 @@ export MAKE_VERBOSE=Y
 export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=N
 export STACK_EXIT_ON_FAIL=Y
+export WGET="wget -nv"
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=N
@@ -40,21 +41,21 @@ export       STACK_BUILD_SZIP=N
 export    STACK_BUILD_UDUNITS=N
 export       STACK_BUILD_ZLIB=N
 export     STACK_BUILD_LAPACK=N
-export    STACK_BOOST_HEADERS=N
+export STACK_BUILD_BOOST_HDRS=N
 export     STACK_BUILD_EIGEN3=N
 export       STACK_BUILD_HDF5=N
 export    STACK_BUILD_PNETCDF=N
 export     STACK_BUILD_NETCDF=N
 export      STACK_BUILD_NCCMP=N
 export        STACK_BUILD_NCO=N
-export    STACK_BUILD_ECBUILD=Y
+export    STACK_BUILD_ECBUILD=N
 export      STACK_BUILD_ECKIT=N
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
 export        STACK_BUILD_ODB=N
-export        STACK_BUILD_ODC=Y
+export        STACK_BUILD_ODC=N
 export    STACK_BUILD_ODYSSEY=Y
-export    STACK_BUILD_BUFRLIB=N
+export    STACK_BUILD_BUFRLIB=Y
 
 # Optional Additions
 export           STACK_BUILD_PIO=N
@@ -64,9 +65,9 @@ export        STACK_BUILD_JASPER=N
 export     STACK_BUILD_ARMADILLO=N
 export        STACK_BUILD_XERCES=N
 export        STACK_BUILD_TKDIFF=N
-export          STACK_BOOST_FULL=N
+export    STACK_BUILD_BOOST_FULL=N
 export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
-export     STACK_BUILD_PDTOOLKIT=Y
+export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
 

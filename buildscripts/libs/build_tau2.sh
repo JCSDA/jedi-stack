@@ -6,15 +6,15 @@ name="tau2"
 version="2.28.1"
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 # manage package dependencies here
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
     module load pdtoolkit
     module load zlib
     module list
@@ -22,10 +22,9 @@ if $MODULES; then
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
     if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-
 else
     prefix=${TAU_ROOT:-"/usr/local/$name/$version"}
 fi
@@ -59,6 +58,4 @@ $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

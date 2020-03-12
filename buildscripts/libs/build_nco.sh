@@ -6,18 +6,18 @@ name="nco"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
   set +x
   source $MODULESHOME/init/bash
-  module load jedi-$COMPILER
-  [[ -z $mpi ]] || module load jedi-$MPI
-  module load szip
+  module load jedi-$JEDI_COMPILER
+  [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
+  module try-load szip
   module load hdf5
   module load netcdf
-  module load udunits
+  module try-load udunits
   module list
   set -x
 
@@ -27,7 +27,6 @@ if $MODULES; then
     [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
   fi
-
 else
     prefix=${NCO_ROOT:-"/usr/local"}
 fi
@@ -72,5 +71,3 @@ $SUDO make install
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
 $MODULES && update_modules $modpath $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

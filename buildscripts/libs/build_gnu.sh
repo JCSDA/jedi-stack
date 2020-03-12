@@ -35,5 +35,3 @@ $SUDO make install-strip
 # generate modulefile from template
 $MODULES && update_modules core $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

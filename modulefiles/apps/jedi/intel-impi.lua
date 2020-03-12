@@ -9,7 +9,7 @@ local pkgNameVer = myModuleFullName()
 conflict(pkgName)
 
 load("jedi-intel/17.0.1")
-load("szip/2.1.1")
+try_load("szip/2.1.1")
 load("jedi-impi/17.0.1")
 
 load("hdf5/1.10.5")

@@ -33,9 +33,9 @@
 #
 
 # currently supported options
-supported_options=("ubuntu/18.04","cheyenne","orion","rhel7emc")
+supported_options=("ubuntu/18.04","cheyenne","orion","rhel7emc","gentoo")
 
-export JEDI_STACK_ROOT=$PWD/..
+JEDI_BUILDSCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 set -ex
 
@@ -94,15 +94,15 @@ case $1 in
     source $prefix/lmod/lmod/init/profile
 
     # The module files will be installed in $OPT/modulefiles
-    OPT=/opt/modules
+    JEDI_OPT=/opt/modules
 
     sudo ln -s $MODULESHOME/init/profile /etc/profile.d/z00_lmod.sh
-    echo "export OPT=$OPT" | sudo tee -a /etc/profile.d/z00_lmod.sh
-    echo "module use $OPT/modulefiles/core" | sudo tee -a /etc/profile.d/z00_lmod.sh
+    echo "export JEDI_OPT=$JEDI_OPT" | sudo tee -a /etc/profile.d/z00_lmod.sh
+    echo "module use $JEDI_OPT/modulefiles/core" | sudo tee -a /etc/profile.d/z00_lmod.sh
 
     sudo ln -s $MODULESHOME/init/cshrc   /etc/profile.d/z00_lmod.csh
-    echo "setenv OPT $OPT" | sudo tee -a /etc/profile.d/z00_lmod.csh
-    echo "module use $OPT/modulefiles/core" | sudo tee -a /etc/profile.d/z00_lmod.csh
+    echo "setenv JEDI_OPT $JEDI_OPT" | sudo tee -a /etc/profile.d/z00_lmod.csh
+    echo "module use $JEDI_OPT/modulefiles/core" | sudo tee -a /etc/profile.d/z00_lmod.csh
 
     ;;
 #==========================================================================================
@@ -119,40 +119,58 @@ case $1 in
       set -x
       exit 1
     fi
-    cd ${JEDI_STACK_ROOT}/buildscripts
     # The module files will be installed in $OPT/modulefiles
-    export OPT="$HOME/opt"
-    echo "export OPT=$OPT" >> $HOME/.bashrc
-    echo "module use $OPT/modulefiles/core" >> $HOME/.bashrc
+    export JEDI_OPT="$HOME/opt"
+    echo "export JEDI_OPT=$JEDI_OPT" >> $HOME/.bashrc
+    echo "module use $JEDI_OPT/modulefiles/core" >> $HOME/.bashrc
     ;;
 #==========================================================================================
 "cheyenne")
-
-    # Cheyenne compiler modules define the environment variable MODULE so in order for
-    # the build scripts to function properly we need to replace it with something else
-    cd ${JEDI_STACK_ROOT}/buildscripts
-    sed -i -e 's/COMPILER/JEDI_COMPILER/g' setup_modules.sh build_stack.sh
-    cd libs
-    sed -i -e 's/COMPILER/JEDI_COMPILER/g' *.sh
-
-    export OPT="/glade/work/miesch/modules"
-    echo "export OPT=$OPT" >> $HOME/.bashrc
-    echo "module use $OPT/modulefiles/core" >> $HOME/.bashrc
+    export JEDI_OPT="/glade/work/miesch/modules"
+    echo "export JEDI_OPT=$JEDI_OPT" >> $HOME/.bashrc
+    echo "module use $JEDI_OPT/modulefiles/core" >> $HOME/.bashrc
     ;;
 #==========================================================================================
 "orion")
+    export JEDI_OPT="$HOME/opt"
+    echo "export JEDI_OPT=$JEDI_OPT" >> $HOME/.bashrc
+    echo "module use $JEDI_OPT/modulefiles/core" >> $HOME/.bashrc
 
-    # Orion compiler modules define the environment variable COMPILER so in order for
-    # the build scripts to function properly we need to replace it with something else
-    cd ${JEDI_STACK_ROOT}/buildscripts
-    sed -i -e 's/COMPILER/JEDI_COMPILER/g' setup_modules.sh build_stack.sh
-    cd libs
-    sed -i -e 's/COMPILER/JEDI_COMPILER/g' *.sh
+    ;;
+#==========================================================================================
+"gentoo")
+    set +ex
+    LMOD_VERSION=$( { module --version; } 2>&1)
+    if [[ ! $? == 0 ]]; then
+        echo "Unable to find 'module' command.  Check lmod exists and is configured.  Must source  '/usr/lib/lmod/lmod/init/bash' in shell to activate. "
+        exit 1
+    fi
+    echo "Found lmod version: ${LMOD_VERSION}"
+    export JEDI_OPT=${JEDI_OPT:-$OPT}
+    if [[ -z $JEDI_OPT ]]; then
+        echo "ERROR: must set JEDI_OPT to path to user modules directory."
+        echo "Suggested location is $HOME/opt/modules"
+        exit 1
+    fi
+    echo "Using JEDI_OPT=$JEDI_OPT"
+    [[ ! -d $JEDI_OPT ]] && mkdir -p $JEDI_OPT
+    echo "export JEDI_OPT=$JEDI_OPT" > $HOME/.jedi-stack-bashrc
+    echo "export JEDI_APP_MODULES=\"\$JEDI_OPT/modulefiles/apps\"" >> $HOME/.jedi-stack-bashrc
+    echo "export JEDI_MODULES=\"\$JEDI_OPT/modulefiles/core\"" >> $HOME/.jedi-stack-bashrc
+    echo "export SYSTEM_MODULES=\"\$JEDI_OPT/modulefiles/system\"" >> $HOME/.jedi-stack-bashrc
+    echo "export MODULEPATH=\"\$SYSTEM_MODULES:\$JEDI_APP_MODULES:\$JEDI_MODULES\"" >> $HOME/.jedi-stack-bashrc
+    echo "source /usr/lib/lmod/lmod/init/bash" >> $HOME/.jedi-stack-bashrc
+    echo "module use \$JEDI_APP_MODULES" >> $HOME/.jedi-stack-bashrc
+    echo "module use \$JEDI_MODULES" >> $HOME/.jedi-stack-bashrc
+    echo "module use \$SYSTEM_MODULES" >> $HOME/.jedi-stack-bashrc
+    source $HOME/.jedi-stack-bashrc
+    mkdir -p $JEDI_OPT/modulefiles/system
+    mkdir -p $JEDI_OPT/modulefiles/apps
+    cp -a $JEDI_BUILDSCRIPTS_DIR/../modulefiles/system/gentoo/* $JEDI_OPT/modulefiles/system/
+    cp -a $JEDI_BUILDSCRIPTS_DIR/../modulefiles/apps/gentoo/* $JEDI_OPT/modulefiles/apps/
 
-    export OPT="$HOME/opt"
-    echo "export OPT=$OPT" >> $HOME/.bashrc
-    echo "module use $OPT/modulefiles/core" >> $HOME/.bashrc
-
+    echo "jedi-stack: setup_environment: gentoo -- Success!"
+    echo "To permanently enable the jedi-stack environment add 'source .jedi-stack-bashrc' to your .bashrc"
     ;;
 #==========================================================================================
 *)
@@ -163,4 +181,6 @@ case $1 in
     ;;
 esac
 
-exit 0
+set +x
+echo "setup_environment.sh $1: success!"
+echo "To proceed run: setup_modules.sh $1"

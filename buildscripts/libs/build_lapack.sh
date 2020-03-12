@@ -6,13 +6,13 @@ name="lapack"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
 # manage package dependencies here
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
+    module load jedi-$JEDI_COMPILER
     module list
     set -x
 
@@ -48,12 +48,10 @@ mkdir -p build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR:PATH=$prefix/lib \
       -DCMAKE_Fortran_COMPILER=$SERIAL_FC -DCMAKE_Fortran_FLAGS=$FCFLAGS ..
 
-make -j${NTHREADS:-4} 
+VERBOSE="$MAKE_VERBOSE" make -j${NTHREADS:-4} 
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
-$SUDO make install
+VERBOSE="$MAKE_VERBOSE" $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

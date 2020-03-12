@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Compiler/MPI combination
-export COMPILER="gnu/9.2.0"
-export MPI="openmpi/3.1.5"
-#export MPI="mpich/3.2.1"
+export JEDI_COMPILER="gnu/9.2.0"
+export JEDI_MPI="openmpi/3.1.5"
+#export JEDI_MPI="mpich/3.2.1"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -35,7 +35,7 @@ export       STACK_BUILD_SZIP=Y
 export    STACK_BUILD_UDUNITS=Y
 export       STACK_BUILD_ZLIB=Y
 export     STACK_BUILD_LAPACK=Y
-export    STACK_BOOST_HEADERS=Y
+export STACK_BUILD_BOOST_HDRS=Y
 export     STACK_BUILD_EIGEN3=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
@@ -58,7 +58,7 @@ export        STACK_BUILD_JASPER=Y
 export     STACK_BUILD_ARMADILLO=N
 export        STACK_BUILD_XERCES=N
 export        STACK_BUILD_TKDIFF=N
-export          STACK_BOOST_FULL=N
+export    STACK_BUILD_BOOST_FULL=N
 export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N

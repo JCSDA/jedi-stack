@@ -18,7 +18,7 @@ conflict("netcdf")
 conflict("udunits")
 conflict("esmf")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 

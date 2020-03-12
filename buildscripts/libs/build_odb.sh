@@ -6,33 +6,32 @@ name="odb-api"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 [[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
-    module load ecbuild
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
+    module try-load ecbuild
     module load netcdf
-    module load eckit
+    module try-load eckit
     
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-    
 else
     prefix=${ODB_ROOT:-"/usr/local"}
 fi
-    
+
 export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
@@ -65,6 +64,4 @@ $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   

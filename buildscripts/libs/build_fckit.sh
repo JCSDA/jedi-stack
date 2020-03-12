@@ -8,8 +8,8 @@ source=$1
 version=$2
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 [[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 [[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
@@ -17,15 +17,16 @@ mpi=$(echo $MPI | sed 's/\//-/g')
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
-    module load ecbuild eckit
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
+    module try-load ecbuild
+    module try-load eckit
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$source-$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
@@ -50,11 +51,9 @@ git checkout $version
 mkdir -p build && cd build
 
 ecbuild -DCMAKE_INSTALL_PREFIX=$prefix --build=Release ..
-make -j${NTHREADS:-4}
-$SUDO make $verb install
+VERBOSE="$MAKE_VERBOSE" make -j${NTHREADS:-4}
+VERBOSE="$MAKE_VERBOSE" $SUDO make $verb install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $source-$version \
-	 || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
-
-exit 0
+         || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   

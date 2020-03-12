@@ -22,7 +22,7 @@ prereq("intel/17.0.1")
 
 try_load("szip")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 local base = "/opt/intel17/compilers_and_libraries_2017.1.132"
 
 setenv("I_MPI_ROOT", pathJoin(base,"linux/mpi"))

@@ -10,7 +10,7 @@ family("compiler")
 conflict(pkgName)
 conflict("gnu")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 local mklroot = "/opt/intel17/compilers_and_libraries_2017.1.132/linux/mkl"
 
 prepend_path("PATH","/opt/intel17/compilers_and_libraries_2017.1.132/linux/bin/intel64:/opt/intel17/compilers_and_libraries_2017.1.132/linux/mpi/intel64/bin:/opt/intel17/debugger_2017/gdb/intel64_mic/bin")

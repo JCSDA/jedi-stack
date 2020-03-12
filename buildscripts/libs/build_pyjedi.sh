@@ -40,5 +40,3 @@ $SUDO python setup.py install
 
 CC=gcc python3 setup.py build 
 $SUDO python3 setup.py install 
-
-exit 0

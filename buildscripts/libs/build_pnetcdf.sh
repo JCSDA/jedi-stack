@@ -6,23 +6,22 @@ name="pnetcdf"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-    
 else
     prefix=${PNETCDF_ROOT:-"/usr/local"}
 fi
@@ -33,7 +32,7 @@ export CC=$MPI_CC
 export CXX=$MPI_CXX
 
 export F9X=$FC
-export FFLAGS="-fPIC"
+export FFLAGS="-fPIC -w"
 export CFLAGS="-fPIC"
 export CXXFLAGS="-fPIC"
 export FCFLAGS="$FFLAGS"
@@ -50,12 +49,10 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix
 
-make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

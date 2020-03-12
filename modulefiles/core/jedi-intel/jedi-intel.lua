@@ -15,7 +15,7 @@ load(compiler)
 prereq(compiler)
 try_load("mkl")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 local mpath = pathJoin(opt,"modulefiles/compiler","intel",pkgVersion)
 prepend_path("MODULEPATH", mpath)
 

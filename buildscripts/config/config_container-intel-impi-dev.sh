@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Compiler/MPI combination
-export COMPILER="intel/17.0.1"
-export MPI="impi/17.0.1"
+export JEDI_COMPILER="intel/17.0.1"
+export JEDI_MPI="impi/17.0.1"
 source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
@@ -39,7 +39,7 @@ export       STACK_BUILD_SZIP=Y
 export    STACK_BUILD_UDUNITS=Y
 export       STACK_BUILD_ZLIB=Y
 export     STACK_BUILD_LAPACK=N
-export    STACK_BOOST_HEADERS=Y
+export STACK_BUILD_BOOST_HDRS=Y
 export     STACK_BUILD_EIGEN3=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
@@ -63,7 +63,7 @@ export        STACK_BUILD_JASPER=N
 export     STACK_BUILD_ARMADILLO=N
 export        STACK_BUILD_XERCES=N
 export        STACK_BUILD_TKDIFF=N
-export          STACK_BOOST_FULL=N
+export    STACK_BUILD_BOOST_FULL=N
 export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N

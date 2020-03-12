@@ -8,8 +8,8 @@ source=$1
 version=$2
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 [[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 [[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
@@ -17,24 +17,22 @@ mpi=$(echo $MPI | sed 's/\//-/g')
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
-    module load ecbuild
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
+    module try-load ecbuild
     module load odc
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$source-$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-
 else
     prefix=${ODYSSEY_ROOT:-"/usr/local"}
 fi
 
-    
 export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
@@ -57,5 +55,3 @@ $SUDO make $verb install
 # generate modulefile from template
 $MODULES && update_modules mpi $name $source-$version \
          || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

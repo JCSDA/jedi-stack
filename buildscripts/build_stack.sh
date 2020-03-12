@@ -15,23 +15,25 @@
 supported_options=("container" "custom")
 
 # root directory for the repository
-export JEDI_STACK_ROOT=$PWD/..
+JEDI_BUILDSCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export JEDI_STACK_ROOT=${JEDI_BUILDSCRIPTS_DIR}/..
 
-set -x
+set -ex
 
 # define update_modules function
-source libs/update_modules.sh
+source "${JEDI_BUILDSCRIPTS_DIR}/libs/update_modules.sh"
 
 # create build directory if needed
-mkdir -p ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+pkgdir=${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+mkdir -p $pkgdir
 
 # ===============================================================================
 # configure build
 
 if [[ $# -ne 1 ]]; then
-    source config/config_custom.sh
+    source "${JEDI_BUILDSCRIPTS_DIR}/config/config_custom.sh"
 else
-    config_file="config/config_$1.sh"
+    config_file="${JEDI_BUILDSCRIPTS_DIR}/config/config_$1.sh"
     if [[ -e $config_file ]]; then
       source $config_file
     else
@@ -46,9 +48,6 @@ else
     [[ $1 =~ ^container ]] && export MODULES=false || export MODULES=true
 
 fi
-
-# Optionally exit on failure
-[[ $STACK_EXIT_ON_FAIL =~ [yYtT] ]] && set -e
 
 # this is needed to set environment variables if modules are not used
 $MODULES || no_modules $1
@@ -71,128 +70,56 @@ $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 # - should add a check at some point to see if they are already there.
 # this can be done in each script individually
 # it might warrant a --force flag to force rebuild when desired
-
-[[ $STACK_BUILD_CMAKE =~ [yYtT] ]] && \
-    libs/build_cmake.sh "3.13.0" 2>&1 | tee "$logdir/cmake.log"
-
-[[ $STACK_BUILD_UDUNITS =~ [yYtT] ]] && \
-    libs/build_udunits.sh "2.2.26" 2>&1 | tee "$logdir/udunits.log"
-
-[[ $STACK_BUILD_ZLIB =~ [yYtT] ]] && \
-    libs/build_zlib.sh "1.2.11" 2>&1 | tee "$logdir/zlib.log"
-
-[[ $STACK_BUILD_SZIP =~ [yYtT] ]] && \
-    libs/build_szip.sh "2.1.1" 2>&1 | tee "$logdir/szip.log"
-
-[[ $STACK_BUILD_LAPACK =~ [yYtT] ]] && \
-    libs/build_lapack.sh "3.7.0" 2>&1 | tee "$logdir/lapack.log"
-
-[[ $STACK_BOOST_HEADERS  =~ [yYtT] ]] && \
-    libs/build_boost.sh "1.68.0" "headers-only" 2>&1 | tee "$logdir/boost-headers.log"
-
-[[ $STACK_BUILD_EIGEN3 =~ [yYtT] ]] && \
-    libs/build_eigen.sh "3.3.5" 2>&1 | tee "$logdir/eigen3.log"
-
-[[ $STACK_BUILD_BUFRLIB =~ [yYtT] ]] && \
-    libs/build_bufrlib.sh "master" 2>&1 | tee "$logdir/bufrlib.log"
-
-# The first argument is the source, either "ecmwf" or "jcsda" (fork)
-[[ $STACK_BUILD_ECBUILD =~ [yYtT] ]] && \
-    libs/build_ecbuild.sh "jcsda" "3.1.0.jcsda2" 2>&1 | tee "$logdir/ecbuild.log"
+build_lib CMAKE cmake 3.13.0
+build_lib UDUNITS udunits 2.2.26
+build_lib ZLIB zlib 1.2.11
+build_lib SZIP szip 2.1.1
+build_lib LAPACK lapack 3.7.0
+build_lib BOOST_HDRS boost 1.68.0 headers-only
+build_lib EIGEN3 eigen 3.3.5
+build_lib BUFRLIB bufrlib master
+build_lib ECBUILD ecbuild jcsda 3.1.0.jcsda2
 
 #----------------------
 # These must be rebuilt for each MPI implementation
-
-[[ $STACK_BUILD_HDF5  =~ [yYtT] ]] && \
-    libs/build_hdf5.sh "1.10.5" 2>&1 | tee "$logdir/hdf5.log"
-
-[[ $STACK_BUILD_PNETCDF =~ [yYtT] ]] && \
-    libs/build_pnetcdf.sh "1.11.2" 2>&1 | tee "$logdir/pnetcdf.log"
-
-# enter versions for C, Fortran, anc CXX
-[[ $STACK_BUILD_NETCDF =~ [yYtT] ]] && \
-    libs/build_netcdf.sh "4.7.0" "4.4.5" "4.3.0" 2>&1 | tee "$logdir/netcdf.log"
-
-[[ $STACK_BUILD_NCCMP     =~ [yYtT] ]] && \
-    libs/build_nccmp.sh "1.8.2.1" 2>&1 | tee "$logdir/nccmp.log"
-
-# The first argument is the source, either "ecmwf" or "jcsda" (fork)
-[[ $STACK_BUILD_ECKIT =~ [yYtT] ]] && \
-    libs/build_eckit.sh "jcsda" "1.4.0.jcsda3" 2>&1 | tee "$logdir/eckit.log"
-
-# The first argument is the source, either "ecmwf" or "jcsda" (fork)
-[[ $STACK_BUILD_FCKIT =~ [yYtT] ]] && \
-    libs/build_fckit.sh "jcsda" "develop" 2>&1 | tee "$logdir/fckit.log"
-
-# The first argument is the source, either "ecmwf" or "jcsda" (fork)
-[[ $STACK_BUILD_ATLAS =~ [yYtT] ]] && \
-    libs/build_atlas.sh "ecmwf" "0.19.1" 2>&1 | tee "$logdir/atlas.log"
-
-[[ $STACK_BUILD_ODB      =~ [yYtT] ]] && \
-    libs/build_odb.sh "0.18.1.r2" 2>&1 | tee "$logdir/odb.log"
-
-# The first argument is the source, either "ecmwf" or "jcsda" (fork)
-[[ $STACK_BUILD_ODC =~ [yYtT] ]] && \
-    libs/build_odc.sh "jcsda" "develop" 2>&1 | tee "$logdir/odc.log"
-
-# This needs to follow the build of ODC so that the module odc can be loaded.
-[[ $STACK_BUILD_ODYSSEY =~ [yYtT] ]] && \
-    libs/build_odyssey.sh "jcsda" "develop" 2>&1 | tee "$logdir/odyssey.log"
+build_lib HDF5 hdf5 1.10.5
+build_lib PNETCDF pnetcdf 1.11.2
+build_lib NETCDF netcdf 4.7.0 4.4.5 4.3.0
+build_lib NCCMP nccmp 1.8.2.1
+build_lib ECKIT eckit jcsda 1.4.0.jcsda3
+build_lib FCKIT fckit jcsda develop
+build_lib ATLAS atlas ecmwf 0.19.1
+build_lib ODB odb 0.18.1.r2
+build_lib ODC odc jcsda develop
+build_lib ODYSSEY odyssey jcsda develop
 
 # ===============================================================================
 # Optional Extensions to the JEDI Stack
 
 #----------------------
 # MPI-independent
-[[ $STACK_BUILD_JASPER    =~ [yYtT] ]] && \
-    libs/build_jasper.sh "1.900.1" 2>&1 | tee "$logdir/jasper.log"
-
-[[ $STACK_BUILD_ARMADILLO =~ [yYtT] ]] && \
-    libs/build_armadillo.sh "1.900.1" 2>&1 | tee "$logdir/armadillo.log"
-
-[[ $STACK_BUILD_XERCES    =~ [yYtT] ]] && \
-    libs/build_xerces.sh "3.1.4" 2>&1 | tee "$logdir/xerces.log"
-
-[[ $STACK_BUILD_NCEPLIBS  =~ [yYtT] ]] && \
-    libs/build_nceplibs.sh "fv3" 2>&1 | tee "$logdir/nceplibs.log"
-
-[[ $STACK_BUILD_TKDIFF    =~ [yYtT] ]] && \
-    libs/build_tkdiff.sh "4.3.5" 2>&1 | tee "$logdir/tkdiff.log"
-
-[[ $STACK_BUILD_PYJEDI    =~ [yYtT] ]] && \
-    libs/build_pyjedi.sh 2>&1 | tee "$logdir/pyjedi.log"
+build_lib JASPER jasper 1.900.1
+build_lib ARMADILLO armadillo 1.900.1
+build_lib XERCES xerces 3.1.4
+build_lib NCEPLIBS nceplibs fv3
+build_lib TKDIFF tkdirr 4.3.5
+build_lib PYJEDI pyjedi
 
 #----------------------
 # These must be rebuilt for each MPI implementation
-[[ $STACK_BUILD_NCO     =~ [yYtT] ]] && \
-    libs/build_nco.sh "4.7.9" 2>&1 | tee "$logdir/nco.log"
-
-[[ $STACK_BUILD_PIO      =~ [yYtT] ]] && \
-    libs/build_pio.sh "2.4.4" 2>&1 | tee "$logdir/pio.log"
-
-[[ $STACK_BUILD_FFTW     =~ [yYtT] ]] && \
-    libs/build_fftw.sh "3.3.8" 2>&1 | tee "$logdir/fftw.log"
-
-[[ $STACK_BOOST_FULL     =~ [yYtT] ]] && \
-    libs/build_boost.sh "1.68.0" 2>&1 | tee "$logdir/boost.log"
-
-[[ $STACK_BUILD_ESMF     =~ [yYtT] ]] && \
-    libs/build_esmf.sh "8_0_0" 2>&1 | tee "$logdir/esmf.log"
-
-[[ $STACK_BUILD_BASELIBS =~ [yYtT] ]] && \
-    libs/build_baselibs.sh "5.2.2" 2>&1 | tee "$logdir/baselibs.log"
-
-[[ $STACK_BUILD_PDTOOLKIT =~ [yYtT] ]] && \
-    libs/build_pdtoolkit.sh "3.25.1" 2>&1 | tee "$logdir/pdtoolkit.log"
-
-[[ $STACK_BUILD_TAU2 =~ [yYtT] ]] && \
-    libs/build_tau2.sh "3.25.1" 2>&1 | tee "$logdir/tau2.log"
+build_lib NCO nco 4.7.9
+build_lib PIO pio 2.5.0
+build_lib FFTW fftw 3.3.8
+build_lib BOOST_FULL boost 1.68.0
+build_lib ESMF esmf 8_0_0
+build_lib BASELIBS baselibs 5.2.2
+build_lib PDTOOLKIT pdtoolkit 3.25.1
+build_lib TAU2 tau2 3.25.1
 
 # ===============================================================================
 # optionally clean up
 [[ $MAKE_CLEAN =~ [yYtT] ]] && \
-  ( $SUDO rm -rf ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}; $SUDO rm -rf $logdir )
+    ( $SUDO rm -rf $pkgdir; $SUDO rm -rf $logdir )
 
 # ===============================================================================
-
-exit 0
+echo "build_stack.sh $1: success!"

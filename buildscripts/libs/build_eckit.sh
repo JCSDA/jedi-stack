@@ -8,18 +8,19 @@ source=$1
 version=$2
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 [[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
     module try-load cmake
-    module load zlib udunits
+    module try-load zlib
+    module try-load udunits
     module load netcdf
     module load boost-headers eigen
     module load ecbuild
@@ -28,7 +29,7 @@ if $MODULES; then
 
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$source-$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
@@ -57,6 +58,4 @@ $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $source-$version \
-	 || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

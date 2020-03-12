@@ -9,7 +9,7 @@ conflict(pkgName)
 
 try_load("cmake")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,"core",pkgName,pkgVersion)
 

@@ -1,18 +1,17 @@
 #!/bin/bash
 
 set -ex
-
 name="bufrlib"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
 # manage package dependencies here
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
+    module load jedi-$JEDI_COMPILER
     module list
     set -x
 
@@ -39,10 +38,8 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git checkout $version
 
-$SUDO ./tools/build.sh $prefix -DBUILD_SHARED_LIBS=1
+VERBOSE="$MAKE_VERBOSE" $SUDO ./tools/build.sh $prefix -DBUILD_SHARED_LIBS=1
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

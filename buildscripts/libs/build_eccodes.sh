@@ -6,15 +6,15 @@ name="eccodes"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
-    module load cmake
-    module load szip
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI 
+    module try-load cmake
+    module try-load szip
     module load hdf5
     module load netcdf
     module list
@@ -22,7 +22,7 @@ if $MODULES; then
 
     prefix="${PREFIX:-"$HOME/opt"}/$compiler/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
@@ -51,12 +51,10 @@ mkdir -p build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DENABLE_NETCDF=ON -DENABLE_FORTRAN=ON ..
 
-make -j${NTHREADS:-4}
+VERBOSE="$MAKE_VERBOSE" make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && ctest
-$SUDO make install
+VERBOSE="$MAKE_VERBOSE" $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

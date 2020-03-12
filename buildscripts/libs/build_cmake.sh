@@ -11,7 +11,7 @@ name="cmake"
 version=$1
 
 if $MODULES; then
-    module load jedi-$COMPILER
+    module load jedi-$JEDI_COMPILER
     module list
 
     prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
@@ -40,6 +40,4 @@ $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $version \
- 	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

@@ -16,7 +16,7 @@ conflict(pkgName)
 always_load("odc")
 prereq("odc")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 local odc_lib = pathJoin(os.getenv("odc_ROOT"), "lib")
 local olib_pattern = pathJoin(base, "lib/python3*/site-packages")

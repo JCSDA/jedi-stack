@@ -10,7 +10,7 @@ family("compiler")
 conflict(pkgName)
 conflict("intel")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local mpath = pathJoin(opt,"modulefiles/compiler",pkgName,pkgVersion)
 prepend_path("MODULEPATH", mpath)

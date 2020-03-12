@@ -19,7 +19,7 @@ local mpi = pathJoin("mpt",pkgVersion)
 load(mpi)
 prereq(mpi)
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,"mpt",pkgVersion)
 prepend_path("MODULEPATH", mpath)
 

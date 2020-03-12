@@ -8,15 +8,15 @@ f_version=$2
 cxx_version=$3
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    [[ -z $mpi ]] || module load jedi-$MPI
-    module load szip
+    module load jedi-$JEDI_COMPILER
+    [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
+    module try-load szip
     module load hdf5
     [[ -z $mpi ]] || module load pnetcdf
     module list
@@ -97,7 +97,7 @@ mkdir -p build && cd build
 [[ -z $mpi ]] || extra_conf="--enable-pnetcdf --enable-parallel-tests"
 ../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
 
-make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
@@ -131,7 +131,8 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
 
-make -j${NTHREADS:-4}
+#VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j1 #NetCDF-Fortran-4.5.2 & intel/20 have a linker bug if built with j>1
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
@@ -154,10 +155,8 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix
 
-make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
 $MODULES || echo $software >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

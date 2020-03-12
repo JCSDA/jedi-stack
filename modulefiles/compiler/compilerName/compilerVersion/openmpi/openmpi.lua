@@ -14,10 +14,9 @@ family("mpi")
 conflict(pkgName)
 conflict("mpich","impi")
 
-always_load("szip")
-prereq("szip")
+try_load("szip")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,pkgName,pkgVersion)
 prepend_path("MODULEPATH", mpath)
@@ -31,6 +30,12 @@ prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
 setenv("MPI_ROOT", base)
+
+-- Enable FindMPI.cmake to automatically find and configure OpenMPI
+setenv("MPI_HOME", base)
+setenv("MPI_Fortran_COMPILER", pathJoin(base,"bin/mpifort"))
+setenv("MPI_C_COMPILER", pathJoin(base,"bin/mpicc"))
+setenv("MPI_CXX_COMPILER", pathJoin(base,"bin/mpicxx"))
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)

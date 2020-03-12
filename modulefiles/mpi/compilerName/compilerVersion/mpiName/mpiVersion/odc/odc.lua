@@ -13,10 +13,12 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-load("ecbuild","netcdf","eckit")
-prereq("ecbuild","netcdf","eckit")
+try_load("ecbuild")
+try_load("eckit")
+always_load("netcdf")
+prereq("netcdf")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 

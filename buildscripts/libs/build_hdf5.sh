@@ -6,15 +6,16 @@ name="hdf5"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
   set +x
   source $MODULESHOME/init/bash
-  module load jedi-$COMPILER
-  [[ -z $MPI ]] || module load jedi-$MPI
-  module load szip zlib
+  module load jedi-$JEDI_COMPILER
+  [[ -z $JEDI_MPI ]] || module load jedi-$JEDI_MPI 
+  module try-load szip
+  module try-load zlib
   module list
   set -x
 
@@ -39,10 +40,12 @@ else
 fi
 
 export F9X=$FC
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
+export FFLAGS="-fPIC -w"
+export CFLAGS="-fPIC -w"
+export CXXFLAGS="-fPIC -w"
 export FCFLAGS="$FFLAGS"
+SZIP_ROOT=${SZIP_ROOT:-/usr}
+ZLIB_ROOT=${ZLIB_ROOT:-/usr}
 
 gitURL="https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git"
 
@@ -57,9 +60,9 @@ mkdir -p build && cd build
 
 [[ -z $mpi ]] || extra_conf="--enable-parallel --enable-unsupported"
 
-../configure --prefix=$prefix --enable-fortran --enable-fortran2003 --enable-cxx --enable-hl --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
+../configure --prefix=$prefix --enable-fortran --enable-cxx --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
 
-make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 [[ $USE_SUDO =~ [yYtT] ]] && sudo -- bash -c "export PATH=$PATH; make install" \
                           || make install
@@ -68,5 +71,3 @@ make -j${NTHREADS:-4}
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
 $MODULES && update_modules $modpath $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

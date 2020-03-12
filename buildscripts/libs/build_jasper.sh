@@ -6,11 +6,11 @@ name="jasper"
 version=$1
 
 # Hyphenated version used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
 set +x
 source $MODULESHOME/init/bash
-module load jedi-$COMPILER
+module load jedi-$JEDI_COMPILER
 module list
 set -x
 
@@ -67,5 +67,3 @@ $SUDO make install
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

@@ -13,10 +13,12 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("ecbuild","netcdf","eckit")
-prereq("ecbuild","netcdf","eckit")
+try_load("ecbuild")
+try_load("eckit")
+always_load("netcdf")
+prereq("netcdf")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
@@ -27,7 +29,7 @@ prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 prepend_path("PYTHONPATH", pathJoin(base, "lib/python2.7/site-packages"))
 
-setenv( "ODB_ROOT", base)
+setenv( "odb_ROOT", base)
 setenv( "ODB_API_PATH", base)
 setenv( "ODB_API_VERSION", pkgVersion)
 

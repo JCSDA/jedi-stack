@@ -6,14 +6,14 @@ name="baselibs"
 version=$1
 
 # Hyphenated versions used for install prefix
-compiler=$(echo $COMPILER | sed 's/\//-/g')
-mpi=$(echo $MPI | sed 's/\//-/g')
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
-    module load jedi-$COMPILER
-    module load jedi-$MPI
+    module load jedi-$JEDI_COMPILER
+    module load jedi-$JEDI_MPI
     module list
     set -x
 
@@ -54,6 +54,4 @@ $SUDO make install F90=$FC ESMF_COMM=$ESMF_COMM CONFIG="${compilerD}-${mpiD}" pr
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
