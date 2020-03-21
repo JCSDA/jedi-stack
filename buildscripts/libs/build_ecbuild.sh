@@ -9,15 +9,19 @@ dash_version=$(echo -n $version | sed -e "s@/@-@g")
 
 if $MODULES; then
 
-    module try-load cmake
+  set +x
+  source $MODULESHOME/init/bash
+  module try-load cmake
+  module list
+  set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/core/$name/$source-$dash_version"
-    if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-    fi
+  prefix="${PREFIX:-"/opt/modules"}/core/$name/$source-$dash_version"
+  if [[ -d $prefix ]]; then
+    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+                               || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+  fi
 else
-    prefix=${ECBUILD_ROOT:-"/usr/local"}
+  prefix=${ECBUILD_ROOT:-"/usr/local"}
 fi
 
 software=ecbuild
@@ -35,4 +39,4 @@ VERBOSE="$MAKE_VERBOSE" $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $source-$dash_version \
-         || echo $name $source-$dash_version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log			   
+         || echo $name $source-$dash_version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

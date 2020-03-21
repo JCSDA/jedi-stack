@@ -15,7 +15,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
+    [[ -z $mpi ]] || module load jedi-$JEDI_MPI
     module try-load szip
     module load hdf5
     module load netcdf
@@ -44,7 +44,7 @@ fi
 export CFLAGS="-fPIC"
 export LDFLAGS="-L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
-url="https://sourceforge.net/projects/nccmp/files/${software}.tar.gz"
+url="https://gitlab.com/remikz/nccmp/-/archive/$version/${software}.tar.gz"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 

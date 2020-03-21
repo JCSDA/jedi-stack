@@ -15,9 +15,6 @@ export JEDI_MPI="mpich/3.3.1"
 export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="from-source"
 
-# For nccmp. This magically fixes the make install command.
-export MKDIR_P="mkdir -p"
-
 # Build options
 export PREFIX=/opt/modules
 export USE_SUDO=Y

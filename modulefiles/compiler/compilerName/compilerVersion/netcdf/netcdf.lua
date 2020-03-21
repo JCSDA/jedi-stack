@@ -30,6 +30,12 @@ setenv("NetCDF_INCLUDES", pathJoin(base,"include"))
 setenv("NetCDF_LIBRARIES", pathJoin(base,"lib"))
 setenv("NetCDF_VERSION", pkgVersion)
 
+setenv("NETCDF", base)
+setenv("NETCDF_ROOT", base)
+setenv("NETCDF_INCLUDES", pathJoin(base,"include"))
+setenv("NETCDF_LIBRARIES", pathJoin(base,"lib"))
+setenv("NETCDF_VERSION", pkgVersion)
+
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
 whatis("Category: library")
