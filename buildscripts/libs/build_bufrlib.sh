@@ -36,6 +36,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 [[ -d $software ]] || git clone https://github.com/JCSDA/$software.git
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+git fetch
 git checkout $version
 
 VERBOSE="$MAKE_VERBOSE" $SUDO ./tools/build.sh $prefix -DBUILD_SHARED_LIBS=1
