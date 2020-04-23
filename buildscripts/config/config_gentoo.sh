@@ -47,12 +47,16 @@ export WGET="wget -nv"
 
 export SZIP_ROOT=/usr
 export ZLIB_ROOT=/usr
+export PNG_ROOT=/usr
+export JPEG_ROOT=/usr
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=N
 export       STACK_BUILD_SZIP=N
 export    STACK_BUILD_UDUNITS=N
+export       STACK_BUILD_JPEG=N
 export       STACK_BUILD_ZLIB=N
+export        STACK_BUILD_PNG=N
 export     STACK_BUILD_LAPACK=N
 export STACK_BUILD_BOOST_HDRS=N
 export     STACK_BUILD_EIGEN3=N

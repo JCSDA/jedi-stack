@@ -67,17 +67,17 @@ brew install graphviz
 
 See the [section below](#MacPython) for instructions to install python on the Mac.
 
-Your Mac should have come with Clang compilers for C and C++ pre-installed, so in this scheme you are adding in gfortran (GNU) for compiling Fortran code. Once you have finished with the brew install commands, make sure to set OPT in your environment as described below.
+Your Mac should have come with Clang compilers for C and C++ pre-installed, so in this scheme you are adding in gfortran (GNU) for compiling Fortran code. Once you have finished with the brew install commands, make sure to set `JEDI_OPT` in your environment as described below.
 
-If you're on an HPC system you can largely skip this step (but you still need to set the **OPT** environment variable, see below) because most of these packages are probably already installed and available.  However, there are a few items that you may wish to add by loading the appropriate modules (if they exist) - for example:
+If you're on an HPC system you can largely skip this step (but you still need to set the **JEDI_OPT** environment variable, see below) because most of these packages are probably already installed and available.  However, there are a few items that you may wish to add by loading the appropriate modules (if they exist) - for example:
 ```
 module load doxygen git-lfs
 ```
 Note, however, if you are using [JEDI Modules](https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/developer/jedi_environment/modules.html) you do not have to worry about this (or indeed, about this repository in general) - the JEDI team will make sure that the modules provided will include the packages you need.
 
-**IMPORTANT:** Another reponsibility of the `setup_environment.sh` script is to define the OPT environment variable.  This is needed both for the build and to allow users to load the JEDI modules after you build them.  This specifies where the modules will be installed, with a default value of `OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `OPT=$HOME/opt/modules`.
+**IMPORTANT:** Another reponsibility of the `setup_environment.sh` script is to define the `JEDI_OPT` environment variable.  This is needed both for the build and to allow users to load the JEDI modules after you build them.  This specifies where the modules will be installed, with a default value of `JEDI_OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `JEDI_OPT=$HOME/opt/modules`.
 
-OPT needs to be set in order to complete Steps 2-4.  But, it also needs to be set in order for users to use the modules.  For this reason, the `module_setup.sh` script also modifies bashrc and cshrc initialization scripts so that OPT is defined and Lmod is initialized properly when users log in.
+`JEDI_OPT` needs to be set in order to complete Steps 2-4.  But, it also needs to be set in order for users to use the modules.  For this reason, the `module_setup.sh` script also modifies bashrc and cshrc initialization scripts so that `JEDI_OPT` is defined and Lmod is initialized properly when users log in.
 
 ## Step 2: Configure Build
 
@@ -95,7 +95,7 @@ For example, `COMPILER=gnu/7.3.0`.
 
 **MPI** is the MPI library you wish to use for this build.  The format is the same as for `COMPILER`, for example: `export MPI=openmpi/3.1.2`.
 
-**PREFIX** is the directory where the software packages will be installed.  Normally this is set to be the same as the `OPT` environment variable (default value `/opt/modules`), though this is not required.  If OPT and PREFIX are both the same, then the software installation trees (the top level of each being is the compiler, e.g. `gnu-7.3.0`) will branch directly off of $OPT while the module files will be located in the `modulefiles subdirectory.
+**PREFIX** is the directory where the software packages will be installed.  Normally this is set to be the same as the `JEDI_OPT` environment variable (default value `/opt/modules`), though this is not required.  If `JEDI_OPT` and `PREFIX` are both the same, then the software installation trees (the top level of each being is the compiler, e.g. `gnu-7.3.0`) will branch directly off of `$JEDI_OPT` while the module files will be located in the `modulefiles subdirectory.
 
 **USE_SUDO** If `PREFIX` is set to a value that requires root permission to write to, such as `/opt/modules`, then this flag should be enabled.
 
@@ -137,6 +137,8 @@ The remaining items enable or disable builds of each software package.  The foll
   - ODB
 
 * Supplementary Libraries
+  - PNG
+  - JPEG
   - Jasper
   - Armadillo
   - Boost (full installation)
@@ -165,14 +167,14 @@ For building on Mac OSX, use:
 ./setup_modules.sh mac
 ~~~~~~~
 
-This script sets up the module directory tree in `$OPT`.  It also sets up the compiler and mpi modules.  The compiler and mpi modules are handled separately from the rest of the build because, when possible, we wish to exploit site-specific installations that maximize performance.
+This script sets up the module directory tree in `$JEDI_OPT`.  It also sets up the compiler and mpi modules.  The compiler and mpi modules are handled separately from the rest of the build because, when possible, we wish to exploit site-specific installations that maximize performance.
 
 **For this reason, the compiler and mpi modules are preceded by a `jedi-` label**.  For example, to load the gnu compiler module and the openmpi software library, you would enter this:
 ```
 module load jedi-gnu/7.3.0
 module load jedi-openmpi/3.2.1
 ```
-These `jedi-` modules are really meta-modules that will both load the compiler/mpi library and modify the `MODULEPATH` so the user has access to the software packages that will be built in Step 4.  On HPC systems, these meta-modules will load the native modules provided by the system administrators.  For example, `module load jedi-openmpi/3.2.1` will first load the native `openmpi/3.2.1` module and then modify the `MODULEPATH` accordingly to allow users to access the JEDI libraries.  If this module is not available (e.g. in a container or in the cloud), then the `openmpi/3.2.1` module will be built from source and installed into `$OPT`.
+These `jedi-` modules are really meta-modules that will both load the compiler/mpi library and modify the `MODULEPATH` so the user has access to the software packages that will be built in Step 4.  On HPC systems, these meta-modules will load the native modules provided by the system administrators.  For example, `module load jedi-openmpi/3.2.1` will first load the native `openmpi/3.2.1` module and then modify the `MODULEPATH` accordingly to allow users to access the JEDI libraries.  If this module is not available (e.g. in a container or in the cloud), then the `openmpi/3.2.1` module will be built from source and installed into `$JEDI_OPT`.
 
 So, in short, you should never load the compiler or MPI modules directly.  Instead, you should always load the `jedi-` meta-modules as demonstrated above - they will provide everything you need to load and then use the JEDI software libraries.
 

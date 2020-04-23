@@ -72,7 +72,9 @@ $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 # it might warrant a --force flag to force rebuild when desired
 build_lib CMAKE cmake 3.13.0
 build_lib UDUNITS udunits 2.2.26
+build_lib JPEG jpeg 9.1.0
 build_lib ZLIB zlib 1.2.11
+build_lib PNG png 1.6.35
 build_lib SZIP szip 2.1.1
 build_lib LAPACK lapack 3.7.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
