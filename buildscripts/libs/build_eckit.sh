@@ -41,6 +41,7 @@ export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
 export F9X=$FC
+export CXXFLAGS=-fPIC
 
 software=$name
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}

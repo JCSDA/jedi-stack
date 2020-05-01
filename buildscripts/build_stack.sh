@@ -80,7 +80,7 @@ build_lib LAPACK lapack 3.7.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.5
 build_lib BUFRLIB bufrlib master
-build_lib ECBUILD ecbuild jcsda 3.1.0.jcsda2
+build_lib ECBUILD ecbuild jcsda 3.3.0.jcsda3
 build_lib CGAL cgal 5.0.2
 
 #----------------------
@@ -89,12 +89,11 @@ build_lib HDF5 hdf5 1.10.5
 build_lib PNETCDF pnetcdf 1.11.2
 build_lib NETCDF netcdf 4.7.0 4.4.5 4.3.0
 build_lib NCCMP nccmp 1.8.6.5
-build_lib ECKIT eckit jcsda 1.4.0.jcsda3
+build_lib ECKIT eckit jcsda 1.10.1.jcsda1
 build_lib FCKIT fckit jcsda develop
 build_lib ATLAS atlas ecmwf 0.19.1
 build_lib ODB odb 0.18.1.r2
-build_lib ODC odc jcsda develop
-build_lib ODYSSEY odyssey jcsda develop
+build_lib ODC odc jcsda 1.0.3
 
 # ===============================================================================
 # Optional Extensions to the JEDI Stack
