@@ -5,8 +5,8 @@ export JEDI_COMPILER="gnu/9.2.0"
 export JEDI_MPI="openmpi/4.0.1"
 #export MPI="mpich/3.2.1"
 
-#export COMPILER="intel/17.0.1"
-#export MPI="impi/17.0.1"
+#export JEDI_COMPILER="intel/19.0.5"
+#export JEDI_MPI="impi/19.0.5"
 
 #export JEDI_COMPILER="clang/6.0.1"
 #export JEDI_MPI="openmpi/3.1.2"
@@ -26,7 +26,7 @@ export PREFIX=/opt/modules
 export USE_SUDO=Y
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
-export OVERWRITE=Y
+export OVERWRITE=N
 export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=Y
@@ -53,10 +53,11 @@ export      STACK_BUILD_ECKIT=N
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
 export        STACK_BUILD_ODC=N
-export    STACK_BUILD_BUFRLIB=Y
+export    STACK_BUILD_BUFRLIB=N
 
 # Optional Additions
 export           STACK_BUILD_PIO=N
+export          STACK_BUILD_GPTL=N
 export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
 export          STACK_BUILD_JPEG=N

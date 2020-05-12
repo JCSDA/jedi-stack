@@ -51,6 +51,7 @@ export    STACK_BUILD_BUFRLIB=Y
 
 # Optional Additions
 export           STACK_BUILD_PIO=Y
+export          STACK_BUILD_GPTL=N
 export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
 export          STACK_BUILD_JPEG=N
