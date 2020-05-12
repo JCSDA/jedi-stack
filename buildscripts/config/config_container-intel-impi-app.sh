@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/17.0.1"
-export JEDI_MPI="impi/17.0.1"
+export JEDI_COMPILER="intel/19.0.5"
+export JEDI_MPI="impi/19.0.5"
 source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
@@ -20,7 +20,7 @@ export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="native-pkg"
 
 # Build options
-export PREFIX=/usr/local
+export PREFIX=/opt/jedi
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -50,15 +50,15 @@ export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
-export        STACK_BUILD_ODC=Y
+export        STACK_BUILD_ODB=N
+export        STACK_BUILD_ODC=N
+export    STACK_BUILD_ODYSSEY=N
 export    STACK_BUILD_BUFRLIB=N
 
 # Optional Additions
 export           STACK_BUILD_PIO=N
-export        STACK_BUILD_PYJEDI=Y
+export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
-export          STACK_BUILD_JPEG=N
-export           STACK_BUILD_PNG=N
 export        STACK_BUILD_JASPER=N
 export     STACK_BUILD_ARMADILLO=N
 export        STACK_BUILD_XERCES=N
@@ -68,4 +68,16 @@ export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
-export          STACK_BUILD_CGAL=N
+
+# For help with finding packages
+export PATH=${PREFIX}/bin:$PATH
+export LD_LIBRARY_PATH=${PREFIX}/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=${PREFIX}/lib:$LIBRARY_PATH
+export CPATH=${PREFIX}/include:$CPATH
+export HDF5=${PREFIX}
+export HDF5_PATH=${PREFIX}
+export HDF5_INCLUDES=${PREFIX}/include
+export HDF5_LIBRARIES=${PREFIX}/lib
+export NETCDF=${PREFIX}
+export PNETCDF=${PREFIX}
+export EIGEN_ROOT=${PREFIX}

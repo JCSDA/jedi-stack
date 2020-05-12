@@ -94,7 +94,7 @@ function no_modules {
     while IFS= read -r line ; do
         if [[ $(echo $line | grep "STACK_BUILD" | cut -d= -f2) =~ [yYtT] ]]; then
             pkg=$(echo $line | cut -d= -f1 | cut -d_ -f3)
-            eval export ${pkg}_ROOT="/usr/local"
+            eval export ${pkg}_ROOT=${PREFIX:-"/usr/local"}
         fi
     done < $config_file
     set -x
