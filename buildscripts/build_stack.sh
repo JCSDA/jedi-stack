@@ -106,6 +106,7 @@ build_lib XERCES xerces 3.1.4
 build_lib NCEPLIBS nceplibs fv3
 build_lib TKDIFF tkdirr 4.3.5
 build_lib PYJEDI pyjedi
+build_lib PYBIND11 pybind11 2.5.0
 
 #----------------------
 # These must be rebuilt for each MPI implementation
