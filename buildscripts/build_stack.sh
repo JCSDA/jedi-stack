@@ -70,7 +70,7 @@ $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 # - should add a check at some point to see if they are already there.
 # this can be done in each script individually
 # it might warrant a --force flag to force rebuild when desired
-build_lib CMAKE cmake 3.13.0
+build_lib CMAKE cmake 3.17.2
 build_lib UDUNITS udunits 2.2.26
 build_lib JPEG jpeg 9.1.0
 build_lib ZLIB zlib 1.2.11
@@ -85,9 +85,9 @@ build_lib CGAL cgal 5.0.2
 
 #----------------------
 # These must be rebuilt for each MPI implementation
-build_lib HDF5 hdf5 1.10.5
-build_lib PNETCDF pnetcdf 1.11.2
-build_lib NETCDF netcdf 4.7.0 4.4.5 4.3.0
+build_lib HDF5 hdf5 1.10.6
+build_lib PNETCDF pnetcdf 1.12.1
+build_lib NETCDF netcdf 4.7.3 4.5.2 4.3.0
 build_lib NCCMP nccmp 1.8.6.5
 build_lib ECKIT eckit jcsda 1.10.1.jcsda1
 build_lib FCKIT fckit jcsda develop
