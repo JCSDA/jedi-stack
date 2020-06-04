@@ -42,10 +42,13 @@ mkdir -p build && cd build
 
 cmake $sourceDir \
   -DCMAKE_INSTALL_PREFIX=$prefix \
+  -DBUILD_TESTS=ON \
+  -DBUILD_EXECUTABLES=ON \
   -DCMAKE_BUILD_TYPE=RELEASE
 
 make -j${NTHREADS:-4}
-[[ $MAKE_CHECK =~ [yYtT] ]] && make check
+[[ $MAKE_CHECK =~ [yYtT] ]] && make test
+
 $SUDO make install
 
 # generate modulefile from template
