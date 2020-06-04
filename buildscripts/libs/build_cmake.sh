@@ -30,9 +30,9 @@ url="https://cmake.org/files/v${version%.*}/$software.tar.gz"
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
-export CC=SERIAL_CC
-export CXX=SERIAL_CXX
-export FC=SERIAL_FC
+export CC=$SERIAL_CC
+export CXX=$SERIAL_CXX
+export FC=$SERIAL_FC
 
 $SUDO ./bootstrap --prefix=$prefix
 $SUDO make -j${NTHREADS:-4}
