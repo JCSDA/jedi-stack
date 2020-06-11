@@ -146,6 +146,14 @@ mkdir -p $logdir
 [[ $STACK_BUILD_SZIP =~ [yYtT] ]] && \
     ${JEDI_BUILDSCRIPTS_DIR}/libs/build_szip.sh "2.1.1" 2>&1 | tee "$logdir/szip.log"
 
+RetCode=${PIPESTATUS[0]}
+if [[ $RetCode > 0 ]]
+then
+    echo "SZIP BUILD FAIL! Error:$RetCode"
+    exit $RetCode
+fi
+echo "SZIP BUILD SUCCESS!"
+
 #===============================================================================
 # Now build the MPI library from source, if needed.  However, if there is
 # a native installation available, it's usually better to use that
@@ -169,6 +177,14 @@ case ${MPI_BUILD} in
   "from-source")
     echo -e "============================\n INSTALLING MPI FROM SOURCE"
     ${JEDI_BUILDSCRIPTS_DIR}/libs/build_mpi.sh $mpiName $mpiVersion 2>&1 | tee "$logdir/$mpiName.log"
+
+    RetCode=${PIPESTATUS[0]}
+    if [[ $RetCode > 0 ]]
+    then
+        echo "MPI BUILD FAIL! Error:$RetCode"
+        exit $RetCode
+    fi
+    echo "MPI BUILD SUCCESS!"
     ;;
 esac
 

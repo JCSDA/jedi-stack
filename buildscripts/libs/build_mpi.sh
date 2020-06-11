@@ -46,10 +46,37 @@ if [[ -d $prefix ]]; then
                                || ( echo "ERROR: $prefix EXISTS, ABORT!"; exit 1 )
 fi
 
+# If on a Mac, need to disable -flat_namespace for the link step. This is so because
+# we have mixed C/C++ and Fortran in several libraries, and -flat_namespace leads
+# to aborts when exceptions are thrown. (See the ZenHub issue JCSDA/oops#649 for details.)
+# Fortunately, mpich provides a configure control (--enable-two-level-namespace) for doing
+# this. Unfortunately, openmpi has -flat_namepace harwired into its configure script. A
+# workaround for openmpi is to strip off the -flat_namespace settings in the configure
+# script using sed.
+host=$(uname -s)
 case "$name" in
-    openmpi ) extra_conf="--enable-mpi-fortran --enable-mpi-cxx" ;;
-    mpich   ) extra_conf="--enable-fortran --enable-cxx" ;;
-    *       ) echo "Invalid option for MPI = $software, ABORT!"; exit 1 ;;
+    openmpi )
+       extra_conf="--enable-mpi-fortran --enable-mpi-cxx"
+       if [[ "$host" == "Darwin" ]]
+       then
+           # On a Mac, use the sed hack to disable -flat_namespace
+           sed -i '.bak' -e's/-Wl,-flat_namespace//g' ../configure
+           extra_conf="$extra_conf --with-wrapper-ldflags=-Wl,-commons,use_dylibs"
+       fi
+       ;;
+    mpich   )
+       if [[ "$host" == "Darwin" ]]
+       then
+           # On a Mac, use the control to disable -flat_namespace
+           extra_conf="--enable-fortran --enable-cxx --enable-two-level-namespace"
+       else
+           extra_conf="--enable-fortran --enable-cxx"
+       fi
+       ;;
+    *       )
+       echo "Invalid option for MPI = $software, ABORT!"
+       exit 1
+       ;;
 esac
 
 ../configure --prefix=$prefix $extra_conf

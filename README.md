@@ -75,9 +75,18 @@ module load doxygen git-lfs
 ```
 Note, however, if you are using [JEDI Modules](https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/developer/jedi_environment/modules.html) you do not have to worry about this (or indeed, about this repository in general) - the JEDI team will make sure that the modules provided will include the packages you need.
 
-**IMPORTANT:** Another reponsibility of the `setup_environment.sh` script is to define the `JEDI_OPT` environment variable.  This is needed both for the build and to allow users to load the JEDI modules after you build them.  This specifies where the modules will be installed, with a default value of `JEDI_OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `JEDI_OPT=$HOME/opt/modules`.
+**IMPORTANT:** Another reponsibility of the `setup_environment.sh` script is to define the `JEDI_OPT` environment variable and initialize the Lmod system.  These actions are needed both for the build and to allow users to load the JEDI modules after you build them.  `JEDI_OPT` specifies where the modules will be installed, with a default value of `JEDI_OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `JEDI_OPT=$HOME/opt/modules`.
 
-`JEDI_OPT` needs to be set in order to complete Steps 2-4.  But, it also needs to be set in order for users to use the modules.  For this reason, the `module_setup.sh` script also modifies bashrc and cshrc initialization scripts so that `JEDI_OPT` is defined and Lmod is initialized properly when users log in.
+`JEDI_OPT` needs to be set and Lmod initialized in order to complete Steps 2-4.  But, these actions also need to be performed in order for users to use the modules. Be sure to add the following to your shell initialization scripts (example shown is for bash):
+```
+# For jedi-stack
+export JEDI_OPT=/opt/modules
+
+# For lmod modules
+. /usr/local/opt/lmod/init/profile
+module use $JEDI_OPT/modulefiles/core
+```
+and make sure these settings are in place before proceeding to Steps 2-4.
 
 ## Step 2: Configure Build
 
@@ -163,9 +172,9 @@ where `<configuration>` points to the configuration script that you wish to use,
 If no arguments are specified, the default is `custom`.  Note that you can skip this step as well for container builds because we currenly include only one compiler/mpi combination in each container.  So, each package is only build once and there is no need for modules.
 
 For building on Mac OSX, use:
-~~~~~~~
+```
 ./setup_modules.sh mac
-~~~~~~~
+```
 
 This script sets up the module directory tree in `$JEDI_OPT`.  It also sets up the compiler and mpi modules.  The compiler and mpi modules are handled separately from the rest of the build because, when possible, we wish to exploit site-specific installations that maximize performance.
 

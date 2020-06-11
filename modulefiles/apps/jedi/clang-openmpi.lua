@@ -10,20 +10,18 @@ conflict(pkgName)
 
 load("jedi-clang")
 load("szip/2.1.1")
-load("jedi-openmpi/3.1.2")
+load("jedi-openmpi/4.0.3")
 
-load("hdf5/1.10.5")
-load("pnetcdf/1.11.2")
-load("netcdf/4.7.0")
+load("hdf5")
+load("pnetcdf")
+load("netcdf")
 
-load("lapack/3.7.0")
-load("boost-headers/1.68.0")
-load("eigen/3.3.5")
-load("bufrlib/master")
+load("lapack")
+load("boost-headers")
+load("eigen")
+load("bufrlib")
 
 load("ecbuild")
-load("eckit")
-load("fckit")
 
 load("odc")
 load("nccmp")

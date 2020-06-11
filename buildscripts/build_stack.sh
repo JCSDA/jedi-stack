@@ -89,8 +89,8 @@ build_lib HDF5 hdf5 1.10.6
 build_lib PNETCDF pnetcdf 1.12.1
 build_lib NETCDF netcdf 4.7.3 4.5.2 4.3.0
 build_lib NCCMP nccmp 1.8.6.5
-build_lib ECKIT eckit jcsda 1.10.1.jcsda1
-build_lib FCKIT fckit jcsda develop
+build_lib ECKIT eckit jcsda 1.10.1.jcsda2
+build_lib FCKIT fckit jcsda release-stable
 build_lib ATLAS atlas ecmwf 0.19.1
 build_lib ODB odb 0.18.1.r2
 build_lib ODC odc jcsda 1.0.3

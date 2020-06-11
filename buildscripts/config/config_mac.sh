@@ -2,7 +2,7 @@
 
 # Compiler/MPI combination
 export JEDI_COMPILER="clang/11.0.0"
-#export JEDI_MPI="openmpi/3.1.2"
+#export JEDI_MPI="openmpi/4.0.3"
 export JEDI_MPI="mpich/3.3.1"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
