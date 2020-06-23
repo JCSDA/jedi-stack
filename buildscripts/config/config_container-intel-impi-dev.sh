@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/17.0.1"
-export JEDI_MPI="impi/17.0.1"
+export JEDI_COMPILER="intel/19.0.5"
+export JEDI_MPI="impi/19.0.5"
 source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
@@ -27,7 +27,7 @@ export LOGDIR=buildscripts/log
 export OVERWRITE=N
 export NTHREADS=4
 export   MAKE_CHECK=N
-export MAKE_VERBOSE=N
+export MAKE_VERBOSE=Y
 export   MAKE_CLEAN=Y
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
@@ -51,10 +51,10 @@ export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
 export        STACK_BUILD_ODC=Y
-export    STACK_BUILD_BUFRLIB=N
+export    STACK_BUILD_BUFRLIB=Y
 
 # Optional Additions
-export           STACK_BUILD_PIO=N
+export           STACK_BUILD_PIO=Y
 export          STACK_BUILD_GPTL=N
 export        STACK_BUILD_PYJEDI=Y
 export      STACK_BUILD_PYBIND11=Y
