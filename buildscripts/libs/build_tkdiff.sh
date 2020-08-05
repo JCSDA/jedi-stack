@@ -1,4 +1,8 @@
 #!/bin/bash
+# © Copyright 2020 UCAR
+# This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
+# http://www.apache.org/licenses/LICENSE-2.0.
+
 
 # tkdiff is a side-by-side diff viewer, editor, and merge provider
 # this script installs into /usr/local/bin so it requires root privileges

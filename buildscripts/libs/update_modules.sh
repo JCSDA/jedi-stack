@@ -1,4 +1,8 @@
 #!/bin/bash
+# © Copyright 2020 UCAR
+# This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
+# http://www.apache.org/licenses/LICENSE-2.0.
+
 
 # This script creates a module file for a given package
 # based on a pre-existing template

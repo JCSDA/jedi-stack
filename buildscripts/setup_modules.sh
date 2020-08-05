@@ -1,4 +1,8 @@
 #!/bin/bash
+# © Copyright 2020 UCAR
+# This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
+# http://www.apache.org/licenses/LICENSE-2.0.
+
 
 # The purpose of this script is to define the compiler and MPI library to be
 # used and to set up and deploy the associated modules.  This needs to be each
