@@ -114,7 +114,7 @@ build_lib PYBIND11 pybind11 2.5.0
 
 #----------------------
 # These must be rebuilt for each MPI implementation
-build_lib GPTL gptl 8.0.2
+build_lib GPTL gptl 8.0.3
 build_lib NCO nco 4.7.9
 build_lib PIO pio 2.5.0
 build_lib FFTW fftw 3.3.8

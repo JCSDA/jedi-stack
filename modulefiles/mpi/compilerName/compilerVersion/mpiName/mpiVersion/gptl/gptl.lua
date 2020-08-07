@@ -22,6 +22,7 @@ prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
+prepend_path("PKG_CONFIG_PATH", pathJoin(base,"lib","pkgconfig"))
 
 setenv( "GPTL_ROOT", base)
 setenv( "GPTL_PATH", base)
