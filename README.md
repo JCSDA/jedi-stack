@@ -131,7 +131,7 @@ The remaining items enable or disable builds of each software package.  The foll
   - `jedi-` Meta-modules for all the above as well as Intel and IMPI
 
 * Minimal JEDI Stack
-  - SZip (Step 3)
+  - SZip
   - Zlib
   - HDF5
   - NetCDF
@@ -186,8 +186,6 @@ module load jedi-openmpi/3.2.1
 These `jedi-` modules are really meta-modules that will both load the compiler/mpi library and modify the `MODULEPATH` so the user has access to the software packages that will be built in Step 4.  On HPC systems, these meta-modules will load the native modules provided by the system administrators.  For example, `module load jedi-openmpi/3.2.1` will first load the native `openmpi/3.2.1` module and then modify the `MODULEPATH` accordingly to allow users to access the JEDI libraries.  If this module is not available (e.g. in a container or in the cloud), then the `openmpi/3.2.1` module will be built from source and installed into `$JEDI_OPT`.
 
 So, in short, you should never load the compiler or MPI modules directly.  Instead, you should always load the `jedi-` meta-modules as demonstrated above - they will provide everything you need to load and then use the JEDI software libraries.
-
-Another job of the `setup_modules.sh` script is to install the [SZip library](https://support.hdfgroup.org/doc_resource/SZIP/).  This is done in Step 3 rather than Step 4 because some MPI implementations may make use of SZip compression to boost performance.  If, in the future, the compiler or MPI libraries have any new dependencies, then they should likewise be incorporated into either `setup_modules.sh` or `setup_environment.sh`.
 
 ## Step 4: Build JEDI Stack
 

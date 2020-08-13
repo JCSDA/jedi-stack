@@ -140,23 +140,6 @@ if [[ -z $JEDI_STACK_DISABLE_COMPILER_VERSION_CHECK  && \
     [[ $ans =~ ([^YyTt]) ]] && exit 1
 fi
 set -x
-#===============================================================================
-# Next build szip.  It's helpful to do this before building MPI because the MPI
-# libraries may exploit szip compression to improve performance.
-
-logdir=$JEDI_STACK_ROOT/$LOGDIR
-mkdir -p $logdir
-
-[[ $STACK_BUILD_SZIP =~ [yYtT] ]] && \
-    ${JEDI_BUILDSCRIPTS_DIR}/libs/build_szip.sh "2.1.1" 2>&1 | tee "$logdir/szip.log"
-
-RetCode=${PIPESTATUS[0]}
-if [[ $RetCode > 0 ]]
-then
-    echo "SZIP BUILD FAIL! Error:$RetCode"
-    exit $RetCode
-fi
-echo "SZIP BUILD SUCCESS!"
 
 #===============================================================================
 # Now build the MPI library from source, if needed.  However, if there is

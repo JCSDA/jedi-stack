@@ -20,7 +20,7 @@ if $MODULES; then
   source $MODULESHOME/init/bash
   module load jedi-$JEDI_COMPILER
   module try-load szip
-  [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
+  [[ -z $mpi ]] || module load jedi-$JEDI_MPI
   module load hdf5
   [[ -z $mpi ]] || module load pnetcdf
   module load netcdf
@@ -80,6 +80,7 @@ export ESMF_CXXLINKER=$CXX
 export ESMF_F90COMPILER=$FC
 export ESMF_F90LINKER=$FC
 export ESMF_NETCDF=nc-config
+export ESMF_NFCONFIG=nf-config
 [[ -z $mpi ]] || export ESMF_PNETCDF=pnetcdf-config
 export ESMF_BOPT=O
 export ESMF_OPTLEVEL=2
@@ -90,6 +91,7 @@ export ESMF_INSTALL_MODDIR=mod
 export ESMF_ABI=64
 
 gitURL="https://git.code.sf.net/p/esmf/esmf.git"
+gitURL="https://github.com/esmf-org/esmf"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
@@ -99,6 +101,7 @@ software="ESMF_$version"
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 export ESMF_DIR=$PWD
 
+make info
 make -j${NTHREADS:-4}
 $SUDO make install
 [[ $MAKE_CHECK =~ [yYtT] ]] && make installcheck

@@ -119,7 +119,7 @@ build_lib NCO nco 4.7.9
 build_lib PIO pio 2.5.0
 build_lib FFTW fftw 3.3.8
 build_lib BOOST_FULL boost 1.68.0
-build_lib ESMF esmf 8_0_0
+build_lib ESMF esmf 8_0_1
 build_lib BASELIBS baselibs 5.2.2
 build_lib PDTOOLKIT pdtoolkit 3.25.1
 build_lib TAU2 tau2 3.25.1
