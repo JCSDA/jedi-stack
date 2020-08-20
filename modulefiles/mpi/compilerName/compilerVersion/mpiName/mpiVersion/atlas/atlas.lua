@@ -19,7 +19,7 @@ always_load("fckit")
 prereq("eckit")
 prereq("fckit")
 
-local opt = os.getenv("OPT") or "/opt/modules"
+local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
@@ -29,6 +29,8 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+setenv( "atlas_ROOT", base) --Controls CMake>=3.12 find_package()
+setenv( "atlas_DIR", pathJoin(base,"lib","cmake","atlas")) --Controls CMake<=3.11 find_package()
 setenv( "ATLAS_PATH", base)
 setenv( "ATLAS_VERSION", pkgVersion)
 

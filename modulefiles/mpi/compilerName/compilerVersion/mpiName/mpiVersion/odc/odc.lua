@@ -27,7 +27,8 @@ prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 
-setenv( "odc_ROOT", base)
+setenv( "odc_ROOT", base) --Controls CMake>=3.12 find_package()
+setenv( "odc_DIR", pathJoin(base,"lib","cmake","fckit")) -- Controls CMake<=3.11 find_package()
 setenv( "odc_PATH", base)
 setenv( "odc_VERSION", pkgVersion)
 

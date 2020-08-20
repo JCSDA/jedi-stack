@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="atlas"
@@ -15,15 +14,14 @@ version=$2
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-[[ $MAKE_VERBOSE =~ [yYtT] ]] && verb="VERBOSE=1" || unset verb
-
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module load jedi-$JEDI_MPI
-    module load ecbuild eckit fckit
+    module try-load ecbuild
+    module load eckit
+    module load fckit
     module list
     set -x
 
@@ -37,11 +35,9 @@ else
     prefix=${ATLAS_ROOT:-"/usr/local"}
 fi
 
-
 export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
-export F9X=$FC
 
 software=$name
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
@@ -55,11 +51,9 @@ git checkout $version
 mkdir -p build && cd build
 
 ecbuild --prefix=$prefix --build=Release ..
-make -j${NTHREADS:-4}
-$SUDO make $verb install
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4} install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $source-$version \
    || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0

@@ -17,6 +17,15 @@ load("netcdf")
 load("pio")
 load("bufrlib")
 
+-- ECMWF packages
+load("eckit")
+load("fckit")
+load("atlas")
+
+--Python module dependencies
+load("proj")
+load("geos")
+
 whatis("Name: ".. pkgName)
 whatis("Version: ".. pkgVersion)
 whatis("Category: Application")

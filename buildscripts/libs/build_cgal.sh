@@ -2,8 +2,6 @@
 # © Copyright 2020 UCAR
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
-
-
 #
 # CGAL Library used by Atlas
 # https://www.cgal.org
@@ -27,22 +25,20 @@ set -ex
 name="cgal"
 version=$1
 
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
-
 # this is only needed if MAKE_CHECK is enabled
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module load boost-headers
-    module load zlib
+    module try-load boost-headers
+    module try-load zlib
     module list
     set -x
 
     prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
 else
@@ -58,10 +54,8 @@ url="https://github.com/CGAL/cgal/releases/download/releases%2FCGAL-$version/$so
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
 cmake . -DCMAKE_INSTALL_PREFIX=$prefix
-$SUDO make install
+VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $version \
-	 || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
-
-exit 0
+         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

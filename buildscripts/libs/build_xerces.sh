@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="xerces"
@@ -33,9 +32,10 @@ export FC=$SERIAL_FC
 export CC=$SERIAL_CC
 export CXX=$SERIAL_CXX
 
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
-export FCFLAGS="-fPIC"
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
+export FCFLAGS="$FFLAGS"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 

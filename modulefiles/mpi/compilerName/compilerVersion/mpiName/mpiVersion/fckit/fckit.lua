@@ -25,6 +25,8 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+setenv( "fckit_ROOT", base) --Controls CMake>=3.12 find_package()
+setenv( "fckit_DIR", pathJoin(base,"lib","cmake","fckit")) -- Controls CMake<=3.11 find_package()
 setenv( "FCKIT_PATH", base)
 setenv( "FCKIT_VERSION", pkgVersion)
 

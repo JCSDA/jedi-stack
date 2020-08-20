@@ -2,8 +2,7 @@
 # © Copyright 2020 UCAR
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
-
-
+#
 # This script creates a module file for a given package
 # based on a pre-existing template
 #
@@ -120,6 +119,65 @@ function build_lib() {
     set -x
 }
 
+
+function _initialize_prefix() {
+    # ARGS: type name version compiler mpi required_modules optional_modules
+    set +x
+    type=$1
+    name=$2
+    if $MODULES; then
+        source $MODULESHOME/init/bash
+        module load jedi-$JEDI_COMPILER
+        if [[ $# > 5 ]]; then
+            for mod in ${@:6}; do
+                module load $mod
+            done
+        fi
+        if [[ $# > 6 ]]; then
+            for mod in ${@:7}; do
+                module try-load $mod
+            done
+        fi
+        module list
+        case $type in
+            core) prefix="${PREFIX:-"/opt/modules"}/core/$name/$version";;
+            compiler) prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version";;
+            mpi) prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version";;
+        esac
+        if [[ -d $prefix ]]; then
+            [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!"; $SUDO rm -rf $prefix ) \
+                                       || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+        fi
+    else
+        prefix=${${name}_ROOT:-"/usr/local"}
+    fi
+    export prefix
+}
+
+function initialize_prefix_core() {
+    # ARGS: name version required_modules optional_modules
+    set -x
+    _initialize_prefix core $1 $2 "" "" ${@:3}
+}
+
+function initialize_prefix_compiler() {
+    # ARGS: name version compiler required_modules optional_modules
+    set -x
+    echo $@
+    _initialize_prefix compiler $1 $2 $3 "" ${@:4}
+}
+
+function initialize_prefix_mpi() {
+    # ARGS: name version compiler mpi required_modules optional_modules
+    set -x
+    _initialize_prefix mpi $@
+}
+
+
 export -f update_modules
 export -f no_modules
 export -f build_lib
+export -f _initialize_prefix
+export -f initialize_prefix_core
+export -f initialize_prefix_compiler
+export -f initialize_prefix_mpi

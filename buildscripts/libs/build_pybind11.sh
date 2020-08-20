@@ -2,8 +2,7 @@
 # © Copyright 2020 UCAR
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
-
-
+#
 # This is a project to generate C++/Python bindings.
 # Library is header-only, so there is no need to link to Python here.
 
@@ -43,10 +42,9 @@ git fetch
 git checkout $branch
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
+
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DPYBIND11_TEST=OFF -DCMAKE_VERBOSE_MAKEFILE=1 ..
-VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
-#[[ $MAKE_CHECK =~ [yYtT] ]] && make test
-VERBOSE=$MAKE_VERBOSE $SUDO make install
+VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4} install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $version \

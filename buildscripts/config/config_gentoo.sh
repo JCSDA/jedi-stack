@@ -4,15 +4,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0.
 
 
-#Cross-platform get number of processors
-if [ -z $NUM_PROCS ]; then
-    case $(uname -s) in
-        Linux*) NUM_PROCS=$(grep -c ^processor /proc/cpuinfo);;
-        Darwin*) NUM_PROCS=$(sysctl -n hw.logicalcpu);;
-        *) NUM_PROCS=1
-    esac
-fi
-
 # Compiler/MPI combination
 export JEDI_COMPILER=${JEDI_COMPILER:-"intel/20.0"}
 export JEDI_MPI=${JEDI_MPI:-"impi/20.0"}
@@ -32,6 +23,15 @@ else
     export MPI_BUILD="from-source"
 fi
 
+#Cross-platform get number of processors
+if [ -z $NUM_PROCS ]; then
+    case $(uname -s) in
+        Linux*) NUM_PROCS=$(grep -c ^processor /proc/cpuinfo);;
+        Darwin*) NUM_PROCS=$(sysctl -n hw.logicalcpu);;
+        *) NUM_PROCS=1
+    esac
+fi
+
 # For nccmp. This magically fixes the make install command.
 export MKDIR_P="mkdir -p"
 
@@ -48,7 +48,13 @@ export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
 export WGET="wget -nv"
+#Global compiler flags
+export FFLAGS=""
+export CFLAGS=""
+export CXXFLAGS=""
+export LDFLAGS=""
 
+#Provided system package roots
 export SZIP_ROOT=/usr
 export ZLIB_ROOT=/usr
 export PNG_ROOT=/usr
@@ -62,16 +68,17 @@ export       STACK_BUILD_ZLIB=N
 export     STACK_BUILD_LAPACK=N
 export STACK_BUILD_BOOST_HDRS=N
 export     STACK_BUILD_EIGEN3=N
+export    STACK_BUILD_BUFRLIB=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
 export     STACK_BUILD_NETCDF=Y
 export      STACK_BUILD_NCCMP=N
 export        STACK_BUILD_NCO=N
 export    STACK_BUILD_ECBUILD=N
-export      STACK_BUILD_ECKIT=N
+export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=N
+export      STACK_BUILD_ATLAS=N
 export        STACK_BUILD_ODC=Y
-export    STACK_BUILD_BUFRLIB=Y
 
 # Optional Additions
 export           STACK_BUILD_PIO=Y
@@ -89,3 +96,6 @@ export    STACK_BUILD_BOOST_FULL=N
 export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
 export          STACK_BUILD_CGAL=N
+export          STACK_BUILD_GEOS=Y
+export        STACK_BUILD_SQLITE=Y
+export          STACK_BUILD_PROJ=Y

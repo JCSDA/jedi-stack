@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="pio"
@@ -37,11 +36,9 @@ export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
 
-export F9X=$FC
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
-export FCFLAGS="$FFLAGS"
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
@@ -54,8 +51,10 @@ git fetch
 git checkout $branch
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
+
 export CMAKE_INCLUDE_PATH=$MPI_Fortran_INCLUDE_PATH #Find MPI is broken in PIO GPTL MPIMOD_PATH must be found at this prefix
 cmake -DNetCDF_C_PATH=$NETCDF -DNetCDF_Fortran_PATH=$NETCDF -DPnetCDF_PATH=$PNETCDF -DHDF5_PATH=$HDF5_ROOT -DCMAKE_INSTALL_PREFIX=$prefix -DPIO_USE_MALLOC=ON -DCMAKE_VERBOSE_MAKEFILE=1 -DPIO_ENABLE_TIMING=OFF ..
+
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 VERBOSE=$MAKE_VERBOSE $SUDO make install

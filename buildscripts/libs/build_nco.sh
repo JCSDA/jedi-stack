@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="nco"
@@ -14,23 +13,23 @@ compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
-  set +x
-  source $MODULESHOME/init/bash
-  module load jedi-$JEDI_COMPILER
-  [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
-  module try-load szip
-  module load hdf5
-  module load netcdf
-  module try-load udunits
-  module list
-  set -x
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$JEDI_COMPILER
+    [[ -z $mpi ]] || module load jedi-$JEDI_MPI
+    module try-load szip
+    module load hdf5
+    module load netcdf
+    module try-load udunits
+    module list
+    set -x
 
-  prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
 
-  if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
-                               || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-  fi
+    if [[ -d $prefix ]]; then
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
+                                || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
 else
     prefix=${NCO_ROOT:-"/usr/local"}
 fi
@@ -44,15 +43,14 @@ else
     export CC=$SERIAL_CC
     export CXX=$SERIAL_CXX
 fi
-
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
-
 export F77=$FC
-export FCFLAGS=$FFLAGS
 
-export LDFLAGS="-L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
+export FCFLAGS="$FFLAGS"
+
+export LDFLAGS+=" -L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
 gitURL="https://github.com/nco/nco.git"
 
@@ -67,7 +65,7 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix --enable-doc=no
 
-make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 

@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="png"
@@ -17,7 +16,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module load zlib
+    module try-load zlib
     module list
     set -x
 
@@ -32,7 +31,7 @@ else
 fi
 
 export CC=$SERIAL_CC
-export CFLAGS="-fPIC"
+export CFLAGS+=" -fPIC"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
@@ -50,7 +49,7 @@ cmake $sourceDir \
   -DCMAKE_BUILD_TYPE=RELEASE \
   -DZLIB_ROOT=${ZLIB_ROOT}
 
-make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 

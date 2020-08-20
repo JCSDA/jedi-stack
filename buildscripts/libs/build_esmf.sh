@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="esmf"
@@ -47,11 +46,11 @@ else
   export CC=$SERIAL_CC
   export CXX=$SERIAL_CXX
 fi
-
 export F9X=$FC
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
+
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
 export FCFLAGS="$FFLAGS"
 
 if [[ ! -z $mpi ]]; then

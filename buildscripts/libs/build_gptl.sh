@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="gptl"
@@ -17,7 +16,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module load jedi-$JEDI_MPI 
+    module load jedi-$JEDI_MPI
     module try-load cmake
     module list
     set -x
@@ -45,9 +44,9 @@ autoreconf -i
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 ../configure --enable-pmpi --prefix=$prefix
-VERBOSE=$MAKE_VERBOSE make 
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
-VERBOSE=$MAKE_VERBOSE $SUDO make install
+$SUDO make V=$MAKE_VERBOSE -j${NTHREADS:-4} install
 
 # generate modulefile from template
 $MODULES && update_modules mpi $name $version \

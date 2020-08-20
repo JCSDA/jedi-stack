@@ -2,8 +2,7 @@
 # © Copyright 2020 UCAR
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
-
-
+#
 # Building cmake from source is sometimes preferable to package installs
 # because it allows you to get the most up-to-date versions and it
 # allows you to place it into a module context so you can experiment
@@ -20,8 +19,8 @@ if $MODULES; then
 
     prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
     if [[ -d $prefix ]]; then
-	[[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-            || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 else
     prefix="/usr/local"

@@ -10,7 +10,7 @@ conflict(pkgName)
 
 load("jedi-clang")
 load("szip/2.1.1")
-load("jedi-mpich/3.3.1")
+load("jedi-mpich/3.3.2")
 
 load("hdf5")
 load("pnetcdf")

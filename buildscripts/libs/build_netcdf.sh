@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="netcdf"
@@ -31,7 +30,6 @@ if $MODULES; then
         [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-
 else
     prefix=${NETCDF_ROOT:-"/usr/local"}
 fi
@@ -45,12 +43,12 @@ else
     export CC=$SERIAL_CC
     export CXX=$SERIAL_CXX
 fi
-
 export F77=$FC
 export F9X=$FC
-export FFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC -std=c++11"
+
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC -std=c++11"
 export FCFLAGS="$FFLAGS"
 
 gitURLroot="https://github.com/Unidata"
@@ -58,7 +56,7 @@ gitURLroot="https://github.com/Unidata"
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 curr_dir=$(pwd)
 
-export LDFLAGS="-L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
+export LDFLAGS+=" -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
 cd $curr_dir
 
@@ -101,13 +99,13 @@ mkdir -p build && cd build
 [[ -z $mpi ]] || extra_conf="--enable-pnetcdf --enable-parallel-tests"
 ../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
 
-VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
-export LDFLAGS+=" -L$prefix/lib"
 export CFLAGS+=" -I$prefix/include"
 export CXXFLAGS+=" -I$prefix/include"
+export LDFLAGS+=" -L$prefix/lib"
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi
@@ -136,7 +134,7 @@ mkdir -p build && cd build
 ../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
 
 #VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
-VERBOSE=$MAKE_VERBOSE make -j1 #NetCDF-Fortran-4.5.2 & intel/20 have a linker bug if built with j>1
+make V=$MAKE_VERBOSE -j1 #NetCDF-Fortran-4.5.2 & intel/20 have a linker bug if built with j>1
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
@@ -159,7 +157,7 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix
 
-VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 

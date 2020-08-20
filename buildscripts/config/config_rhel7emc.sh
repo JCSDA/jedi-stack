@@ -32,6 +32,11 @@ export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
 export WGET="wget -nv"
+#Global compiler flags
+export FFLAGS=""
+export CFLAGS=""
+export CXXFLAGS=""
+export LDFLAGS=""
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=Y
@@ -41,6 +46,7 @@ export       STACK_BUILD_ZLIB=Y
 export     STACK_BUILD_LAPACK=Y
 export STACK_BUILD_BOOST_HDRS=Y
 export     STACK_BUILD_EIGEN3=Y
+export    STACK_BUILD_BUFRLIB=N
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
 export     STACK_BUILD_NETCDF=Y
@@ -50,7 +56,6 @@ export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=N
 export      STACK_BUILD_FCKIT=N
 export        STACK_BUILD_ODC=N
-export    STACK_BUILD_BUFRLIB=N
 
 # Optional Additions
 export           STACK_BUILD_PIO=N
@@ -70,3 +75,6 @@ export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
 export          STACK_BUILD_CGAL=N
+export          STACK_BUILD_GEOS=N
+export        STACK_BUILD_SQLITE=N
+export          STACK_BUILD_PROJ=N

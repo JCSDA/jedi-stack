@@ -13,6 +13,7 @@ prepend_path("INTEL_LICENSE_FILE", intel_license_path)
 
 -- Compiler
 local intel_compiler_path = intel_release_path
+local intel_gcc_version = "9.3.0" -- Version of GCC to use (10.1.0) not supported yet
 local compiler_bin_path = pathJoin(intel_compiler_path,"bin/intel64")
 local compiler_lib_path = pathJoin(intel_compiler_path,"compiler/lib/intel64_lin")
 local compiler_inc_path = pathJoin(intel_compiler_path,"compiler/include/intel64")
@@ -24,6 +25,12 @@ prepend_path("LD_LIBRARY_PATH",compiler_lib_path)
 prepend_path("LIBRARY_PATH",compiler_lib_path)
 prepend_path("MANPATH",compiler_man_path)
 setenv("INTEL_COMPILER_PATH", intel_compiler_path)
+
+-- Global compiler flags for GCC compatibility
+setenv("FFLAGS","-gcc-name=gcc-" .. intel_gcc_version)
+setenv("CFLAGS","-gcc-name=gcc-" .. intel_gcc_version)
+setenv("LDFLAGS","-gcc-name=gcc-" .. intel_gcc_version)
+setenv("CXXFLAGS","-gcc-name=gcc-" .. intel_gcc_version)
 
 pushenv("FC",pathJoin(compiler_bin_path,"ifort"))
 pushenv("CC",pathJoin(compiler_bin_path,"icc"))

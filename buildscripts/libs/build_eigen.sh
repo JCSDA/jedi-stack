@@ -3,20 +3,17 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="eigen"
 version=$1
-
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 
 # this is only needed if MAKE_CHECK is enabled
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module load boost-headers
+    module try-load boost-headers
     module list
     set -x
 
@@ -32,9 +29,10 @@ fi
 
 cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
 
-software="eigen-eigen-b3f3d4950030"
-url="https://bitbucket.org/eigen/eigen/get/$version.tar.gz"
-[[ -d $software ]] || ( $WGET $url; tar -xf $version.tar.gz )
+software="eigen-$version"
+tarfile="$software.tar.bz2"
+url="https://gitlab.com/libeigen/eigen/-/archive/$version/$tarfile"
+[[ -d $software ]] || ( $WGET $url; tar -xf $tarfile )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build

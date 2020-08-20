@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="zlib"
@@ -31,9 +30,10 @@ export FC=$SERIAL_FC
 export CC=$SERIAL_CC
 export CXX=$SERIAL_CXX
 
-export FCFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
+export FCFLAGS="$FFLAGS"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
@@ -47,7 +47,7 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix
 
-make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ "$CHECK" = "YES" ]] && make check
 $SUDO make install
 

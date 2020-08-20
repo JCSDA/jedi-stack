@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="hdf5"
@@ -14,21 +13,20 @@ compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
-  set +x
-  source $MODULESHOME/init/bash
-  module load jedi-$JEDI_COMPILER
-  [[ -z $JEDI_MPI ]] || module load jedi-$JEDI_MPI 
-  module try-load szip
-  module try-load zlib
-  module list
-  set -x
+    set +x
+    source $MODULESHOME/init/bash
+    module load jedi-$JEDI_COMPILER
+    [[ -z $JEDI_MPI ]] || module load jedi-$JEDI_MPI
+    module try-load szip
+    module try-load zlib
+    module list
+    set -x
 
-  prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
-  if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-                               || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-  fi
-
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version"
+    if [[ -d $prefix ]]; then
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+                                || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
 else
     prefix=${HDF5_ROOT:-"/usr/local"}
 fi
@@ -42,12 +40,13 @@ else
   export CC=$SERIAL_CC
   export CXX=$SERIAL_CXX
 fi
-
 export F9X=$FC
-export FFLAGS="-fPIC -w"
-export CFLAGS="-fPIC -w"
-export CXXFLAGS="-fPIC -w"
+
+export FFLAGS+=" -fPIC -w"
+export CFLAGS+=" -fPIC -w"
+export CXXFLAGS+=" -fPIC -w"
 export FCFLAGS="$FFLAGS"
+
 SZIP_ROOT=${SZIP_ROOT:-/usr}
 ZLIB_ROOT=${ZLIB_ROOT:-/usr}
 
@@ -64,9 +63,9 @@ mkdir -p build && cd build
 
 [[ -z $mpi ]] || extra_conf="--enable-parallel --enable-unsupported"
 
-../configure --prefix=$prefix --enable-fortran --enable-cxx --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
+../configure --prefix=$prefix --enable-fortran --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
 
-VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 [[ $USE_SUDO =~ [yYtT] ]] && sudo -- bash -c "export PATH=$PATH; make install" \
                           || make install

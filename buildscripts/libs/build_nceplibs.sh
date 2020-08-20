@@ -2,8 +2,7 @@
 # © Copyright 2020 UCAR
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
-
-
+#
 # Note - the compilers and install paths for this are currently hardwired in,
 # including some in /usr/local.  This might work for the container but it
 # needs more work to fully integrate into the build system
@@ -29,7 +28,6 @@ if $MODULES; then
         [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-
 else
     prefix=${NCEPLIBS:-"/usr/local"}
 fi

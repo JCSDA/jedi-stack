@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="nccmp"
@@ -45,10 +44,10 @@ else
     export CXX=$SERIAL_CXX
 fi
 
-export CFLAGS="-fPIC"
-export LDFLAGS="-L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
+export CFLAGS+=" -fPIC"
+export LDFLAGS+=" -L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
-url="https://gitlab.com/remikz/nccmp/-/archive/$version/${software}.tar.gz"
+url="https://gitlab.com/remikz/nccmp/-/tree/$version/${software}.tar.gz"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
@@ -63,9 +62,9 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix $extra_confs
 
-make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
-$SUDO make install
+$SUDO make V=$MAKE_VERBOSE -j${NTHREADS:-4} install
 
 # generate modulefile from template
 [[ -z $mpi ]] && modpath=compiler || modpath=mpi

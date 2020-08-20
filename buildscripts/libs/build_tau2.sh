@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="tau2"
@@ -19,8 +18,8 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module load jedi-$JEDI_MPI 
-    module load pdtoolkit
-    module load zlib
+    module try-load pdtoolkit
+    module try-load zlib
     module list
     set -x
 
@@ -54,8 +53,6 @@ software=tau2
 
 $SUDO ./configure -prefix=$prefix -c++=$CXX -cc=$CC -fortran=$FC -mpi -ompt -bfd=download \
                   -dwarf=download -unwind=download -iowrapper -pdt=$PDTOOLKIT_ROOT 
-
-#                  -arch=x86_64
 
 # Note - if this doesn't work you might have to run the entire script as root
 $SUDO make install

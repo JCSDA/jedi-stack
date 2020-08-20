@@ -12,20 +12,19 @@ version=$2
 dash_version=$(echo -n $version | sed -e "s@/@-@g")
 
 if $MODULES; then
+    set +x
+    source $MODULESHOME/init/bash
+    module try-load cmake
+    module list
+    set -x
 
-  set +x
-  source $MODULESHOME/init/bash
-  module try-load cmake
-  module list
-  set -x
-
-  prefix="${PREFIX:-"/opt/modules"}/core/$name/$source-$dash_version"
-  if [[ -d $prefix ]]; then
-    [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
-                               || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
-  fi
+    prefix="${PREFIX:-"/opt/modules"}/core/$name/$source-$dash_version"
+    if [[ -d $prefix ]]; then
+        [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix; $SUDO mkdir $prefix ) \
+                                   || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
+    fi
 else
-  prefix=${ECBUILD_ROOT:-"/usr/local"}
+    prefix=${ECBUILD_ROOT:-"/usr/local"}
 fi
 
 software=ecbuild
@@ -40,7 +39,8 @@ git checkout $version
 mkdir -p build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=$prefix ..
-VERBOSE="$MAKE_VERBOSE" $SUDO make install
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $source-$dash_version \

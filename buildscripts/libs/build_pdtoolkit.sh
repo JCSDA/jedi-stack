@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="pdtoolkit"
@@ -17,7 +16,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module load zlib
+    module try-load zlib
     module list
     set -x
 
@@ -26,7 +25,6 @@ if $MODULES; then
         [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
-
 else
     prefix=${PDTLIB_ROOT:-"/usr/local/$name/$version"}
 fi
@@ -44,11 +42,10 @@ url="http://tau.uoregon.edu/pdt_lite.tgz"
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 
-$SUDO ./configure -prefix=$prefix 
+$SUDO ./configure -prefix=$prefix
 
-$SUDO make
-
-$SUDO make install
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
+$SUDO make V=$MAKE_VERBOSE -j${NTHREADS:-4} install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \

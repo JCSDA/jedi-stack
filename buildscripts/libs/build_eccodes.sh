@@ -38,9 +38,10 @@ export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
 
-export FCFLAGS="-fPIC"
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
+export FFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
+export FCFLAGS="$FFLAGS"
 
 gitURL="https://github.com/ecmwf/eccodes.git"
 

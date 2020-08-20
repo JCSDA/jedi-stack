@@ -3,15 +3,12 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name="gnu"
 version=$1
 
 software="gcc-$version"
-
-[[ $USE_SUDO =~ [yYtT] ]] && export SUDO="sudo" || unset SUDO
 
 prefix="${PREFIX:-"$HOME/opt"}/$name/$version"
 [[ -d $prefix ]] && ( echo "$prefix exists, ABORT!"; exit 1 )
@@ -33,7 +30,7 @@ extra_conf="--disable-multilib"
              --enable-checking=release \
              --enable-languages=c,c++,fortran $extra_conf
 
-make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 $SUDO make install-strip
 
 # generate modulefile from template

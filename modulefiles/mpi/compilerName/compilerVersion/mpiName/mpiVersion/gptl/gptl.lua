@@ -24,7 +24,7 @@ prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 prepend_path("PKG_CONFIG_PATH", pathJoin(base,"lib","pkgconfig"))
 
-setenv( "GPTL_ROOT", base)
+setenv( "gptl_ROOT", base) --Controls CMake find_package()
 setenv( "GPTL_PATH", base)
 setenv( "GPTL_VERSION", pkgVersion)
 

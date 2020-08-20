@@ -3,8 +3,8 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
+
 name="bufrlib"
 version=$1
 
@@ -16,6 +16,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
+    module try-load cmake
     module list
     set -x
 
@@ -43,7 +44,10 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 git fetch
 git checkout $version
 
-VERBOSE="$MAKE_VERBOSE" $SUDO ./tools/build.sh $prefix -DBUILD_SHARED_LIBS=1
+cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DBUILD_SHARED_LIBS=1
+cd build
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4} install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \

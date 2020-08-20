@@ -3,7 +3,6 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-
 set -ex
 
 name=$1
@@ -20,6 +19,7 @@ esac
 
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+[[ -n $FC ]] && FC_GFORTRAN_10=$($FC --version | grep -cE "GNU Fortran.* 1[0-9]\.[0-9]+")
 
 set +x
 source $MODULESHOME/init/bash
@@ -31,9 +31,11 @@ export CC=$SERIAL_CC
 export CXX=$SERIAL_CXX
 export FC=$SERIAL_FC
 
-export CFLAGS="-fPIC"
-export CXXFLAGS="-fPIC"
-export FCFLAGS="-fPIC"
+export FFLAGS+=" -fPIC"
+[[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch"
+export CFLAGS+=" -fPIC"
+export CXXFLAGS+=" -fPIC"
+export FCFLAGS=${FFLAGS}
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"../pkg"}
 
@@ -73,6 +75,7 @@ case "$name" in
        then
            # On a Mac, use the control to disable -flat_namespace
            extra_conf="--enable-fortran --enable-cxx --enable-two-level-namespace"
+           export FFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz" #Required for gfortran-10
        else
            extra_conf="--enable-fortran --enable-cxx"
        fi

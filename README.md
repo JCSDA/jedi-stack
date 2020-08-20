@@ -67,7 +67,7 @@ brew install graphviz
 
 See the [section below](#MacPython) for instructions to install python on the Mac.
 
-Your Mac should have come with Clang compilers for C and C++ pre-installed, so in this scheme you are adding in gfortran (GNU) for compiling Fortran code. Once you have finished with the brew install commands, make sure to set `JEDI_OPT` in your environment as described below.
+Your Mac should have come with Clang compilers for C and C++ pre-installed, so in this scheme you are adding in GFortran (GNU) for compiling Fortran code. Once you have finished with the brew install commands, make sure to set `JEDI_OPT` in your environment as described below.
 
 If you're on an HPC system you can largely skip this step (but you still need to set the **JEDI_OPT** environment variable, see below) because most of these packages are probably already installed and available.  However, there are a few items that you may wish to add by loading the appropriate modules (if they exist) - for example:
 ```
@@ -75,7 +75,7 @@ module load doxygen git-lfs
 ```
 Note, however, if you are using [JEDI Modules](https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/developer/jedi_environment/modules.html) you do not have to worry about this (or indeed, about this repository in general) - the JEDI team will make sure that the modules provided will include the packages you need.
 
-**IMPORTANT:** Another reponsibility of the `setup_environment.sh` script is to define the `JEDI_OPT` environment variable and initialize the Lmod system.  These actions are needed both for the build and to allow users to load the JEDI modules after you build them.  `JEDI_OPT` specifies where the modules will be installed, with a default value of `JEDI_OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `JEDI_OPT=$HOME/opt/modules`.
+**IMPORTANT:** Another responsibility of the `setup_environment.sh` script is to define the `JEDI_OPT` environment variable and initialize the Lmod system.  These actions are needed both for the build and to allow users to load the JEDI modules after you build them.  `JEDI_OPT` specifies where the modules will be installed, with a default value of `JEDI_OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `JEDI_OPT=$HOME/opt/modules`.
 
 `JEDI_OPT` needs to be set and Lmod initialized in order to complete Steps 2-4.  But, these actions also need to be performed in order for users to use the modules. Be sure to add the following to your shell initialization scripts (example shown is for bash):
 ```
@@ -157,7 +157,7 @@ The remaining items enable or disable builds of each software package.  The foll
   - ESMA-Baselibs
   - nceplibs
 
-**IMPORTANT: Steps 2, 3, and 4 need to be repeated for each compiler/mpi combination that you wish to install.**  The new packages will be installed alongside any previously-exising packages that may already exist and that are built from other compiler/mpi combinations.
+**IMPORTANT: Steps 2, 3, and 4 need to be repeated for each compiler/mpi combination that you wish to install.**  The new packages will be installed alongside any previously-existing packages that may already exist and that are built from other compiler/mpi combinations.
 
 ## Step 3: Set Up Compiler, MPI, and Module System
 
@@ -244,11 +244,37 @@ module load jedi/clang-openmpi      # set environment for subsequent JEDI builds
 module list
 ~~~~~~~
 
+# Gentoo
+
+The ``gentoo`` system setting is designed for building Intel toolchains on systems like [Gentoo Linux](https://gentoo.org/get-started/),
+where the base system and all JEDI dependencies are compiled using GCC and installed in the `/usr` directory.  In order to also build JEDI packages with
+Intel compilers, all Fortran packages that provide compiled modules must be independently compiled
+with the Intel `ifort` compiler.
+
+To setup environment, choose a modules home directory.  This can be anywhere, but a common location is `$HOME/opt/modules`.  Also the Intel compilers must be installed to a location pointed to by the `INTEL_ROOT` environment variable.  We assume licenses are available under the `$INTEL_ROOT/licenses` path, but the path can also be supplied via `INTEL_LICENSE_FILE` environment variable.
+~~~~~~~~~
+$ export INTEL_ROOT=<path-to-intel-root>
+$ export JEDI_OPT=$HOME/opt/modules
+$ buildscipts/setup_environment.sh gentoo
+$ buildscipts/setup_modules.sh gentoo
+$ buildscipts/build_stack.sh gentoo
+~~~~~~~~~
+
+The enthronement setup with `setup_environment.sh gentoo` generates a `$HOME/.jedi-stack-bashrc` with all the environment
+variables necessary for configuring the JEDI modules, based on the supplied `JEDI_OPT`.  This script can then be sourced in `.bashrc` if desired:
+~~~~~~~~~
+source $HOME/.jedi-stack-bashrc
+~~~~~~~~~
+
+Now load intel-impi modules under the `jedi` prefix:
+~~~~~~~~~
+$ module load jedi/intel-impi
+~~~~~~~~~
 
 # Adding a New library/package
 
 If you want to add a new library to the stack you need to follow these steps:
-1. write a new build script in buildscripts/libs, using exising scripts as a template
+1. write a new build script in buildscripts/libs, using existing scripts as a template
 2. define a new control flag and add it to the config files in buildscripts/config
 3. Add a call to the new build script in buildscripts/build\_stack.sh
-4. Create a new module template at the appropriate place in the modulefiles directory, using exising files as a template
+4. Create a new module template at the appropriate place in the modulefiles directory, using existing files as a template

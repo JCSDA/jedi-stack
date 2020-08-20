@@ -13,10 +13,9 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-load("netcdf")
-load("boost-headers","eigen")
-
-prereq("netcdf","boost-headers","eigen")
+try_load("zlib")
+try_load("boost-headers")
+try_load("eigen")
 
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
@@ -28,6 +27,8 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+setenv( "eckit_ROOT", base) --Controls CMake>=3.12 find_package()
+setenv( "eckit_DIR", pathJoin(base,"lib","cmake","eckit")) -- Controls CMake<=3.11 find_package()
 setenv( "ECKIT_PATH", base)
 setenv( "ECKIT_VERSION", pkgVersion)
 

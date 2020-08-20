@@ -80,18 +80,18 @@ build_lib JPEG jpeg 9.1.0
 build_lib ZLIB zlib 1.2.11
 build_lib PNG png 1.6.35
 build_lib SZIP szip 2.1.1
-build_lib LAPACK lapack 3.7.0
+build_lib LAPACK lapack 3.8.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
-build_lib EIGEN3 eigen 3.3.5
+build_lib EIGEN3 eigen 3.3.7
 build_lib BUFRLIB bufrlib master
 build_lib ECBUILD ecbuild jcsda 3.3.2.jcsda2
 build_lib CGAL cgal 5.0.2
 
 #----------------------
 # These must be rebuilt for each MPI implementation
-build_lib HDF5 hdf5 1.10.6
+build_lib HDF5 hdf5 1.12.0
 build_lib PNETCDF pnetcdf 1.12.1
-build_lib NETCDF netcdf 4.7.3 4.5.2 4.3.0
+build_lib NETCDF netcdf 4.7.4 4.5.3 4.3.0
 build_lib NCCMP nccmp 1.8.6.5
 build_lib ECKIT eckit jcsda 1.11.6.jcsda1
 build_lib FCKIT fckit jcsda 0.7.0.jcsda1
@@ -111,6 +111,10 @@ build_lib NCEPLIBS nceplibs fv3
 build_lib TKDIFF tkdirr 4.3.5
 build_lib PYJEDI pyjedi
 build_lib PYBIND11 pybind11 2.5.0
+build_lib GEOS geos 3.8.1
+build_lib SQLITE sqlite 3.32.3
+build_lib PROJ proj 7.1.0
+
 
 #----------------------
 # These must be rebuilt for each MPI implementation
