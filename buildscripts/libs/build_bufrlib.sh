@@ -32,22 +32,25 @@ fi
 
 export FC=$SERIAL_FC
 export CC=$SERIAL_CC
-export CXX=$SERIAL_CXX
 
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
+## Implementation can be switched to NCEPLIBS-bufr when shared libraries are supported
 software=bufrlib
+#software=NCEPLIBS-bufr
+
+# Release git tag name
+tag=bufr_v$version
+
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 [[ -d $software ]] || git clone https://github.com/JCSDA/$software.git
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git fetch
-git checkout $version
+git checkout --detach $tag
 
-cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DBUILD_SHARED_LIBS=1
+cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DOPT_IPO=OFF
 cd build
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
-VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4} install
+VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version \

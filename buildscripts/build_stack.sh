@@ -83,7 +83,7 @@ build_lib SZIP szip 2.1.1
 build_lib LAPACK lapack 3.8.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.7
-build_lib BUFRLIB bufrlib master
+build_lib BUFRLIB bufrlib 11.3.2
 build_lib ECBUILD ecbuild jcsda 3.3.2.jcsda2
 build_lib CGAL cgal 5.0.2
 

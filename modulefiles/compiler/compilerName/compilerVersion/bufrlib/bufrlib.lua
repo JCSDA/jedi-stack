@@ -18,12 +18,9 @@ prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("LIBRARY_PATH", pathJoin(base,"lib"))
 
-setenv("bufrlib_ROOT", base)
-setenv("bufrlib_PATH", base)
-setenv("bufrlib_DIR", pathJoin(base,"share","bufrlib","cmake"))
-setenv("bufrlib_INCLUDES", pathJoin(base,"include","bufrlib"))
-setenv("bufrlib_LIBRARIES", pathJoin(base,"lib"))
-setenv("bufrlib_VERSION", pkgVersion)
+setenv("bufr_VERSION", pkgVersion)
+setenv("bufr_ROOT", base) -- CMake find_package(bufr)
+setenv("bufrlib_ROOT", base) -- py-ncepbufr variable
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
