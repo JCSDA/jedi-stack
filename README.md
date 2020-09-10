@@ -7,6 +7,8 @@ We want to provide a common set of software libraries to JEDI users and develope
 
 Building the JEDI software stack is a **Four-Step process**, as described in the following sections.
 
+[See here for additional tips on particular platforms](doc/Platforms.md)
+
 ## Step 1: Set up Basic Environment
 
 This is the most context-dependent part of the build process.  How you proceed depends on the system you are on.  Regardless of how you proceed, this step only needs to be done once for each system.
@@ -90,19 +92,21 @@ and make sure these settings are in place before proceeding to Steps 2-4.
 
 ## Step 2: Configure Build
 
-The next step is to choose what components of the stack you wish to build and to specify any other aspects of the build that you would like.  This is normally done by editing the file `buildscripts/config/config_custom.sh`.  Here we describe some of the parameter settings available.
+The next step is to choose what components of the stack you wish to build and to specify any other aspects of the build that you would like.  This is normally done by editing one of the platform-specific `buildscripts/config/config_*.sh` files.  Or, if your platform is not among the options, you can edit the `config_custom.sh` file.  Then, edit the `buildscripts/config/choose_modules.sh` file to choose which modules you wish to build.  Note that some are prerequisites of others.  For example, you must build hdf5 before you build netcdf.
 
-For building on Mac OSX, a configuration file (`config_mac.sh`) is provided. This configuration is set up to build using Clang 10.0.0 with gfortran 7.4.0 and OpenMPI 3.1.2. You may wish to edit this file for building with a different compiler/mpi set.
+Here we describe some of the parameter settings available in these configuration files.
 
-For building on an EMC RHEL7 workstation, a configuration file (`config_rhel7emc.sh`) is provided.  This configuration is set up to build using GCC 9.2.0 and OpenMPI 3.1.5.
+For building on Mac OSX, a configuration file (`config_mac.sh`) is provided. This configuration is set up to build using Clang 10.0.0 with gfortran and OpenMPI. You may wish to edit this file for building with a different compiler/mpi set.
 
-**COMPILER** This defines the vendor and version of the compiler you wish to use for this build.  The format is the same as what you would typically use in a module load command:
+For building on an EMC RHEL7 workstation, a configuration file (`config_rhel7emc.sh`) is provided.  This .
+
+**JEDI_COMPILER** This defines the vendor and version of the compiler you wish to use for this build.  The format is the same as what you would typically use in a module load command:
 ```
 export COMPILER=<name>/<version>
 ```
 For example, `COMPILER=gnu/7.3.0`.
 
-**MPI** is the MPI library you wish to use for this build.  The format is the same as for `COMPILER`, for example: `export MPI=openmpi/3.1.2`.
+**JEDI_MPI** is the MPI library you wish to use for this build.  The format is the same as for `COMPILER`, for example: `export MPI=openmpi/3.1.2`.
 
 **PREFIX** is the directory where the software packages will be installed.  Normally this is set to be the same as the `JEDI_OPT` environment variable (default value `/opt/modules`), though this is not required.  If `JEDI_OPT` and `PREFIX` are both the same, then the software installation trees (the top level of each being is the compiler, e.g. `gnu-7.3.0`) will branch directly off of `$JEDI_OPT` while the module files will be located in the `modulefiles subdirectory.
 
@@ -199,77 +203,6 @@ For building on Mac OSX, use:
 ~~~~~~~~
 ./build_stack.sh mac
 ~~~~~~~~
-
-# <a name="MacPython"></a>Setting up python for Mac OSX
-It is recommended for now to skip the automatic build of the pyjedi package. This has been shut off by default in the mac configuration file. It is also recommended to use miniconda for python2 and python3.
-
-For miniconda, get the downloads on the site: https://docs.conda.io/en/latest/miniconda.html. Select the 64-bit bash installer for both python 2.7 and 3.7. These each download a script to install miniconda on your Mac. Run each script as:
-~~~~~~~
-sh Miniconda2-latest-MacOSX-x86_64.sh
-sh Miniconda3-latest-MacOSX-x86_64.sh
-~~~~~~~
-
-When prompted allow the install to go into your home directory, and allow the script to modify your .bash_profile file. Edit your .bash_profile file and make sure that your PATH is being set the way you want it. Keep in mind that for now the ODB API python interface only works with python 2.7 (so you should make sure that "python" will be found in your miniconda2 area).
-
-Once you have miniconda2 and 3 installed, run the conda command to install extra python packages you will need for JEDI. For both miniconda2 and 3, run:
-~~~~~~~
-conda install setuptools
-conda install wheel
-conda install netcdf4
-conda install matplotlib
-conda install pycodestyle
-conda install autopep8
-conda install swig
-conda install numpy
-conda install scipy
-conda install pyyaml
-conda install sphinx
-~~~~~~~
-
-Then, build the ncepbufr python packages. Again for both miniconda2 and 3, run:
-~~~~~~~
-git clone https://github.com/JCSDA/py-ncepbufr.git # Only need to do this once. The build/install processes for both
-                                                   # python2 and 3 can be run from the same clone of py-ncepbufr.
-
-cd py-ncepbufr
-python setup.py build
-python setup.py install
-~~~~~~~
-
-# Mac OSX Clang environment module
-One result of the build process for Mac OSX is that a module script has been installed for setting up your environment for using Clang on the Mac. This can be accessed by running:
-~~~~~~~
-module purge                        # clear out the environment
-module load jedi/clang-openmpi      # set environment for subsequent JEDI builds on the Mac using Clang and OpenMPI
-module list
-~~~~~~~
-
-# Gentoo
-
-The ``gentoo`` system setting is designed for building Intel toolchains on systems like [Gentoo Linux](https://gentoo.org/get-started/),
-where the base system and all JEDI dependencies are compiled using GCC and installed in the `/usr` directory.  In order to also build JEDI packages with
-Intel compilers, all Fortran packages that provide compiled modules must be independently compiled
-with the Intel `ifort` compiler.
-
-To setup environment, choose a modules home directory.  This can be anywhere, but a common location is `$HOME/opt/modules`.  Also the Intel compilers must be installed to a location pointed to by the `INTEL_ROOT` environment variable.  We assume licenses are available under the `$INTEL_ROOT/licenses` path, but the path can also be supplied via `INTEL_LICENSE_FILE` environment variable.
-~~~~~~~~~
-$ export INTEL_ROOT=<path-to-intel-root>
-$ export JEDI_OPT=$HOME/opt/modules
-$ buildscipts/setup_environment.sh gentoo
-$ buildscipts/setup_modules.sh gentoo
-$ buildscipts/build_stack.sh gentoo
-~~~~~~~~~
-
-The enthronement setup with `setup_environment.sh gentoo` generates a `$HOME/.jedi-stack-bashrc` with all the environment
-variables necessary for configuring the JEDI modules, based on the supplied `JEDI_OPT`.  This script can then be sourced in `.bashrc` if desired:
-~~~~~~~~~
-source $HOME/.jedi-stack-bashrc
-~~~~~~~~~
-
-Now load intel-impi modules under the `jedi` prefix:
-~~~~~~~~~
-$ module load jedi/intel-impi
-~~~~~~~~~
 
 # Adding a New library/package
 

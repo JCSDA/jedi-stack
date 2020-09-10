@@ -53,6 +53,9 @@ else
 
 fi
 
+# Choose which modules you wish to install
+$MODULES && source ${JEDI_BUILDSCRIPTS_DIR}/config/choose_modules.sh
+
 # this is needed to set environment variables if modules are not used
 $MODULES || no_modules $1
 
@@ -84,16 +87,17 @@ build_lib LAPACK lapack 3.8.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.7
 build_lib BUFRLIB bufrlib 11.3.2
-build_lib ECBUILD ecbuild jcsda 3.3.2.jcsda2
+build_lib ECBUILD ecbuild jcsda 3.3.2.jcsda3
 build_lib CGAL cgal 5.0.2
+build_lib GITLFS git-lfs 2.11.0
 
 #----------------------
 # These must be rebuilt for each MPI implementation
 build_lib HDF5 hdf5 1.12.0
 build_lib PNETCDF pnetcdf 1.12.1
 build_lib NETCDF netcdf 4.7.4 4.5.3 4.3.0
-build_lib NCCMP nccmp 1.8.6.5
-build_lib ECKIT eckit jcsda 1.11.6.jcsda1
+build_lib NCCMP nccmp 1.8.7.0
+build_lib ECKIT eckit jcsda 1.11.6.jcsda2
 build_lib FCKIT fckit jcsda 0.7.0.jcsda1
 build_lib ATLAS atlas jcsda 0.20.2.jcsda1
 build_lib ODB odb 0.18.1.r2
@@ -120,7 +124,7 @@ build_lib PROJ proj 7.1.0
 # These must be rebuilt for each MPI implementation
 build_lib GPTL gptl 8.0.3
 build_lib NCO nco 4.7.9
-build_lib PIO pio 2.5.0
+build_lib PIO pio 2.5.1
 build_lib FFTW fftw 3.3.8
 build_lib BOOST_FULL boost 1.68.0
 build_lib ESMF esmf 8_0_1

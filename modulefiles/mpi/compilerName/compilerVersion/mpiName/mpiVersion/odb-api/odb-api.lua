@@ -13,9 +13,7 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-try_load("ecbuild")
-try_load("eckit")
-always_load("netcdf")
+prereq("eckit")
 prereq("netcdf")
 
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"

@@ -13,10 +13,6 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-try_load("zlib")
-try_load("boost-headers")
-try_load("eigen")
-
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)

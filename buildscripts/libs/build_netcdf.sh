@@ -120,6 +120,8 @@ echo "##########################################################################
 # Load netcdf-c before building netcdf-fortran
 $MODULES && module load netcdf
 
+module list
+
 set -x
 
 cd $curr_dir
@@ -131,7 +133,7 @@ software=$name-"fortran"-$version
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-../configure --prefix=$prefix --enable-netcdf-4 $extra_conf
+../configure --prefix=$prefix --disable-fortran-type-check
 
 #VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 make V=$MAKE_VERBOSE -j1 #NetCDF-Fortran-4.5.2 & intel/20 have a linker bug if built with j>1

@@ -13,9 +13,6 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
-always_load("eckit")
-always_load("fckit")
-
 prereq("eckit")
 prereq("fckit")
 

@@ -44,6 +44,7 @@ export LDFLAGS=""
 
 # Minimal JEDI Stack
 export      STACK_BUILD_CMAKE=N
+export     STACK_BUILD_GITLFS=N
 export       STACK_BUILD_SZIP=Y
 export    STACK_BUILD_UDUNITS=Y
 export       STACK_BUILD_ZLIB=Y

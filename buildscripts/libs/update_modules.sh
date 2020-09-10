@@ -90,7 +90,7 @@ function no_modules {
       *     ) echo "Unknown MPI option = $MPIName, ABORT!"; exit 1 ;;
     esac
 
-    config_file="${JEDI_STACK_ROOT}/buildscripts/config/config_${1:-"container"}.sh"
+    components_file="${JEDI_STACK_ROOT}/buildscripts/config/choose_modules.sh"
 
     set +x
     # look for build items that are set in the config file
@@ -99,7 +99,7 @@ function no_modules {
             pkg=$(echo $line | cut -d= -f1 | cut -d_ -f3)
             eval export ${pkg}_ROOT=${PREFIX:-"/usr/local"}
         fi
-    done < $config_file
+    done < $components_file
     set -x
 }
 

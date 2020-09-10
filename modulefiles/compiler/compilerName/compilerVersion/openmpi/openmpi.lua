@@ -18,6 +18,9 @@ try_load("szip")
 
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
+local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,"openmpi",pkgVersion)
+prepend_path("MODULEPATH", mpath)
+
 local mpath = pathJoin(opt,"modulefiles/mpi",compNameVer,pkgName,pkgVersion)
 prepend_path("MODULEPATH", mpath)
 

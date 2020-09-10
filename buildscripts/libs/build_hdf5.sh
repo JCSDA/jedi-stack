@@ -61,9 +61,9 @@ software=$name-$(echo $version | sed 's/\./_/g')
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-[[ -z $mpi ]] || extra_conf="--enable-parallel --enable-unsupported"
+[[ -z $mpi ]] || extra_conf="--enable-parallel"
 
-../configure --prefix=$prefix --enable-fortran --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
+../configure --prefix=$prefix --with-pic --enable-fortran --enable-static --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
 
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
