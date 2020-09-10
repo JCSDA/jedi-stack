@@ -70,6 +70,7 @@ export           STACK_BUILD_PIO=Y
 export          STACK_BUILD_GPTL=N
 export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_PYBIND11=Y
+export      STACK_BUILD_GSL_LITE=Y
 export      STACK_BUILD_NCEPLIBS=N
 export          STACK_BUILD_JPEG=N
 export           STACK_BUILD_PNG=N
