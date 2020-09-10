@@ -36,6 +36,12 @@ export CXX=$MPI_CXX
 export F9X=$FC
 
 export FFLAGS+=" -fPIC -w"
+# for GNU Fortran 10; see: https://github.com/Unidata/netcdf-fortran/issues/212#issuecomment-638457375
+set +e
+[[ -n $FC ]] && FC_GFORTRAN_10=$($FC --version | grep -cE "GNU Fortran.* 1[0-9]\.[0-9]+")
+[[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch"
+set -e
+
 export CFLAGS+=" -fPIC"
 export CXXFLAGS+=" -fPIC"
 export FCFLAGS="$FFLAGS"

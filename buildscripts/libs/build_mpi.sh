@@ -19,7 +19,6 @@ esac
 
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
-[[ -n $FC ]] && FC_GFORTRAN_10=$($FC --version | grep -cE "GNU Fortran.* 1[0-9]\.[0-9]+")
 
 set +x
 source $MODULESHOME/init/bash
@@ -36,6 +35,12 @@ export FFLAGS+=" -fPIC"
 export CFLAGS+=" -fPIC"
 export CXXFLAGS+=" -fPIC"
 export FCFLAGS=${FFLAGS}
+
+# check compiler version
+set +e
+[[ -n $FC ]] && FC_GFORTRAN_10=$($FC --version | grep -cE "GNU Fortran.* 1[0-9]\.[0-9]+")
+set -e
+
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"../pkg"}
 
@@ -67,7 +72,10 @@ case "$name" in
        then
            # On a Mac, use the sed hack to disable -flat_namespace
            sed -i '.bak' -e's/-Wl,-flat_namespace//g' ../configure
-           extra_conf="$extra_conf --with-wrapper-ldflags=-Wl,-commons,use_dylibs"
+           # On a Mac, use Open MPI internal versions of hwloc and libevent
+           # see: https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
+           openmpi_conf="--with-hwloc=internal --with-libevent=internal"
+           extra_conf="$extra_conf $openmpi_conf --with-wrapper-ldflags=-Wl,-commons,use_dylibs"
        fi
        ;;
     mpich   )

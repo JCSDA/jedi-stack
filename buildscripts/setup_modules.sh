@@ -28,6 +28,8 @@ if [ -z "$JEDI_OPT" ]; then
     exit 1
 fi
 
+logdir=$JEDI_STACK_ROOT/log
+
 # define update_modules function
 source ${JEDI_BUILDSCRIPTS_DIR}/libs/update_modules.sh
 
