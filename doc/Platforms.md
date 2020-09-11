@@ -142,7 +142,7 @@ For the intel stack in particular, running the tests is very sensitive to the pr
 source /etc/bashrc
 module purge
 export JEDI_OPT=/work/noaa/da/mmiesch/modules
-module use -a $OPT/modulefiles/core
+module use -a $JEDI_OPT/modulefiles/core
 module load jedi/intel-impi
 module list
 ulimit -s unlimited
