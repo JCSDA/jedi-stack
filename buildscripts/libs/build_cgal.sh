@@ -30,6 +30,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
+    module try-load cmake
     module try-load boost-headers
     module try-load zlib
     module list

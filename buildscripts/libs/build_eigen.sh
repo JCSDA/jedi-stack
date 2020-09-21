@@ -14,6 +14,7 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module try-load boost-headers
+    module try-load cmake
     module list
     set -x
 
