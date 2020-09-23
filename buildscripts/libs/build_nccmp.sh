@@ -45,7 +45,7 @@ else
     export CXX=$SERIAL_CXX
 fi
 
-export CFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC -fcommon"
 export LDFLAGS+=" -L$NETCDF_ROOT/lib -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
 
 url="https://gitlab.com/remikz/nccmp/-/archive/$version/${software}.tar.gz"

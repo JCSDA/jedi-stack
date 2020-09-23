@@ -47,7 +47,7 @@ export CXX=$MPI_CXX
 
 export F9X=$FC
 export FFLAGS+=" -fPIC"
-export CFLAGS+=" -fPIC"
+export CFLAGS+=" -fPIC -fcommon"
 export CXXFLAGS+=" -fPIC"
 export FCFLAGS="$FFLAGS"
 
