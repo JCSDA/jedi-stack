@@ -46,6 +46,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git fetch
 git checkout --detach $tag
+[[ -d build ]] && rm -rf build
 
 cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DOPT_IPO=OFF
 cd build
