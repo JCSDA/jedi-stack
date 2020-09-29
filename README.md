@@ -158,6 +158,7 @@ The remaining items enable or disable builds of each software package.  The foll
   - FFTW
   - ecCodes
   - ESMF
+  - FMS
   - ESMA-Baselibs
   - nceplibs
 

@@ -89,3 +89,4 @@ export HDF5_LIBRARIES=${PREFIX}/lib
 export NETCDF=${PREFIX}
 export PNETCDF=${PREFIX}
 export EIGEN_ROOT=${PREFIX}
+export           STACK_BUILD_FMS=N

@@ -131,6 +131,7 @@ build_lib ESMF esmf 8_0_1
 build_lib BASELIBS baselibs 5.2.2
 build_lib PDTOOLKIT pdtoolkit 3.25.1
 build_lib TAU2 tau2 3.25.1
+build_lib FMS fms jcsda release-stable
 
 # ===============================================================================
 # optionally clean up

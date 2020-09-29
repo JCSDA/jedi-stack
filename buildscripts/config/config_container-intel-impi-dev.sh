@@ -82,3 +82,4 @@ export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
 export          STACK_BUILD_CGAL=N
+export           STACK_BUILD_FMS=N
