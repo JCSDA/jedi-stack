@@ -39,7 +39,7 @@ git fetch
 git checkout $branch
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=$prefix -DGSL_LITE_OPT_INSTALL_COMPAT_HEADER=ON -DCMAKE_VERBOSE_MAKEFILE=1 ..
+cmake -DCMAKE_INSTALL_PREFIX=$prefix -DGSL_LITE_OPT_BUILD_TESTS=OFF -DGSL_LITE_OPT_INSTALL_COMPAT_HEADER=ON -DCMAKE_VERBOSE_MAKEFILE=1 ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 #[[ $MAKE_CHECK =~ [yYtT] ]] && make test
 VERBOSE=$MAKE_VERBOSE $SUDO make install
