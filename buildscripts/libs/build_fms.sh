@@ -35,9 +35,11 @@ else
 fi
 
 export FC=$MPI_FC
+[[ -n $FC && `$FC --version` =~ GNU\ Fortran.*\ 1[0-9]\.[0-9]+ ]] && FC_GFORTRAN_10=1
 export CC=$MPI_CC
 
 export FFLAGS+=" -fPIC -w"
+[[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch"
 export CFLAGS+=" -fPIC -w"
 export FCFLAGS="$FFLAGS"
 
