@@ -14,6 +14,8 @@ load("mpich/3.2.1")
 
 load("eigen/3.3.5")
 load("boost/1_68_0")
+load("json/3.9.1")
+load("json-schema-validator/2.1.0")
 
 load("ecbuild/2.9.3")
 
