@@ -26,21 +26,17 @@ module load jedi-$JEDI_COMPILER
 module list
 set -x
 
+[[ -n $FC && `$FC --version` =~ GNU\ Fortran.*\ 1[0-9]\.[0-9]+ ]] && FC_GFORTRAN_10=1
+
 export CC=$SERIAL_CC
 export CXX=$SERIAL_CXX
 export FC=$SERIAL_FC
 
 export FFLAGS+=" -fPIC"
-[[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch"
+[[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz"
 export CFLAGS+=" -fPIC"
 export CXXFLAGS+=" -fPIC"
 export FCFLAGS=${FFLAGS}
-
-# check compiler version
-set +e
-[[ -n $FC ]] && FC_GFORTRAN_10=$($FC --version | grep -cE "GNU Fortran.* 1[0-9]\.[0-9]+")
-set -e
-
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"../pkg"}
 
@@ -83,10 +79,10 @@ case "$name" in
        then
            # On a Mac, use the control to disable -flat_namespace
            extra_conf="--enable-fortran --enable-cxx --enable-two-level-namespace"
-           export FFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz" #Required for gfortran-10
        else
            extra_conf="--enable-fortran --enable-cxx"
        fi
+       [[ -n $HWLOC_ROOT ]] && extra_conf+=" --with-hwloc-prefix=${HWLOC_ROOT}"
        ;;
     *       )
        echo "Invalid option for MPI = $software, ABORT!"
@@ -95,7 +91,7 @@ case "$name" in
 esac
 
 ../configure --prefix=$prefix $extra_conf
-make -j${NTHREADS:-4}
+make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
 
