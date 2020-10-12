@@ -10,6 +10,11 @@ family("MetaCompiler")
 conflict(pkgName)
 conflict("jedi-intel")
 
+-- Default serial compiler names may be overridden by compiler module itself
+setenv("FC",  "gfortran")
+setenv("CC",  "gcc")
+setenv("CXX", "g++")
+
 local compiler = pathJoin("gnu",pkgVersion)
 load(compiler)
 prereq(compiler)
@@ -22,12 +27,12 @@ prepend_path("MODULEPATH", mpath)
 local mpath = pathJoin(opt,"modulefiles/compiler","jedi-gnu",pkgVersion)
 prepend_path("MODULEPATH", mpath)
 
-setenv("FC",  "gfortran")
-setenv("CC",  "gcc")
-setenv("CXX", "g++")
-setenv("SERIAL_FC",  "gfortran")
-setenv("SERIAL_CC",  "gcc")
-setenv("SERIAL_CXX", "g++")
+local fc = os.getenv("FC") or "gfortran"
+local cc = os.getenv("CC") or "gcc"
+local cxx = os.getenv("CXX") or "g++"
+setenv("SERIAL_FC",  fc)
+setenv("SERIAL_CC",  cc)
+setenv("SERIAL_CXX", cxx)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)

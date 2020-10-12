@@ -28,22 +28,17 @@ if $MODULES; then
 else
     prefix=${PNETCDF_ROOT:-"/usr/local"}
 fi
-    
+
+[[ -n $FC && `$FC --version` =~ GNU\ Fortran.*\ 1[0-9]\.[0-9]+ ]] && FC_GFORTRAN_10=1
 
 export FC=$MPI_FC
 export CC=$MPI_CC
-export CXX=$MPI_CXX
 export F9X=$FC
 
 export FFLAGS+=" -fPIC -w"
 # for GNU Fortran 10; see: https://github.com/Unidata/netcdf-fortran/issues/212#issuecomment-638457375
-set +e
-[[ -n $FC ]] && FC_GFORTRAN_10=$($FC --version | grep -cE "GNU Fortran.* 1[0-9]\.[0-9]+")
 [[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch"
-set -e
-
 export CFLAGS+=" -fPIC"
-export CXXFLAGS+=" -fPIC"
 export FCFLAGS="$FFLAGS"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
@@ -56,7 +51,7 @@ url="https://parallel-netcdf.github.io/Release/$software.tar.gz"
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-../configure --prefix=$prefix --enable-shared
+../configure --prefix=$prefix --enable-shared --enable-static --disable-cxx
 
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
