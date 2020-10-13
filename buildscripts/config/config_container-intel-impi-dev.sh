@@ -5,8 +5,8 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/19.0.5"
-export JEDI_MPI="impi/19.0.5"
+export JEDI_COMPILER="intel/19.1.0"
+export JEDI_MPI="impi/19.1.0"
 source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
@@ -18,7 +18,7 @@ export CPATH=/usr/local/include:$CPATH
 # native-module: load a pre-existing module (common for HPC systems)
 # native-pkg: use pre-installed executables located in /usr/bin or /usr/local/bin,
 #             as installed by package managers like apt-get or hombrewo.
-#             This is a common option for, e.g., gcc/g++/gfortrant
+#             This is a common option for, e.g., gcc/g++/gfortran
 # from-source: This is to build from source
 export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="native-pkg"
@@ -61,7 +61,7 @@ export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
-export        STACK_BUILD_ODC=Y
+export        STACK_BUILD_ODC=N
 
 # Optional Additions
 export           STACK_BUILD_PIO=Y
@@ -82,6 +82,6 @@ export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
 export          STACK_BUILD_CGAL=N
-export          STACK_BUILD_JSON=N
+export          STACK_BUILD_JSON=Y
 export STACK_BUILD_JSON_SCHEMA_VALIDATOR=Y
 export           STACK_BUILD_FMS=N
