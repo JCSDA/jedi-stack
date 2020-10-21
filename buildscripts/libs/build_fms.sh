@@ -20,6 +20,7 @@ if $MODULES; then
   source $MODULESHOME/init/bash
   module load jedi-$JEDI_COMPILER
   module load jedi-$JEDI_MPI
+  module load ecbuild
   module load netcdf
   module list
   set -x
@@ -52,7 +53,7 @@ software=$name-$version
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-cmake .. \
+ecbuild .. \
       -DCMAKE_INSTALL_PREFIX=$prefix \
       -D32BIT=ON -D64BIT=ON \
       -DGFS_PHYS=ON \
