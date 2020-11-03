@@ -1,5 +1,5 @@
 help([[
-JEDI environment with intel compilers, intel mpi, and intel mkl. Release 2020.0
+ Minimal JEDI environment with GCC-9 compilers and mpich
 ]])
 
 local pkgName    = myModuleName()
@@ -8,8 +8,8 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-load("jedi-intel/20.0")
-load("jedi-impi/20.0")
+load("jedi-gnu/9.3.0")
+load("jedi-mpich/3.3.2")
 
 -- Packages producing Fortran modules
 load("bufrlib")
@@ -26,4 +26,4 @@ load("atlas")
 whatis("Name: ".. pkgName)
 whatis("Version: ".. pkgVersion)
 whatis("Category: Application")
-whatis("Description: JEDI environment with intel compilers, intel mpi, and intel mkl. Release 2020.0")
+whatis("Description: Minimal JEDI environment with GCC-9 compilers and mpich")

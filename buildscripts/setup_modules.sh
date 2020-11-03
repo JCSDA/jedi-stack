@@ -24,7 +24,7 @@ JEDI_BUILDSCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 
 export JEDI_STACK_ROOT=$JEDI_BUILDSCRIPTS_DIR/..
 JEDI_OPT=${JEDI_OPT:-$OPT}
 if [ -z "$JEDI_OPT" ]; then
-    echo "Set JEDI_OPT to modules directory (suggeded: $HOME/opt/modules)"
+    echo "Set JEDI_OPT to modules directory (suggested: $HOME/opt/modules)"
     exit 1
 fi
 
@@ -165,6 +165,10 @@ case ${MPI_BUILD} in
     ;;
   "from-source")
     echo -e "============================\n INSTALLING MPI FROM SOURCE"
+
+    logdir=$JEDI_STACK_ROOT/$LOGDIR
+    mkdir -p $logdir
+
     ${JEDI_BUILDSCRIPTS_DIR}/libs/build_mpi.sh $mpiName $mpiVersion 2>&1 | tee "$logdir/$mpiName.log"
 
     RetCode=${PIPESTATUS[0]}

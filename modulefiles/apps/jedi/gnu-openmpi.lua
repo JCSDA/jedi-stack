@@ -20,6 +20,8 @@ load("lapack/3.7.0")
 load("boost-headers/1.68.0")
 load("eigen/3.3.5")
 load("bufrlib/11.3.2")
+load("json/3.9.1")
+load("json-schema-validator/2.1.0")
 
 load("ecbuild/jcsda-release-stable")
 load("eckit/1.1.0")

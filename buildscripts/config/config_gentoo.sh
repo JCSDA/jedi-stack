@@ -17,6 +17,7 @@ export JEDI_STACK_DISABLE_COMPILER_VERSION_CHECK=1
 #             This is a common option for, e.g., gcc/g++/gfortran
 # from-source: This is to build from source
 export COMPILER_BUILD="native-module"
+
 if [[ "$JEDI_MPI" == "impi"* ]]; then
     export MPI_BUILD="native-module"
 else
@@ -59,44 +60,19 @@ export SZIP_ROOT=/usr
 export ZLIB_ROOT=/usr
 export PNG_ROOT=/usr
 export JPEG_ROOT=/usr
+export HWLOC_ROOT=/usr
 
-# Minimal JEDI Stack
-export      STACK_BUILD_CMAKE=N
-export       STACK_BUILD_SZIP=N
-export    STACK_BUILD_UDUNITS=N
-export       STACK_BUILD_ZLIB=N
-export     STACK_BUILD_LAPACK=N
-export STACK_BUILD_BOOST_HDRS=N
-export     STACK_BUILD_EIGEN3=N
+## Gentoo provides all non-Fortran non-ECMWF packages on the base system
+## Don't add any new dependencies to this file
+
+# Packages that produce Fortran modules
 export    STACK_BUILD_BUFRLIB=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
 export     STACK_BUILD_NETCDF=Y
-export      STACK_BUILD_NCCMP=N
-export        STACK_BUILD_NCO=N
-export    STACK_BUILD_ECBUILD=N
-export      STACK_BUILD_ECKIT=Y
-export      STACK_BUILD_FCKIT=N
-export      STACK_BUILD_ATLAS=N
-export        STACK_BUILD_ODC=Y
+export        STACK_BUILD_PIO=Y
 
-# Optional Additions
-export           STACK_BUILD_PIO=Y
-export          STACK_BUILD_GPTL=N
-export        STACK_BUILD_PYJEDI=N
-export      STACK_BUILD_PYBIND11=N
-export      STACK_BUILD_GSL_LITE=N
-export      STACK_BUILD_NCEPLIBS=N
-export          STACK_BUILD_JPEG=N
-export           STACK_BUILD_PNG=N
-export        STACK_BUILD_JASPER=N
-export     STACK_BUILD_ARMADILLO=N
-export        STACK_BUILD_XERCES=N
-export        STACK_BUILD_TKDIFF=N
-export    STACK_BUILD_BOOST_FULL=N
-export          STACK_BUILD_ESMF=N
-export      STACK_BUILD_BASELIBS=N
-export          STACK_BUILD_CGAL=N
-export          STACK_BUILD_GEOS=Y
-export        STACK_BUILD_SQLITE=Y
-export          STACK_BUILD_PROJ=Y
+# ECMWF dependencies
+export      STACK_BUILD_ECKIT=Y
+export      STACK_BUILD_FCKIT=Y
+export      STACK_BUILD_ATLAS=Y

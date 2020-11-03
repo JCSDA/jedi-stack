@@ -11,3 +11,4 @@
 # Ignore the contents of these directories
 pkg
 buildscripts/log
+jedi-stack-contents.log

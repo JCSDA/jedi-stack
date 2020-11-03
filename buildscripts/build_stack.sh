@@ -112,13 +112,15 @@ build_lib JASPER jasper 1.900.1
 build_lib ARMADILLO armadillo 1.900.1
 build_lib XERCES xerces 3.1.4
 build_lib NCEPLIBS nceplibs fv3
-build_lib TKDIFF tkdirr 4.3.5
+build_lib TKDIFF tkdiff 4.3.5
 build_lib PYJEDI pyjedi
 build_lib PYBIND11 pybind11 2.5.0
 build_lib GSL_LITE gsl_lite 0.34.0
 build_lib GEOS geos 3.8.1
 build_lib SQLITE sqlite 3.32.3
 build_lib PROJ proj 7.1.0
+build_lib JSON json 3.9.1
+build_lib JSON_SCHEMA_VALIDATOR json-schema-validator 2.1.0
 
 #----------------------
 # These must be rebuilt for each MPI implementation

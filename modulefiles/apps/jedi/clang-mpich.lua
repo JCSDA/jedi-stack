@@ -20,6 +20,8 @@ load("lapack")
 load("boost-headers")
 load("eigen")
 load("bufrlib")
+load("json")
+load("json-schema-validator")
 
 load("ecbuild")
 

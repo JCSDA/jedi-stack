@@ -25,7 +25,7 @@ export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
 export           STACK_BUILD_ODC=N
-export           STACK_BUILD_PIO=N
+export           STACK_BUILD_PIO=Y
 export          STACK_BUILD_GPTL=N
 export           STACK_BUILD_NCO=N
 export        STACK_BUILD_PYJEDI=N
@@ -47,4 +47,5 @@ export          STACK_BUILD_GEOS=N
 export        STACK_BUILD_SQLITE=N
 export          STACK_BUILD_PROJ=N
 export           STACK_BUILD_FMS=N
-
+export          STACK_BUILD_JSON=N
+export STACK_BUILD_JSON_SCHEMA_VALIDATOR=N
