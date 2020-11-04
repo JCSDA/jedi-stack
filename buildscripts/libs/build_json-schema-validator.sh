@@ -44,7 +44,7 @@ cmake .. \
       -DCMAKE_INSTALL_PREFIX=$prefix \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=Y \
-      -Dnlohmann_json_DIR=$nlohmann_json_ROOT/include \
+      -Dnlohmann_json_DIR=$nlohmann_json_DIR/include \
       -DBUILD_TESTS=$MAKE_CHECK \
       -DBUILD_EXAMPLES=N
 [[ $MAKE_CHECK =~ [yYtT] ]] && make test
