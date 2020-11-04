@@ -38,13 +38,13 @@ url="https://github.com/pboettch/json-schema-validator/archive/$tarfile"
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-[[ -n $nlohmann_json_ROOT ]] || ( echo "Required json.hpp class not installed, ABORT!"; exit 1 )
-echo nlohmann_json_DIR=$nlohmann_json_ROOT
+# JSON_DIR is set in the json module lua file
+[[ -n $JSON_DIR ]] || ( echo "Required json cmake configuration not found, ABORT!"; exit 1 )
 cmake .. \
       -DCMAKE_INSTALL_PREFIX=$prefix \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=Y \
-      -Dnlohmann_json_DIR=$nlohmann_json_DIR/include \
+      -Dnlohmann_json_DIR=$JSON_DIR \
       -DBUILD_TESTS=$MAKE_CHECK \
       -DBUILD_EXAMPLES=N
 [[ $MAKE_CHECK =~ [yYtT] ]] && make test
