@@ -120,8 +120,6 @@ echo "##########################################################################
 # Load netcdf-c before building netcdf-fortran
 $MODULES && module load netcdf
 
-module list
-
 set -x
 
 cd $curr_dir
