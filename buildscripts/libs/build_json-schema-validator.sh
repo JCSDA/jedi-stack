@@ -24,7 +24,8 @@ if $MODULES; then
     fi
 
 else
-    prefix=${json_ROOT:-"/usr/local"}
+    prefix=${JSON_ROOT:-"/usr/local"}
+    JSON_DIR=${JSON_DIR:-$prefix/lib/cmake/nlohmann_json}
 fi
 
 cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
@@ -39,7 +40,6 @@ url="https://github.com/pboettch/json-schema-validator/archive/$tarfile"
 mkdir -p build && cd build
 
 [[ -n $JSON_DIR ]] || ( echo "Required json cmake configuration not found, ABORT!"; exit 1 )
-
 cmake .. \
       -DCMAKE_INSTALL_PREFIX=$prefix \
       -DCMAKE_BUILD_TYPE=Release \
