@@ -7,7 +7,9 @@
 set -ex
 
 name="bufr"
-version=$1
+# source should either be noaa-emc or jcsda
+source=$1
+version=$2
 
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
@@ -21,7 +23,7 @@ if $MODULES; then
     module list
     set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$source-$version"
     if [[ -d $prefix ]]; then
     [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
@@ -37,21 +39,29 @@ export CC=$SERIAL_CC
 software=NCEPLIBS-bufr
 
 # Release git tag name
-tag=bufr_v$version
+if [[ ${source} == "jcsda" ]]
+then
+  gitOrg="jcsda-internal"
+  tag=$version
+else
+  gitOrg="${source}"
+  tag=bufr_v$version
+fi
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-[[ -d $software ]] || git clone https://github.com/noaa-emc/$software.git
+[[ -d $software ]] || git clone https://github.com/$gitOrg/$software.git
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git fetch
 git checkout --detach $tag
-[[ -d build ]] && rm -rf build
+#[[ -d build ]] && rm -rf build
+[[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 
-cmake -DCMAKE_INSTALL_PREFIX=$prefix ..
+cmake -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=$prefix ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules compiler $name $version \
-         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+$MODULES && update_modules compiler $name $source-$version \
+         || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
