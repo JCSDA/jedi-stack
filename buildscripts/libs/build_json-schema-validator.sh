@@ -13,7 +13,7 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module try-load cmake
-    module try-load json
+    module load json
     module list
     set -x
 
@@ -24,7 +24,8 @@ if $MODULES; then
     fi
 
 else
-    prefix=${json_ROOT:-"/usr/local"}
+    prefix=${JSON_ROOT:-"/usr/local"}
+    JSON_DIR=${JSON_DIR:-$prefix/lib/cmake/nlohmann_json}
 fi
 
 cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
@@ -38,12 +39,13 @@ url="https://github.com/pboettch/json-schema-validator/archive/$tarfile"
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-echo nlohmann_json_DIR=$nlohmann_json_DIR
+[[ -n $JSON_DIR ]] || ( echo "Required json cmake configuration not found, ABORT!"; exit 1 )
 cmake .. \
       -DCMAKE_INSTALL_PREFIX=$prefix \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
       -DBUILD_SHARED_LIBS=Y \
+      -Dnlohmann_json_DIR=$JSON_DIR \
       -DBUILD_TESTS=$MAKE_CHECK \
       -DBUILD_EXAMPLES=N
 [[ $MAKE_CHECK =~ [yYtT] ]] && make test
