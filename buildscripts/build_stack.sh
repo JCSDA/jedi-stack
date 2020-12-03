@@ -88,7 +88,7 @@ build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.7
 build_lib BUFRLIB bufrlib 11.3.2
 build_lib ECBUILD ecbuild jcsda 3.3.2.jcsda3
-build_lib CGAL cgal 5.0.2
+build_lib CGAL cgal 5.1
 build_lib GITLFS git-lfs 2.11.0
 
 #----------------------
