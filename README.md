@@ -5,8 +5,7 @@ The motivation is to define a common set of software packages and versions to be
 
 We want to provide a common set of software libraries to JEDI users and developers in order to minimize problems associated with incompatible or outdated software versions.  However, we also wish to take advantage of site-specific configurations and optimizations that exploit the local hardware.  For this reason, the build process is designed to use native installations of the compiler suite and the MPI libraries.  The rest of the software stack is build from source for the specified compiler/mpi combination.
 
-# Current JEDI Stack Components
-
+# Section 1: Current JEDI Stack Components
 
 
 ## Required, but not sensitive to version: often installed via package manager of native modules
@@ -70,8 +69,8 @@ These can be build by jedi-stack but they are not required for jedi.
 | -------- | ------- | ----- |
 | NCO      | 4.7.9   | Can use a native module or package installation? |
 | fckit | jcsda/0.7.0.jcsda1 | Usually not included in stack; should move to ecmwf versions for next releases |
-| atlas | jcsda/0.20.2.jcsda1 | Usually not included in stack; should move to ecmwf versions for releases |
-| fms | jcsda/release-stable | Currently not include in stack but moving toward including it|
+| atlas | jcsda/0.20.2.jcsda1 | Usually not included in stack; should move to ecmwf versions for next release |
+| fms | jcsda/release-stable | Currently not included in stack but moving toward including it|
 | gptl | 8.0.3 | profiling tool |
 | fftw | 3.3.8 | |
 | Boost (full) | 1.68.0 | |
@@ -91,12 +90,12 @@ These can be build by jedi-stack but they are not required for jedi.
 | sqlite | 3.32.3 | |
 | proj | 7.1.0 | |
 
-# Building the JEDI Stack
+# Section 2: Building the JEDI Stack
 
 [The procedure to build the jedi-stack is described here](doc/Build.md)
 
 
-# Adding a New library/package
+# Section 3: Adding a New library/package
 
 It is desirable to limit the number of software packages included in jedi-stack for several reasons.
 
@@ -108,7 +107,8 @@ For these reasons, additions to the JEDI stack must first be approved by the JED
 
 ## Vetting process
 
-If you want to add a new library to the stack you need to first propose :
+If you want to add a new library or software package to the stack you must first do the following:
+
 1. Create a Zenhub issue that describes the reason for the addition.  Which JEDI components require it?  Why is it beneficial to add to the stack?  Can it be installed or acquired a different way?  (If you do not have access to the internal JCSDA ZenHub boards you can create a thread on the [JCSDA forums](https://forums.jcsda.org)).  Bring it to the attention of the JEDI Software Infrastructure team by "asssigning" or tagging individual members.
 
 2. The issue will be discussed at one or more meetings of the JEDI software infrastructure team.  You may be contacted for further information.
