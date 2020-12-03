@@ -8,7 +8,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 # Section 1: Current JEDI Stack Components
 
 
-## Required, but not sensitive to version: often installed via package manager of native modules
+## Required, but not sensitive to version: These can be installed via jedi-stack but are often easier to install via package manager or native modules
 
 | software  | minimum version | Notes |
 | -------   | --------------- | ----- |
@@ -99,7 +99,7 @@ These can be build by jedi-stack but they are not required for jedi.
 
 It is desirable to limit the number of software packages included in jedi-stack for several reasons.
 
-Adding dependencies to JEDI may adversely affect its portability.  New dependencies could pose problems for some platforms and compilers or could conflict with other stack components.  As the stack grows, it takes more work to mainin on multiple systems.
+Adding dependencies to JEDI may adversely affect its portability.  New dependencies could pose problems for some platforms and compilers or could conflict with other stack components.  As the stack grows, it takes more work to maintain on multiple systems.
 
 Adding optional build scripts for packages not required by JEDI also increases maintenance work to test them and keep them up to date.  We do not want to support build scripts that are not commonly used.
 
@@ -107,7 +107,7 @@ For these reasons, additions to the JEDI stack must first be approved by the JED
 
 ## Vetting process
 
-If you want to add a new library or software package to the stack you must first do the following:
+If you want to add a new library or software package to the jedi-stack you must first do the following:
 
 1. Create a Zenhub issue that describes the reason for the addition.  Which JEDI components require it?  Why is it beneficial to add to the stack?  Can it be installed or acquired a different way?  (If you do not have access to the internal JCSDA ZenHub boards you can create a thread on the [JCSDA forums](https://forums.jcsda.org)).  Bring it to the attention of the JEDI Software Infrastructure team by "asssigning" or tagging individual members.
 
