@@ -2,7 +2,7 @@
 
 Building the JEDI software stack is a **Four-Step process**, as described in the following sections.
 
-[See here for additional tips on particular platforms](doc/Platforms.md)
+[See here for additional tips on particular platforms](Platforms.md)
 
 ## Step 1: Set up Basic Environment
 
