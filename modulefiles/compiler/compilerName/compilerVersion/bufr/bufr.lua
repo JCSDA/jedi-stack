@@ -15,6 +15,8 @@ local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
 
+prepend_path("PATH", pathJoin(base,"bin"))
+prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("LIBRARY_PATH", pathJoin(base,"lib"))
