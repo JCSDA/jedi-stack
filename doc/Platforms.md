@@ -2,18 +2,21 @@
 
 Here are are tips for building the jedi-stack on particular Platforms
 
-## <a name="MacPython"></a>Setting up python for Mac OSX
-It is recommended for now to skip the automatic build of the pyjedi package. This has been shut off by default in the mac configuration file. It is also recommended to use miniconda for python2 and python3.
+## Mac OSX
 
-For miniconda, get the downloads on the site: https://docs.conda.io/en/latest/miniconda.html. Select the 64-bit bash installer for both python 2.7 and 3.7. These each download a script to install miniconda on your Mac. Run each script as:
+The procedure for setting up a minimial JEDI stack on Mac OSX is described in [a separate how-to document in jedi-docs](https://github.com/JCSDA-internal/jedi-docs/blob/develop/howto/macos/minimum.md).
+
+#### <a name="MacPython"></a>Setting up python for Mac OSX
+It is recommended for now to skip the automatic build of the pyjedi package. This has been shut off by default in the mac configuration file. It is also recommended to use miniconda for python3.
+
+For miniconda, get the downloads on the site: https://docs.conda.io/en/latest/miniconda.html. Select the 64-bit bash installer for 3.7. These each download a script to install miniconda on your Mac. Run each script as:
 ~~~~~~~
-sh Miniconda2-latest-MacOSX-x86_64.sh
 sh Miniconda3-latest-MacOSX-x86_64.sh
 ~~~~~~~
 
-When prompted allow the install to go into your home directory, and allow the script to modify your .bash_profile file. Edit your .bash_profile file and make sure that your PATH is being set the way you want it. Keep in mind that for now the ODB API python interface only works with python 2.7 (so you should make sure that "python" will be found in your miniconda2 area).
+When prompted allow the install to go into your home directory, and allow the script to modify your .bash_profile file. Edit your .bash_profile file and make sure that your PATH is being set the way you want it. 
 
-Once you have miniconda2 and 3 installed, run the conda command to install extra python packages you will need for JEDI. For both miniconda2 and 3, run:
+Once you have miniconda3 installed, run the conda command to install extra python packages you will need for JEDI. Now run:
 ~~~~~~~
 conda install setuptools
 conda install wheel
@@ -28,10 +31,9 @@ conda install pyyaml
 conda install sphinx
 ~~~~~~~
 
-Then, build the ncepbufr python packages. Again for both miniconda2 and 3, run:
+Then, build the ncepbufr python packages. Run:
 ~~~~~~~
-git clone https://github.com/JCSDA/py-ncepbufr.git # Only need to do this once. The build/install processes for both
-                                                   # python2 and 3 can be run from the same clone of py-ncepbufr.
+git clone https://github.com/JCSDA-internal/py-ncepbufr.git # Only need to do this once. 
 
 cd py-ncepbufr
 python setup.py build
