@@ -54,7 +54,7 @@ module load doxygen git-lfs
 ```
 Some modules such as doxygen are optional so if they are not available then no need to worry.  However, if `git-lfs` is not available, you can install it using the build script that is provided in jedi-stack.
 
-Note, however, if you are using [JEDI Modules](https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/developer/jedi_environment/modules.html) you do not have to worry about this (or indeed, about this jedi-stack repository in general) - the JEDI team will make sure that the modules provided will include the packages you need.
+Note, however, if you are using [JEDI Modules](https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/using/jedi_environment/modules.html) you do not have to worry about this (or indeed, about this jedi-stack repository in general) - the JEDI team will make sure that the modules provided will include the packages you need.
 
 **IMPORTANT:** Another responsibility of the `setup_environment.sh` script is to define the `JEDI_OPT` environment variable and initialize the Lmod system.  These actions are needed both for the build and to allow users to load the JEDI modules after you build them.  `JEDI_OPT` specifies where the modules will be installed, with a default value of `JEDI_OPT=/opt/modules`.  Note that this default value normally requires root permission so you would have to set the `USE_SUDO` flag (see Step 2).  If you do not have root privileges (e.g. on an HPC system), you may wish to install your modules in a home or work directory, e.g. `JEDI_OPT=$HOME/opt/modules`.
 
