@@ -33,7 +33,7 @@ conda install sphinx
 
 Then, build the ncepbufr python packages. Run:
 ~~~~~~~
-git clone https://github.com/JCSDA/py-ncepbufr.git # Only need to do this once. 
+git clone https://github.com/JCSDA-internal/py-ncepbufr.git # Only need to do this once. 
 
 cd py-ncepbufr
 python setup.py build
