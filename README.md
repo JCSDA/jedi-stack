@@ -109,18 +109,18 @@ For these reasons, additions to the JEDI stack must first be approved by the JED
 
 If you want to add a new library or software package to the jedi-stack you must first do the following:
 
-1. Create a Zenhub issue that describes the reason for the addition.  Which JEDI components require it?  Why is it beneficial to add to the stack?  Can it be installed or acquired a different way?  (If you do not have access to the internal JCSDA ZenHub boards you can create a thread on the [JCSDA forums](https://forums.jcsda.org)).  Bring it to the attention of the JEDI Software Infrastructure team by "asssigning" or tagging individual members.
+1. Create a Zenhub issue that describes the reason for the addition.  Which JEDI components require it?  Why is it beneficial to add to the stack?  Can it be installed or acquired a different way?  (If you do not have access to the internal JCSDA ZenHub boards you can create a thread on the [JCSDA forums](https://forums.jcsda.org)).  Bring it to the attention of the JEDI Software Infrastructure team (JEDI 1) by "asssigning" or tagging individual members.
 
-2. The issue will be discussed at one or more meetings of the JEDI software infrastructure team.  You may be contacted for further information.
+2. The issue will be discussed at one or more meetings of the JEDI 1 team, possibly in consultation with the broader JEDI team.  You may be contacted for further information.
 
-3. The JEDI software infrastructure Team will either approve or decline the request for an addition to the jedi-stack.   You will be informed of the decision through the ZenHub issue (or forum thread) or by other means (e.g. meetings, email, etc).
+3. The JEDI 1 Team will either approve or decline the request for an addition to the jedi-stack.   You will be informed of the decision through the ZenHub issue (or forum thread) or by other means (e.g. meetings, email, etc).
 
 ## Required Code Changes
 
-If your request to add a package to the JEDI stack is approved by the JEDI software infrastructure team, then you can proceed to add it to the jedi-stack with the following code changes:
+If your request to add a package to the JEDI stack is approved by the JEDI 1 team, then you can proceed to add it to the jedi-stack with the following code changes:
 
 1. write a new build script in `buildscripts/libs`, using existing scripts as a template
 2. define a new control flag and add it to the `choose_modules.sh` and `config_container*` scripts in `buildscripts/config`
 3. Add a call to the new build script in `buildscripts/build_stack.sh`
 4. Create a new module template at the appropriate place in the `modulefiles` directory, using existing files as a template
-5. Add the package to the list of jedi-stack components in the `README.md` file
+5. Add the package to the list of jedi-stack components in the (top-level) `README.md` file

@@ -2,7 +2,11 @@
 
 Here are are tips for building the jedi-stack on particular Platforms
 
-## <a name="MacPython"></a>Setting up python for Mac OSX
+## Mac OSX
+
+The procedure for setting up a minimial JEDI stack on Mac OSX is described in [a separate how-to document in jedi-docs](https://github.com/JCSDA-internal/jedi-docs/blob/develop/howto/macos/minimum.md).
+
+#### <a name="MacPython"></a>Setting up python for Mac OSX
 It is recommended for now to skip the automatic build of the pyjedi package. This has been shut off by default in the mac configuration file. It is also recommended to use miniconda for python2 and python3.
 
 For miniconda, get the downloads on the site: https://docs.conda.io/en/latest/miniconda.html. Select the 64-bit bash installer for both python 2.7 and 3.7. These each download a script to install miniconda on your Mac. Run each script as:
