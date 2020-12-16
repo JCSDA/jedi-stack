@@ -63,5 +63,6 @@ VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules compiler $name $source-$version \
+pythonVersion="$(python --version | cut -d " " -f2 | cut -d. -f1-2)"
+$MODULES && update_modules compiler $name $source-$version $pythonVersion \
          || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
