@@ -19,7 +19,7 @@ load("netcdf")
 load("lapack")
 load("boost-headers")
 load("eigen")
-load("bufrlib")
+load("bufr")
 load("json")
 load("json-schema-validator")
 
