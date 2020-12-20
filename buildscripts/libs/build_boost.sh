@@ -87,7 +87,7 @@ rm -f $HOME/user-config.jam
 [[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
 
 # boost python libraries may not build without these values exported
-pyInc=`python3-config --includes | cut -d' ' -f1`
+pyInc=`python3-config --includes | cut -d' ' -f1 | cut -c3-`
 # echo $pyInc
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:$pyInc
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$pyInc
