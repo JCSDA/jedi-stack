@@ -11,6 +11,8 @@ local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
+try-load(qt)
+
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
