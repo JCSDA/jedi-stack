@@ -14,7 +14,7 @@ local base = pathJoin(opt,"core",pkgName,pkgVersion)
 prepend_path("CPATH", pathJoin(base,"include"))
 
 setenv("gsl_lite_ROOT", base)
-setenv("gsl_lite_DIR", base,"lib","cmake","gsl_lite")
+setenv("gsl_lite_DIR", pathJoin(base,"lib","cmake","gsl-lite"))
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
