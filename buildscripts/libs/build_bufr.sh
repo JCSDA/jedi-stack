@@ -43,11 +43,9 @@ if [[ ${source} == "jcsda-internal" ]]
 then
   gitOrg="jcsda-internal"
   tag=$version
-  modlabel="jcsda"
 else
   gitOrg="${source}"
   tag=bufr_v$version
-  modlabel="noaa"
 fi
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
@@ -66,5 +64,5 @@ VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
 pythonVersion="$(python --version | cut -d " " -f2 | cut -d. -f1-2)"
-$MODULES && update_modules compiler $name $modlabel-$version $pythonVersion \
+$MODULES && update_modules compiler $name $source-$version $pythonVersion \
          || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
