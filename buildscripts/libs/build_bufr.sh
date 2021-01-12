@@ -39,7 +39,7 @@ export CC=$SERIAL_CC
 software=NCEPLIBS-bufr
 
 # Release git tag name
-if [[ ${source} == "jcsda" ]]
+if [[ ${source} == "jcsda-internal" ]]
 then
   gitOrg="jcsda-internal"
   tag=$version
