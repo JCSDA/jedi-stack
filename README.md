@@ -22,7 +22,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 
 | software | version | Notes |
 | -------- | ------- | ----- |
-| udunits  | 2.2.26  |       |
+| udunits  | 2.2.26  | updated to 2.2.28 in develop |
 | zlib     | 1.2.11  |       |
 | szip     | 2.1.1   |       |
 | lapack   | 3.8.0   | Can be replaced by intel mkl |
@@ -34,7 +34,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 | netcdf   | 4.7.4, 4.5.3, 4.3.0 | versions for C, Fortran, and C++ |
 | nccmp    | 1.8.7.0 | Needed for running tests |
 | eckit    | jcsda/1.11.6.jcsda2 | Should move to ecmwf for next release |
-| bufrlib     | 11.3.2 | will be replaced by NCEP bufr   |
+| bufrlib     | 11.3.2 | deprecated: replaced by NCEP-bufr   |
 | pybind11    | 2.5.0 |   |
 | gsl_lite    | 0.34.0 |   |
 
@@ -43,7 +43,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 | software | version | Notes |
 | -------- | ------- | ----- |
 | CGAL     | 5.0.2   | Optional in principle but may become required in practice for efficiency reasons.  Can be installed without gmp, mpfr dependencies |
-| bufr     | 11.4.0  | NCEP version will replace current bufrlib |
+| bufr     | 11.4.0.jcsda1  | NCEP version replaces previous bufrlib |
 
 ## Required for certain components or models
 
