@@ -45,7 +45,7 @@ then
   tag=$version
 else
   gitOrg="${source}"
-  tag=bufr_v$version
+  tag=$version
 fi
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
