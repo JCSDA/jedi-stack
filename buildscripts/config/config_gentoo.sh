@@ -66,7 +66,6 @@ export HWLOC_ROOT=/usr
 ## Don't add any new dependencies to this file
 
 # Packages that produce Fortran modules
-export    STACK_BUILD_BUFRLIB=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
 export     STACK_BUILD_NETCDF=Y
