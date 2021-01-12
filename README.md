@@ -36,7 +36,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 | eckit    | jcsda/1.11.6.jcsda2 | Should move to ecmwf for next release |
 | bufrlib     | 11.3.2 | deprecated: replaced by NCEP-bufr   |
 | pybind11    | 2.5.0 |   |
-| gsl_lite    | 0.34.0 |   |
+| gsl_lite    | 0.34.0 | upgraded to 0.37.0 in develop  |
 
 ## New components since most recent release
 
