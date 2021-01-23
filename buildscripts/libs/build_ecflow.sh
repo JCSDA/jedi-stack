@@ -17,7 +17,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 git fetch --tags
 git checkout $version
 
-ecflow_version=$(awk '/^project/ && /ecflow/ && /VERSION/ {for (I=1;I<=NF;I++) if ($I == "VERSION") {print $(I+1)};}' CMakeLists.txt)
+ecflowVersion=$(awk '/^project/ && /ecflow/ && /VERSION/ {for (I=1;I<=NF;I++) if ($I == "VERSION") {print $(I+1)};}' CMakeLists.txt)
 pythonVersion=$(`which python3` -c 'import sys;print(sys.version_info[0],".",sys.version_info[1],sep="")')
 
 # Hyphenated version used for install prefix
@@ -65,4 +65,4 @@ VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version $pythonVersion \
-         || echo $name $ecflow_version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+         || echo $name $ecflowVersion >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
