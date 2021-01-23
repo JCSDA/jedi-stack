@@ -27,7 +27,6 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module load jedi-$JEDI_MPI
     module try-load cmake git python qt
     module load boost
     module list
