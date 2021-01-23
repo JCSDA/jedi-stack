@@ -23,8 +23,6 @@ pythonVersion=$(`which python3` -c 'import sys;print(sys.version_info[0],".",sys
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
-# software=$name\_$(echo $ecflow_version | sed 's/\./_/g')
-
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -35,7 +33,6 @@ if $MODULES; then
     module list
     set -x
 
-    # prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$ecflow_version"
     prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$name/$version"
     if [[ -d $prefix ]]; then
         [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
