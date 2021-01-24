@@ -41,7 +41,7 @@ function update_modules {
     $SUDO cp $tmpl_file $3.lua
     # Argument number 4 is python version. If not empty use sed to
     # substitue python version into placeholder marks in the lua script.
-    [[ -n "$4" ]] && $SUDO sed -i "" -e "s/@PYTHON_VERSION@/$4/" $3.lua
+    [[ -n "$4" ]] && $SUDO sed -i -e "s/@PYTHON_VERSION@/$4/" $3.lua
 
     # Make the latest installed version the default
     [[ -e default ]] && $SUDO rm -f default
