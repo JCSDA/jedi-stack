@@ -23,6 +23,8 @@ prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
+prepend_path("PYTHONPATH", pathJoin(base,"lib/python@PYTHON_VERSION@/site-packages/ecflow"))
+
 setenv("ECFLOW_ROOT", base)
 setenv("ECFLOW_INCLUDES", pathJoin(base,"include"))
 setenv("ECFLOW_LIBRARIES", pathJoin(base,"lib"))
