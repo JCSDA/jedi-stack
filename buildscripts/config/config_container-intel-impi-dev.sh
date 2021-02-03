@@ -5,8 +5,8 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/2021.1.2"
-export JEDI_MPI="impi/2021.1.2"
+export JEDI_COMPILER="intel/2021.1"
+export JEDI_MPI="impi/2021.1"
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
