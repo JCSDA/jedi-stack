@@ -28,14 +28,3 @@ $SUDO python3 -m pip install -U pytest
 $SUDO python3 -m pip install -U ford
 $SUDO python3 -m pip install -U xarray
 $SUDO python3 -m pip install -U pyodc
-
-#####################################################################
-# ncepbufr for python
-#####################################################################
-
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-git clone https://github.com/JCSDA/py-ncepbufr.git 
-cd py-ncepbufr 
-
-CC=gcc python3 setup.py build 
-$SUDO python3 setup.py install 
