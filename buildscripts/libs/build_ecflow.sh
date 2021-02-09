@@ -105,8 +105,6 @@ $SUDO mv stage/lib $prefix
 
 rm -f $HOME/user-config.jam
 
-export BOOST_ROOT=$prefix
-
 # ecFlow component
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}/$software
 
