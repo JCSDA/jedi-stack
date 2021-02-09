@@ -70,7 +70,6 @@ compName=$(echo $compiler | cut -d- -f1)
 case "$compName" in
     gnu   ) MPICC=$(which mpicc)  ; toolset=gcc ;;
     intel ) MPICC=$(which mpiicc) ; toolset=intel ;;
-    clang ) MPICC=$(which mpiicc) ; toolset=clang ;;
     *     ) echo "Unknown compiler = $compName, ABORT!"; exit 1 ;;
 esac
 
@@ -86,12 +85,7 @@ EOF
 rm -f $HOME/user-config.jam
 [[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
 
-# boost python libraries may not build without these values exported
-pyInc=`python3-config --includes | cut -d' ' -f1 | cut -c3-`
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:$pyInc
-export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$pyInc
-
-./bootstrap.sh --with-toolset=$toolset --with-python=`which python3`
+./bootstrap.sh --with-toolset=$toolset
 ./b2 install $debug --prefix=$BoostBuild
 
 export PATH="$BoostBuild/bin:$PATH"
