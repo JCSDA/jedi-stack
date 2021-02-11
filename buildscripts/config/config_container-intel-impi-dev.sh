@@ -5,9 +5,8 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/19.1.0"
-export JEDI_MPI="impi/19.1.0"
-source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
+export JEDI_COMPILER="intel/2021.1"
+export JEDI_MPI="impi/2021.1"
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -32,7 +31,7 @@ export OVERWRITE=N
 export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=Y
-export   MAKE_CLEAN=Y
+export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
 export WGET="wget -nv"
