@@ -132,6 +132,9 @@ cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release \
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
+rm -rf $prefix/lib/cmake
+rm -rf $prefix/include/boost
+
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version $pythonVersion \
          || echo $name $ecflowVersion >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
