@@ -11,15 +11,6 @@ version=$2
 boost=$3
 boost_version=$4
 
-# Build boost libraries first; ecFlow requires them
-# Install boost and ecFlow in ecFlow directory hierarchy
-
-# Steps 
-# 1. get ecFlow software
-# 2. get boost software, downloaded into ecFlow pkg dir
-# 3. build full boost (libs, headers) in ecFlow pkg dir
-# 4. build ecFlow against boost
-
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=$name
@@ -30,13 +21,11 @@ git fetch --tags
 git checkout $version
 
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
-mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    [[ -z $mpi ]] || module load jedi-$JEDI_MPI
     module try-load cmake git python qt
     module list
     set -x
@@ -50,60 +39,58 @@ else
     prefix=${ECFLOW_ROOT:-"/usr/local"}
 fi
 
-# boost component
-boost_software=$boost\_$(echo $boost_version | sed 's/\./_/g')
-url="https://dl.bintray.com/boostorg/release/$boost_version/source/$boost_software.tar.gz"
-[[ -d $boost_software ]] || ( $WGET $url; tar -xf $boost_software.tar.gz )
-[[ -d $boost_software ]] && cd $boost_software || ( echo "$boost_software does not exist, ABORT!"; exit 1 )
+host=$(uname -s)
+if [[ "$host" == "Darwin" ]]; then
+    [[ -d `brew --cellar boost` ]] && boost_root=`brew --prefix boost`
+    [[ -z $boost_root ]] || echo "Using brew-installed boost headers and libraries"
 
-debug="--debug-configuration"
+    export OPENSSL_ROOT_DIR=`brew --prefix openssl`
+    export OPENSSL_INCLUDE_DIR=$OPENSSL_ROOT_DIR/include
 
-BoostRoot=$(pwd)
-BoostBuild=$BoostRoot/BoostBuild
-build_boost=$BoostRoot/build_boost
-[[ -d $BoostBuild ]] && rm -rf $BoostBuild
-[[ -d $build_boost ]] && rm -rf $build_boost
-cd $BoostRoot/tools/build
+    [[ -d `brew --cellar qt` ]] && qt_root=`brew --prefix qt`
+    [[ ! -z $qt_root ]] && QT="-DCMAKE_PREFIX_PATH=$qt_root" \
+                      || ( echo "Qt must be installed for ecFlow UI, ABORT!" ; exit 1 )
+fi
 
-# Configure with MPI
-compName=$(echo $compiler | cut -d- -f1)
-case "$compName" in
-    gnu   ) MPICC=$(which mpicc)  ; toolset=gcc ;;
-    intel ) MPICC=$(which mpiicc) ; toolset=intel ;;
-    clang ) MPICC=$(which mpiicc) ; toolset=clang ;;
-    *     ) echo "Unknown compiler = $compName, ABORT!"; exit 1 ;;
-esac
+# boost component; build if not otherwise present
+if [ -z $boost_root ]; then
+    echo "Building boost from source"
+    boost_software=$boost\_$(echo $boost_version | sed 's/\./_/g')
+    url="https://dl.bintray.com/boostorg/release/$boost_version/source/$boost_software.tar.gz"
+    [[ -d $boost_software ]] || ( $WGET $url; tar -xf $boost_software.tar.gz )
+    [[ -d $boost_software ]] && cd $boost_software || ( echo "$boost_software does not exist, ABORT!"; exit 1 )
 
-cp $BoostRoot/tools/build/example/user-config.jam ./user-config.jam
-cat >> ./user-config.jam << EOF
+    debug="--debug-configuration"
 
-# ------------------
-# MPI configuration.
-# ------------------
-using mpi : $MPICC ;
-EOF
+    BoostRoot=$(pwd)
+    BoostBuild=$BoostRoot/BoostBuild
+    build_boost=$BoostRoot/build_boost
+    [[ -d $BoostBuild ]] && rm -rf $BoostBuild
+    [[ -d $build_boost ]] && rm -rf $build_boost
+    cd $BoostRoot/tools/build
 
-rm -f $HOME/user-config.jam
-[[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
+    compName=$(echo $compiler | cut -d- -f1)
+    case "$compName" in
+        gnu   ) toolset=gcc ;;
+        intel ) toolset=intel ;;
+        clang ) toolset=clang ;;
+        *     ) echo "Unknown compiler = $compName, ABORT!"; exit 1 ;;
+    esac
 
-# boost python libraries may not build without these values exported
-pyInc=`python3-config --includes | cut -d' ' -f1 | cut -c3-`
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:$pyInc
-export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$pyInc
+    ./bootstrap.sh --with-toolset=$toolset --with-python=`which python3`
+    ./b2 install $debug --prefix=$BoostBuild
 
-./bootstrap.sh --with-toolset=$toolset --with-python=`which python3`
-./b2 install $debug --prefix=$BoostBuild
+    export PATH="$BoostBuild/bin:$PATH"
 
-export PATH="$BoostBuild/bin:$PATH"
+    cd $BoostRoot
+    b2 $debug --build-dir=$build_boost address-model=64 toolset=$toolset stage
 
-cd $BoostRoot
-b2 $debug --build-dir=$build_boost address-model=64 toolset=$toolset stage
+    $SUDO mkdir -p $prefix $prefix/include
+    $SUDO cp -R boost $prefix/include
+    $SUDO mv stage/lib $prefix
 
-$SUDO mkdir -p $prefix $prefix/include
-$SUDO cp -R boost $prefix/include
-$SUDO mv stage/lib $prefix
-
-rm -f $HOME/user-config.jam
+    boost_root=$prefix
+fi
 
 # ecFlow component
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}/$software
@@ -118,22 +105,13 @@ export CXX=$SERIAL_CXX
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 
-host=$(uname -s)
-if [[ "$host" == "Darwin" ]]
-then
-    export OPENSSL_ROOT_DIR=`brew --prefix openssl`
-    export OPENSSL_INCLUDE_DIR=$OPENSSL_ROOT_DIR/include
-    export QT=`brew --prefix qt`
-    QT_LOC="-DCMAKE_PREFIX_PATH=$QT"
-fi
-
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release \
-    -DBOOST_ROOT=$prefix -DENABLE_STATIC_BOOST_LIBS=OFF $QT_LOC ..
+    -DBOOST_ROOT=$boost_root -DENABLE_STATIC_BOOST_LIBS=OFF $QT ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
-rm -rf $prefix/lib/cmake
-rm -rf $prefix/include/boost
+[[ -d $prefix/lib/cmake ]] && $SUDO rm -rf $prefix/lib/cmake
+[[ -d $prefix/include/boost ]] && $SUDO rm -rf $prefix/include/boost
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $version $pythonVersion \
