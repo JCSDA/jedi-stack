@@ -7,7 +7,6 @@ local pkgNameVer = myModuleFullName()
 
 local hierA        = hierarchyA(pkgNameVer,1)
 local compNameVer  = hierA[1]
-local compNameVer  = hierA[2]
 local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
