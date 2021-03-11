@@ -39,6 +39,7 @@ else
     prefix=${ECFLOW_ROOT:-"/usr/local"}
 fi
 
+# macOS: requires boost / boost-python3, openssl, qt
 host=$(uname -s)
 if [[ "$host" == "Darwin" ]]; then
     [[ -d `brew --cellar boost` ]] && boost_root=`brew --prefix boost`

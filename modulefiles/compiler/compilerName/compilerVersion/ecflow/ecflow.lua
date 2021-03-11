@@ -7,6 +7,7 @@ local pkgNameVer = myModuleFullName()
 
 local hierA        = hierarchyA(pkgNameVer,1)
 local compNameVer  = hierA[1]
+local compNameVer  = hierA[2]
 local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
@@ -33,5 +34,5 @@ setenv("ECFLOW_PYTHON", pathJoin(base,"lib/python@PYTHON_VERSION@/site-packages/
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
-whatis("Category: library")
+whatis("Category: application")
 whatis("Description: ecFlow Workflow Manager")

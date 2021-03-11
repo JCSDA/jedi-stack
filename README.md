@@ -89,6 +89,7 @@ These can be build by jedi-stack but they are not required for jedi.
 | geos | 3.8.1 | |
 | sqlite | 3.32.3 | |
 | proj | 7.1.0 | |
+| ecflow | 5.5.3 | Requires boost, boost-python3, openssl, and qt (install via [brew](https://brew.sh/)) |
 
 # Section 2: Building the JEDI Stack
 
