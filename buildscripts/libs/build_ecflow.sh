@@ -39,18 +39,24 @@ else
     prefix=${ECFLOW_ROOT:-"/usr/local"}
 fi
 
-# macOS: requires boost / boost-python3, openssl, qt
 host=$(uname -s)
 if [[ "$host" == "Darwin" ]]; then
     [[ -d `brew --cellar boost` ]] && boost_root=`brew --prefix boost`
     [[ -z $boost_root ]] || echo "Using brew-installed boost headers and libraries"
 
-    export OPENSSL_ROOT_DIR=`brew --prefix openssl`
-    export OPENSSL_INCLUDE_DIR=$OPENSSL_ROOT_DIR/include
+    [[ -d `brew --cellar openssl` ]] && openssl_root=`brew --prefix openssl`
+    if [ -z $openssl_root ]; then
+        echo "OpenSSL must be installed for ecFlow, ABORT!"
+        exit 1
+    fi
 
     [[ -d `brew --cellar qt` ]] && qt_root=`brew --prefix qt`
-    [[ ! -z $qt_root ]] && QT="-DCMAKE_PREFIX_PATH=$qt_root" \
-                      || ( echo "Qt must be installed for ecFlow UI, ABORT!" ; exit 1 )
+    if [ ! -z $qt_root ]; then
+        QT="-DCMAKE_PREFIX_PATH=$qt_root"
+    else
+        echo "Qt must be installed for ecFlow UI, ABORT!"
+        exit 1
+    fi
 fi
 
 # boost component; build if not otherwise present
@@ -107,7 +113,8 @@ export CXX=$SERIAL_CXX
 mkdir -p build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release \
-    -DBOOST_ROOT=$boost_root -DENABLE_STATIC_BOOST_LIBS=OFF $QT ..
+    -DBOOST_ROOT=$boost_root -DENABLE_STATIC_BOOST_LIBS=OFF \
+    -DOPENSSL_ROOT_DIR=$openssl_root $QT ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
