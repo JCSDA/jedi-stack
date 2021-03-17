@@ -1,8 +1,12 @@
 #!/bin/bash
 
 # Co-locate (via symlink) brew-installed boost / boost-python libraries and headers
-e    brew install boost
-#    brew install boost-python3
+#   brew installs these packages in different locations; a typical build from source
+#   code would co-locate them, so that setting BOOST_ROOT for use in building other
+#   software is made easier.
+# Steps:
+#   brew install boost boost-python3
+#   run this script
 
 # Boost libraries and headers: version and location
 boostLib_version=`brew list --versions | grep "boost " | cut -d ' ' -f 2`
