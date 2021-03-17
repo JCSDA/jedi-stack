@@ -70,6 +70,7 @@ compName=$(echo $compiler | cut -d- -f1)
 case "$compName" in
     gnu   ) MPICC=$(which mpicc)  ; toolset=gcc ;;
     intel ) MPICC=$(which mpiicc) ; toolset=intel ;;
+    clang ) MPICC=$(which mpiicc) ; toolset=clang ;;
     *     ) echo "Unknown compiler = $compName, ABORT!"; exit 1 ;;
 esac
 
@@ -85,7 +86,7 @@ EOF
 rm -f $HOME/user-config.jam
 [[ -z $mpi ]] && rm -f ./user-config.jam || mv -f ./user-config.jam $HOME
 
-./bootstrap.sh --with-toolset=$toolset
+./bootstrap.sh --with-toolset=$toolset --with-python=`which python3`
 ./b2 install $debug --prefix=$BoostBuild
 
 export PATH="$BoostBuild/bin:$PATH"

@@ -49,3 +49,4 @@ export          STACK_BUILD_PROJ=N
 export           STACK_BUILD_FMS=N
 export          STACK_BUILD_JSON=N
 export STACK_BUILD_JSON_SCHEMA_VALIDATOR=N
+export        STACK_BUILD_ECFLOW=N
