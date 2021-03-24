@@ -54,9 +54,13 @@ url="https://github.com/CGAL/cgal/releases/download/v$version/$software-library.
 [[ -d $software ]] || ( $WGET $url; tar -xf $software-library.tar.xz )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+
+# Apply a patch to fix CMake intel compiler flags.
+# Remove when possible or update as needed.
 if [[ $version == "5.0.4" ]]; then
     git apply ${JEDI_STACK_ROOT}/buildscripts/libs/patches/${software}-intel-fpmodel-flag-fix.patch
 else
+    echo "Error: Must generate new patch for unsupported CGal version: $version"
     exit 1
 fi
 
