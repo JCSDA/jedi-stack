@@ -58,7 +58,7 @@ git checkout --detach $tag
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 
-cmake -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=$prefix ..
+cmake -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
