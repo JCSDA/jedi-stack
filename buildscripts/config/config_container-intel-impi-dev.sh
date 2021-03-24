@@ -5,9 +5,8 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/19.0.5"
-export JEDI_MPI="impi/19.0.5"
-source /opt/intel/compilers_and_libraries/linux/bin/compilervars.sh intel64
+export JEDI_COMPILER="intel/2021.1"
+export JEDI_MPI="impi/2021.1"
 export PATH=/usr/local/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -18,7 +17,7 @@ export CPATH=/usr/local/include:$CPATH
 # native-module: load a pre-existing module (common for HPC systems)
 # native-pkg: use pre-installed executables located in /usr/bin or /usr/local/bin,
 #             as installed by package managers like apt-get or hombrewo.
-#             This is a common option for, e.g., gcc/g++/gfortrant
+#             This is a common option for, e.g., gcc/g++/gfortran
 # from-source: This is to build from source
 export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="native-pkg"
@@ -32,7 +31,7 @@ export OVERWRITE=N
 export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=Y
-export   MAKE_CLEAN=Y
+export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
 export WGET="wget -nv"
@@ -51,7 +50,7 @@ export       STACK_BUILD_ZLIB=Y
 export     STACK_BUILD_LAPACK=N
 export STACK_BUILD_BOOST_HDRS=Y
 export     STACK_BUILD_EIGEN3=Y
-export    STACK_BUILD_BUFRLIB=Y
+export       STACK_BUILD_BUFR=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
 export     STACK_BUILD_NETCDF=Y
@@ -61,14 +60,14 @@ export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
-export        STACK_BUILD_ODC=Y
+export   STACK_BUILD_PYBIND11=Y
+export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
+export           STACK_BUILD_ODC=N
 export           STACK_BUILD_PIO=Y
 export          STACK_BUILD_GPTL=N
 export        STACK_BUILD_PYJEDI=Y
-export      STACK_BUILD_PYBIND11=Y
-export      STACK_BUILD_GSL_LITE=Y
 export      STACK_BUILD_NCEPLIBS=N
 export          STACK_BUILD_JPEG=N
 export           STACK_BUILD_PNG=N
@@ -82,6 +81,6 @@ export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
 export          STACK_BUILD_CGAL=N
-export          STACK_BUILD_JSON=N
+export          STACK_BUILD_JSON=Y
 export STACK_BUILD_JSON_SCHEMA_VALIDATOR=Y
 export           STACK_BUILD_FMS=N

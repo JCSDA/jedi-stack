@@ -11,9 +11,10 @@ local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,"core",pkgName,pkgVersion)
 
-prepend_path("PATH", pathJoin(base,"Contents"))
+prepend_path("CPATH", pathJoin(base,"include"))
 
-setenv("pybind11_DIR", base)
+setenv("pybind11_ROOT", base)
+setenv("pybind11_DIR", base,"share","cmake","pybind11")
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)

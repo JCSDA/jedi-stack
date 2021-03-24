@@ -78,7 +78,7 @@ $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 # this can be done in each script individually
 # it might warrant a --force flag to force rebuild when desired
 build_lib CMAKE cmake 3.17.2
-build_lib UDUNITS udunits 2.2.26
+build_lib UDUNITS udunits 2.2.28
 build_lib JPEG jpeg 9.1.0
 build_lib ZLIB zlib 1.2.11
 build_lib PNG png 1.6.35
@@ -86,9 +86,9 @@ build_lib SZIP szip 2.1.1
 build_lib LAPACK lapack 3.8.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.7
-build_lib BUFRLIB bufrlib 11.3.2
-build_lib ECBUILD ecbuild jcsda 3.3.2.jcsda3
-build_lib CGAL cgal 5.1
+build_lib BUFR bufr jcsda-internal 11.4.0.jcsda2
+build_lib ECBUILD ecbuild jcsda-internal 3.3.2.jcsda3
+build_lib CGAL cgal 5.0.4
 build_lib GITLFS git-lfs 2.11.0
 
 #----------------------
@@ -97,11 +97,11 @@ build_lib HDF5 hdf5 1.12.0
 build_lib PNETCDF pnetcdf 1.12.1
 build_lib NETCDF netcdf 4.7.4 4.5.3 4.3.0
 build_lib NCCMP nccmp 1.8.7.0
-build_lib ECKIT eckit jcsda 1.11.6.jcsda2
-build_lib FCKIT fckit jcsda 0.7.0.jcsda1
-build_lib ATLAS atlas jcsda 0.20.2.jcsda1
+build_lib ECKIT eckit jcsda-internal 1.11.6.jcsda2
+build_lib FCKIT fckit jcsda-internal 0.7.0.jcsda1
+build_lib ATLAS atlas jcsda-internal 0.20.2.jcsda1
 build_lib ODB odb 0.18.1.r2
-build_lib ODC odc jcsda 1.0.3
+build_lib ODC odc jcsda-internal 1.0.3
 
 # ===============================================================================
 # Optional Extensions to the JEDI Stack
@@ -115,12 +115,13 @@ build_lib NCEPLIBS nceplibs fv3
 build_lib TKDIFF tkdiff 4.3.5
 build_lib PYJEDI pyjedi
 build_lib PYBIND11 pybind11 2.5.0
-build_lib GSL_LITE gsl_lite 0.34.0
+build_lib GSL_LITE gsl_lite 0.37.0
 build_lib GEOS geos 3.8.1
 build_lib SQLITE sqlite 3.32.3
 build_lib PROJ proj 7.1.0
 build_lib JSON json 3.9.1
 build_lib JSON_SCHEMA_VALIDATOR json-schema-validator 2.1.0
+build_lib ECFLOW ecflow ecmwf 5.5.3 boost 1.68.0
 
 #----------------------
 # These must be rebuilt for each MPI implementation
