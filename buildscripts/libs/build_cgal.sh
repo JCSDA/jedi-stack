@@ -54,8 +54,8 @@ url="https://github.com/CGAL/cgal/releases/download/v$version/$software-library.
 [[ -d $software ]] || ( $WGET $url; tar -xf $software-library.tar.xz )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-if [[ $version == "5.1" ]]; then
-    git apply ${JEDI_STACK_ROOT}/buildscripts/libs/${software}-intel-fpmodel-flag-fix.patch
+if [[ $version == "5.0.4" ]]; then
+    git apply ${JEDI_STACK_ROOT}/buildscripts/libs/patches/${software}-intel-fpmodel-flag-fix.patch
 else
     exit 1
 fi
