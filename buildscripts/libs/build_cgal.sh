@@ -64,9 +64,10 @@ else
     exit 1
 fi
 
-
-cmake . -DCMAKE_INSTALL_PREFIX=$prefix -DWITH_CGAL_Qt5=0 -DCGAL_DISABLE_GMP=1 -DEIGEN3_INCLUDE_DIR=$EIGEN_ROOT/include
-VERBOSE=$MAKE_VERBOSE $SUDO make install
+BUILD_DIR="$(pwd)/${software}/_build"
+[[ -d $BUILD_DIR ]] && rm -rf $BUILD_DIR
+cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=$prefix -DWITH_CGAL_Qt5=0 -DCGAL_DISABLE_GMP=1 -DEIGEN3_INCLUDE_DIR=$EIGEN_ROOT/include -DCMAKE_INSTALL_LIBDIR=lib
+cd _build && VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules core $name $version \
