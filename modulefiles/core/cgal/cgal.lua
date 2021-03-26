@@ -18,8 +18,6 @@ prepend_path("CPATH", pathJoin(base,"include"))
 prepend_path("MANPATH", pathJoin(base,"share","man"))
 
 setenv("CGAL_ROOT", base)
-setenv("CGAL_PATH", base)
-setenv("CGAL_DIR", base)
 setenv("CGAL_INCLUDE_DIRS", pathJoin(base,"include"))
 setenv("CGAL_LIBRARIES", pathJoin(base,"lib"))
 setenv("CGAL_VERSION", pkgVersion)
