@@ -64,8 +64,7 @@ else
     exit 1
 fi
 
-BUILD_DIR="$(pwd)/${software}/_build"
-[[ -d $BUILD_DIR ]] && rm -rf $BUILD_DIR
+[[ -d _build ]] && rm -rf _build
 cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=$prefix -DWITH_CGAL_Qt5=0 -DCGAL_DISABLE_GMP=1 -DEIGEN3_INCLUDE_DIR=$EIGEN_ROOT/include -DCMAKE_INSTALL_LIBDIR=lib
 cd _build && VERBOSE=$MAKE_VERBOSE $SUDO make install
 
