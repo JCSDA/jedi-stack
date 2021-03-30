@@ -59,9 +59,9 @@ To setup environment, choose a modules home directory.  This can be anywhere, bu
 ~~~~~~~~~
 $ export INTEL_ROOT=<path-to-intel-root>
 $ export JEDI_OPT=$HOME/opt/modules
-$ buildscipts/setup_environment.sh gentoo
-$ buildscipts/setup_modules.sh gentoo
-$ buildscipts/build_stack.sh gentoo
+$ buildscripts/setup_environment.sh gentoo
+$ buildscripts/setup_modules.sh gentoo
+$ buildscripts/build_stack.sh gentoo
 ~~~~~~~~~
 
 The enthronement setup with `setup_environment.sh gentoo` generates a `$HOME/.jedi-stack-bashrc` with all the environment
