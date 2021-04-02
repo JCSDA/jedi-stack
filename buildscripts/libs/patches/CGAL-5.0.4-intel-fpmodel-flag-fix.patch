@@ -1,0 +1,13 @@
+diff --git a/cmake/modules/CGAL_SetupCGALDependencies.cmake b/cmake/modules/CGAL_SetupCGALDependencies.cmake
+index 6590e31..55c783f 100644
+--- a/cmake/modules/CGAL_SetupCGALDependencies.cmake
++++ b/cmake/modules/CGAL_SetupCGALDependencies.cmake
+@@ -147,7 +147,7 @@ function(CGAL_setup_CGAL_dependencies target)
+     if(WIN32)
+       target_compile_options(${target} ${keyword} "/fp:strict")
+     else()
+-      target_compile_options(${target} ${keyword} "-fp-model" "strict")
++      target_compile_options(${target} ${keyword} "$<1:-fp-model strict>") # Genexpr enforces grouping of args
+     endif()
+   elseif(CMAKE_CXX_COMPILER_ID MATCHES "SunPro")
+     message( STATUS "Using SunPro compiler, using STLPort 4." )
