@@ -19,7 +19,7 @@ export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="from-source"
 
 # Build options
-export PREFIX=/usr/local
+export PREFIX=/optjedi/modules
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -54,16 +54,16 @@ export      STACK_BUILD_NCCMP=Y
 export        STACK_BUILD_NCO=Y
 export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
-export      STACK_BUILD_FCKIT=N
-export      STACK_BUILD_ATLAS=N
+export      STACK_BUILD_FCKIT=Y
+export      STACK_BUILD_ATLAS=Y
 export   STACK_BUILD_PYBIND11=Y
 export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
 export           STACK_BUILD_ODC=N
-export           STACK_BUILD_PIO=Y
+export           STACK_BUILD_PIO=N
 export          STACK_BUILD_GPTL=N
-export        STACK_BUILD_PYJEDI=Y
+export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
 export          STACK_BUILD_JPEG=N
 export           STACK_BUILD_PNG=N
