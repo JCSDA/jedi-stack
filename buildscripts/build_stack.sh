@@ -77,7 +77,7 @@ $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 # - should add a check at some point to see if they are already there.
 # this can be done in each script individually
 # it might warrant a --force flag to force rebuild when desired
-build_lib CMAKE cmake 3.17.2
+build_lib CMAKE cmake 3.20.0
 build_lib UDUNITS udunits 2.2.28
 build_lib JPEG jpeg 9.1.0
 build_lib ZLIB zlib 1.2.11
