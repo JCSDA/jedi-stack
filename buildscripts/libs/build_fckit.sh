@@ -49,7 +49,7 @@ git checkout $version
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 
-ecbuild -DCMAKE_INSTALL_PREFIX=$prefix --build=Release ..
+ecbuild --build=release --prefix=$prefix ..
 VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 

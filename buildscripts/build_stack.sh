@@ -87,7 +87,7 @@ build_lib LAPACK lapack 3.8.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.7
 build_lib BUFR bufr jcsda-internal 11.4.0.jcsda2
-build_lib ECBUILD ecbuild jcsda-internal 3.3.2.jcsda3
+build_lib ECBUILD ecbuild ecmwf 3.6.1
 build_lib CGAL cgal 5.0.4
 build_lib GITLFS git-lfs 2.11.0
 
@@ -97,9 +97,9 @@ build_lib HDF5 hdf5 1.12.0
 build_lib PNETCDF pnetcdf 1.12.1
 build_lib NETCDF netcdf 4.7.4 4.5.3 4.3.0
 build_lib NCCMP nccmp 1.8.7.0
-build_lib ECKIT eckit jcsda-internal 1.11.6.jcsda2
-build_lib FCKIT fckit jcsda-internal 0.7.0.jcsda1
-build_lib ATLAS atlas jcsda-internal 0.20.2.jcsda1
+build_lib ECKIT eckit ecmwf 1.16.0
+build_lib FCKIT fckit ecmwf 0.9.2
+build_lib ATLAS atlas ecmwf 0.24.1
 build_lib ODB odb 0.18.1.r2
 build_lib ODC odc jcsda-internal 1.0.3
 
