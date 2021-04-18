@@ -24,7 +24,7 @@ export MPI_BUILD="native-pkg"
 
 # Build options
 export PREFIX=/optjedi/modules
-export USE_SUDO=N
+export USE_SUDO=Y
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
 export OVERWRITE=N

@@ -5,8 +5,8 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="gnu/7.3.0"
-export JEDI_MPI="openmpi/3.1.2"
+export JEDI_COMPILER="gnu/9.3.0"
+export JEDI_MPI="openmpi/4.1.0"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -20,7 +20,7 @@ export MPI_BUILD="from-source"
 
 # Build options
 export PREFIX=/optjedi/modules
-export USE_SUDO=N
+export USE_SUDO=Y
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
 export OVERWRITE=N
