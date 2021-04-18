@@ -22,3 +22,23 @@ export CPATH=/usr/local/include:$CPATH
 export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="native-pkg"
 
+# Build options
+export PREFIX=/optjedi/modules
+export USE_SUDO=Y
+export PKGDIR=pkg
+export LOGDIR=buildscripts/log
+export OVERWRITE=N
+export NTHREADS=4
+export   MAKE_CHECK=N
+export MAKE_VERBOSE=N
+export   MAKE_CLEAN=N
+export DOWNLOAD_ONLY=F
+export STACK_EXIT_ON_FAIL=T
+export WGET="wget -nv"
+
+#Global compiler flags
+export FFLAGS=""
+export CFLAGS=""
+export CXXFLAGS=""
+export LDFLAGS=""
+
