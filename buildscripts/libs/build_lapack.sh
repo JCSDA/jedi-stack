@@ -34,6 +34,7 @@ export FC=$SERIAL_FC
 export CC=$SERIAL_CC
 
 export FFLAGS="-fPIC ${FFLAGS}"
+export FCLAGS="-fPIC ${FCLAGS}"
 export CFLAGS="-fPIC ${CFLAGS}"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
