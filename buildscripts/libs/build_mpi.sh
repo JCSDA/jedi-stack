@@ -33,7 +33,6 @@ export CXX=$SERIAL_CXX
 export FC=$SERIAL_FC
 
 export FFLAGS+=" -fPIC"
-[[ -n $FC_GFORTRAN_10 ]] && export FFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz"
 export CFLAGS+=" -fPIC"
 export CXXFLAGS+=" -fPIC"
 export FCFLAGS=${FFLAGS}
@@ -81,6 +80,13 @@ case "$name" in
            extra_conf="--enable-fortran --enable-cxx --enable-two-level-namespace"
        else
            extra_conf="--enable-fortran --enable-cxx"
+       fi
+       # Only enable Gfortran-10+ compatibility flags for MPICH Library itself
+       # Do not propogate with mpifort wrapper which will confuse FindMPI.cmake
+       if [[ -n $FC_GFORTRAN_10 ]]; then
+           export FCFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz"
+           export FFLAGS=${FCFLAGS}
+           export MPICH_MPIFORT_FCFLAGS=""
        fi
        [[ -n $HWLOC_ROOT ]] && extra_conf+=" --with-hwloc-prefix=${HWLOC_ROOT}"
        ;;
