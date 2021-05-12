@@ -49,8 +49,8 @@ git checkout $version
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 
-ecbuild -DCMAKE_INSTALL_PREFIX=$prefix --build=Release ..
-VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4}
+ecbuild --build=release --prefix=$prefix ..
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
