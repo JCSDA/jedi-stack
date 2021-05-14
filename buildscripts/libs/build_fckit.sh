@@ -50,7 +50,7 @@ git checkout $version
 mkdir -p build && cd build
 
 ecbuild --build=release --prefix=$prefix ..
-VERBOSE=$MAKE_VERBOSE $SUDO make -j${NTHREADS:-4}
+VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
