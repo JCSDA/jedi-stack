@@ -86,7 +86,7 @@ build_lib SZIP szip 2.1.1
 build_lib LAPACK lapack 3.8.0
 build_lib BOOST_HDRS boost 1.68.0 headers-only
 build_lib EIGEN3 eigen 3.3.7
-build_lib BUFR bufr jcsda-internal 11.4.0.jcsda2
+build_lib BUFR bufr noaa-emc 11.5.0
 build_lib ECBUILD ecbuild ecmwf 3.6.1
 build_lib CGAL cgal 5.0.4
 build_lib GITLFS git-lfs 2.11.0
@@ -126,7 +126,7 @@ build_lib ECFLOW ecflow ecmwf 5.5.3 boost 1.68.0
 #----------------------
 # These must be rebuilt for each MPI implementation
 build_lib GPTL gptl 8.0.3
-build_lib NCO nco 4.7.9
+build_lib NCO nco 4.9.9
 build_lib PIO pio 2.5.1
 build_lib FFTW fftw 3.3.8
 build_lib BOOST_FULL boost 1.68.0
