@@ -43,7 +43,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 | software | version | Notes |
 | -------- | ------- | ----- |
 | CGAL     | 5.0.2   | Optional in principle but may become required in practice for efficiency reasons.  Can be installed without gmp, mpfr dependencies |
-| bufr     | 11.4.0.jcsda1  | NCEP version replaces previous bufrlib |
+| bufr     | 11.5.0  | NCEP upstream replaces previous bufrlib |
 
 ## Required for certain components or models
 
@@ -67,7 +67,7 @@ These can be build by jedi-stack but they are not required for jedi.
 
 | software | version | Notes |
 | -------- | ------- | ----- |
-| NCO      | 4.7.9   | Can use a native module or package installation? |
+| NCO      | 4.7.9   | Upgraded to 4.9.9 in develop.  Can use a native module or package installation? |
 | fckit | jcsda/0.7.0.jcsda1 | Now using `ecmwf/0.9.2` and now included in default stack |
 | atlas | jcsda/0.20.2.jcsda1 | Now using `ecmwf/0.24.1` and now included in default stack |
 | fms | jcsda/release-stable | Currently not included in stack but moving toward including it|
