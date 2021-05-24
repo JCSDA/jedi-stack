@@ -19,7 +19,7 @@ export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="from-source"
 
 # Build options
-export PREFIX=/optjedi
+export PREFIX=/usr/local
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
