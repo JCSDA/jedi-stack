@@ -65,7 +65,7 @@ export   STACK_BUILD_PYBIND11=Y
 export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
-export           STACK_BUILD_ODC=N
+export           STACK_BUILD_ODC=Y
 export           STACK_BUILD_PIO=N
 export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
