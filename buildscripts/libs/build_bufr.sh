@@ -34,6 +34,7 @@ else
 fi
 
 export FC=$SERIAL_FC
+export F90=$SERIAL_FC
 export CC=$SERIAL_CC
 
 software=NCEPLIBS-bufr
@@ -63,6 +64,6 @@ VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
-pythonVersion="$(python --version | cut -d " " -f2 | cut -d. -f1-2)"
+pythonVersion=$(`which python3` -c 'import sys;print(sys.version_info[0],".",sys.version_info[1],sep="")')
 $MODULES && update_modules compiler $name $source-$version $pythonVersion \
          || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

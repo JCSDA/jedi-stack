@@ -8,23 +8,32 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
+load("cmake")
 load("jedi-gnu")
 load("szip")
+load("zlib")
 load("jedi-openmpi")
+
+load("udunits")
+load("lapack")
 
 load("hdf5")
 load("pnetcdf")
 load("netcdf")
+load("nccmp")
 
-load("lapack")
 load("boost-headers")
 load("eigen")
 load("json")
 load("json-schema-validator")
-
-laod("ecbuild")
-load("eckit")
 load("gsl_lite")
+load("pybind11")
+load("bufr")
+
+load("ecbuild")
+load("eckit")
+load("fckit")
+load("atlas")
 
 whatis("Name: ".. pkgName)
 whatis("Version: ".. pkgVersion)

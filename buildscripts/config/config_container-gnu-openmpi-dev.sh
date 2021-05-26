@@ -5,8 +5,8 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="gnu/7.3.0"
-export JEDI_MPI="openmpi/3.1.2"
+export JEDI_COMPILER="gnu/9.3.0"
+export JEDI_MPI="openmpi/4.1.0"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -19,7 +19,7 @@ export COMPILER_BUILD="native-pkg"
 export MPI_BUILD="from-source"
 
 # Build options
-export PREFIX=/usr/local
+export PREFIX=/optjedi
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -27,7 +27,7 @@ export OVERWRITE=N
 export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=N
-export   MAKE_CLEAN=Y
+export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
 export WGET="wget -nv"
@@ -38,7 +38,7 @@ export CXXFLAGS=""
 export LDFLAGS=""
 
 # Minimal JEDI Stack
-export      STACK_BUILD_CMAKE=N
+export      STACK_BUILD_CMAKE=Y
 export     STACK_BUILD_GITLFS=N
 export       STACK_BUILD_SZIP=Y
 export    STACK_BUILD_UDUNITS=Y
@@ -54,8 +54,8 @@ export      STACK_BUILD_NCCMP=Y
 export        STACK_BUILD_NCO=Y
 export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
-export      STACK_BUILD_FCKIT=N
-export      STACK_BUILD_ATLAS=N
+export      STACK_BUILD_FCKIT=Y
+export      STACK_BUILD_ATLAS=Y
 export   STACK_BUILD_PYBIND11=Y
 export   STACK_BUILD_GSL_LITE=Y
 

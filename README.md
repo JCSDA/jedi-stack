@@ -28,12 +28,12 @@ We want to provide a common set of software libraries to JEDI users and develope
 | lapack   | 3.8.0   | Can be replaced by intel mkl |
 | Boost    | 1.68.0  | headers only |
 | Eigen    | 3.3.7   |       |
-| ecbuild  | jcsda/3.3.2.jcsda3 | Should move to ecmwf for future releases |
+| ecbuild  | jcsda/3.3.2.jcsda3 | Now `ecmwf/3.6.1` in develop |
 | hdf5     | 1.12.0  |    |
 | pnetcdf  | 1.12.1  |    |
 | netcdf   | 4.7.4, 4.5.3, 4.3.0 | versions for C, Fortran, and C++ |
 | nccmp    | 1.8.7.0 | Needed for running tests |
-| eckit    | jcsda/1.11.6.jcsda2 | Should move to ecmwf for next release |
+| eckit    | jcsda/1.11.6.jcsda2 | Now `ecmwf/1.16.0` in develop |
 | bufrlib     | 11.3.2 | deprecated: replaced by NCEP-bufr   |
 | pybind11    | 2.5.0 |   |
 | gsl_lite    | 0.34.0 | upgraded to 0.37.0 in develop  |
@@ -43,7 +43,7 @@ We want to provide a common set of software libraries to JEDI users and develope
 | software | version | Notes |
 | -------- | ------- | ----- |
 | CGAL     | 5.0.2   | Optional in principle but may become required in practice for efficiency reasons.  Can be installed without gmp, mpfr dependencies |
-| bufr     | 11.4.0.jcsda1  | NCEP version replaces previous bufrlib |
+| bufr     | 11.5.0  | NCEP upstream replaces previous bufrlib |
 
 ## Required for certain components or models
 
@@ -67,9 +67,9 @@ These can be build by jedi-stack but they are not required for jedi.
 
 | software | version | Notes |
 | -------- | ------- | ----- |
-| NCO      | 4.7.9   | Can use a native module or package installation? |
-| fckit | jcsda/0.7.0.jcsda1 | Usually not included in stack; should move to ecmwf versions for next releases |
-| atlas | jcsda/0.20.2.jcsda1 | Usually not included in stack; should move to ecmwf versions for next release |
+| NCO      | 4.7.9   | Upgraded to 4.9.9 in develop.  Can use a native module or package installation? |
+| fckit | jcsda/0.7.0.jcsda1 | Now using `ecmwf/0.9.2` and now included in default stack |
+| atlas | jcsda/0.20.2.jcsda1 | Now using `ecmwf/0.24.1` and now included in default stack |
 | fms | jcsda/release-stable | Currently not included in stack but moving toward including it|
 | gptl | 8.0.3 | profiling tool |
 | fftw | 3.3.8 | |

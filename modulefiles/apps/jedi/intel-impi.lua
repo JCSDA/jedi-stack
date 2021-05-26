@@ -1,5 +1,5 @@
 help([[
-Load environment for running JEDI applications with GNU compilers and OpenMPI.
+Load environment for running JEDI applications with Intel OneAPI
 ]])
 
 local pkgName    = myModuleName()
@@ -8,9 +8,13 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
+load("cmake")
 load("jedi-intel")
 load("szip")
+load("zlib")
 load("jedi-impi")
+
+load("udunits")
 
 load("hdf5")
 load("pnetcdf")
@@ -19,20 +23,18 @@ load("nccmp")
 
 load("boost-headers")
 load("eigen")
-load("bufr")
 load("json")
 load("json-schema-validator")
+load("gsl_lite")
+load("pybind11")
+load("bufr")
 
 load("ecbuild")
 load("eckit")
-load("gsl_lite")
-
-
-setenv("CC","mpiicc")
-setenv("FC","mpiifort")
-setenv("CXX","mpiicpc")
+load("fckit")
+load("atlas")
 
 whatis("Name: ".. pkgName)
 whatis("Version: ".. pkgVersion)
 whatis("Category: Application")
-whatis("Description: JEDI Environment with Intel17")
+whatis("Description: JEDI Environment with Intel OneAPI")

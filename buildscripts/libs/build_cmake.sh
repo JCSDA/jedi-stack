@@ -15,7 +15,6 @@ version=$1
 
 if $MODULES; then
     module load jedi-$JEDI_COMPILER
-    module try-load cmake
     module list
 
     prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
