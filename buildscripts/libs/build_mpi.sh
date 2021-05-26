@@ -81,12 +81,13 @@ case "$name" in
        else
            extra_conf="--enable-fortran --enable-cxx"
        fi
-       # Only enable Gfortran-10+ compatibility flags for MPICH Library itself
-       # Do not propogate with mpifort wrapper which will confuse FindMPI.cmake
+       # gfortran-10+ compatibility flags
        if [[ -n $FC_GFORTRAN_10 ]]; then
-           export FCFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz"
-           export FFLAGS=${FCFLAGS}
-           export MPICH_MPIFORT_FCFLAGS=""
+           # Use these flags to build MPICH itself, but don't add to WRAPPER_FCFLAGS
+           export MPICHLIB_FCFLAGS+=" -fallow-argument-mismatch -fallow-invalid-boz"
+           export MPICHLIB_FFLAGS=${MPICHLIB_FCFLAGS}
+           # Disable check for mismatched args flags in confdb/aclocal_f77.ac
+           export pac_cv_prog_f77_mismatched_args=yes
        fi
        [[ -n $HWLOC_ROOT ]] && extra_conf+=" --with-hwloc-prefix=${HWLOC_ROOT}"
        ;;
