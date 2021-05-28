@@ -42,7 +42,7 @@ export CXXFLAGS=""
 export LDFLAGS=""
 
 # Minimal JEDI Stack
-export      STACK_BUILD_CMAKE=N
+export      STACK_BUILD_CMAKE=Y
 export     STACK_BUILD_GITLFS=N
 export       STACK_BUILD_SZIP=Y
 export    STACK_BUILD_UDUNITS=Y
@@ -64,7 +64,7 @@ export   STACK_BUILD_PYBIND11=Y
 export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
-export           STACK_BUILD_ODC=N
+export           STACK_BUILD_ODC=Y
 export           STACK_BUILD_PIO=Y
 export          STACK_BUILD_GPTL=N
 export        STACK_BUILD_PYJEDI=Y
@@ -80,7 +80,7 @@ export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
-export          STACK_BUILD_CGAL=N
+export          STACK_BUILD_CGAL=Y
 export          STACK_BUILD_JSON=Y
 export STACK_BUILD_JSON_SCHEMA_VALIDATOR=Y
 export           STACK_BUILD_FMS=N
