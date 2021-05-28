@@ -49,7 +49,7 @@ url="https://github.com/Reference-LAPACK/lapack/archive/$tarball"
 
 # Add CMAKE_INSTALL_LIBDIR to make sure it will be installed under lib not lib64
 cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib \
-      -DCMAKE_Fortran_COMPILER=$SERIAL_FC -DCMAKE_Fortran_FLAGS=$FCFLAGS
+      -DBUILD_SHARED_LIBS=ON -DCMAKE_Fortran_COMPILER=$SERIAL_FC -DCMAKE_Fortran_FLAGS=$FCFLAGS
 cd build
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
