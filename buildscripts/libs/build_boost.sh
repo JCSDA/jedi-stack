@@ -11,7 +11,7 @@ version=$1
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 software=$name\_$(echo $version | sed 's/\./_/g')
-url="https://boostorg.jfrog.io/artifactory/main/release/$version/$software.tar.gz"
+url="https://boostorg.jfrog.io/artifactory/main/release/$version/source/$software.tar.gz"
 [[ -d $software ]] || ( $WGET $url; tar -xf $software.tar.gz )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
