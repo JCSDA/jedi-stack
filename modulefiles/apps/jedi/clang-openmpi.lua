@@ -9,8 +9,8 @@ local pkgNameVer = myModuleFullName()
 conflict(pkgName)
 
 load("jedi-clang")
-load("szip/2.1.1")
-load("jedi-openmpi/4.0.3")
+load("szip")
+load("jedi-openmpi")
 
 load("hdf5")
 load("pnetcdf")
@@ -19,13 +19,14 @@ load("netcdf")
 load("lapack")
 load("boost-headers")
 load("eigen")
-load("bufrlib")
+load("bufr")
 load("json")
 load("json-schema-validator")
 
 load("ecbuild")
 
 load("nccmp")
+load("gsl_lite")
 
 setenv("CC","mpicc")
 setenv("FC","mpifort")

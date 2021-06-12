@@ -32,7 +32,7 @@ export OVERWRITE=N
 export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=N
-export   MAKE_CLEAN=Y
+export   MAKE_CLEAN=N
 export DOWNLOAD_ONLY=F
 export STACK_EXIT_ON_FAIL=T
 export WGET="wget -nv"
@@ -43,7 +43,7 @@ export CXXFLAGS=""
 export LDFLAGS=""
 
 # Minimal JEDI Stack
-export      STACK_BUILD_CMAKE=N
+export      STACK_BUILD_CMAKE=Y
 export     STACK_BUILD_GITLFS=N
 export       STACK_BUILD_SZIP=Y
 export    STACK_BUILD_UDUNITS=Y
@@ -51,7 +51,7 @@ export       STACK_BUILD_ZLIB=Y
 export     STACK_BUILD_LAPACK=N
 export STACK_BUILD_BOOST_HDRS=Y
 export     STACK_BUILD_EIGEN3=Y
-export    STACK_BUILD_BUFRLIB=N
+export       STACK_BUILD_BUFR=Y
 export       STACK_BUILD_HDF5=Y
 export    STACK_BUILD_PNETCDF=Y
 export     STACK_BUILD_NETCDF=Y
@@ -61,10 +61,12 @@ export    STACK_BUILD_ECBUILD=Y
 export      STACK_BUILD_ECKIT=Y
 export      STACK_BUILD_FCKIT=N
 export      STACK_BUILD_ATLAS=N
-export        STACK_BUILD_ODC=N
+export   STACK_BUILD_PYBIND11=Y
+export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
-export           STACK_BUILD_PIO=N
+export           STACK_BUILD_ODC=Y
+export           STACK_BUILD_PIO=Y
 export        STACK_BUILD_PYJEDI=N
 export      STACK_BUILD_NCEPLIBS=N
 export        STACK_BUILD_JASPER=N
@@ -76,6 +78,8 @@ export          STACK_BUILD_ESMF=N
 export      STACK_BUILD_BASELIBS=N
 export     STACK_BUILD_PDTOOLKIT=N
 export          STACK_BUILD_TAU2=N
+export          STACK_BUILD_CGAL=Y
+
 
 # For help with finding packages
 export PATH=${PREFIX}/bin:$PATH

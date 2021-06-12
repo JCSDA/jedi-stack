@@ -1,12 +1,15 @@
 #!/bin/bash
 # © Copyright 2020 UCAR
+# © Copyright 2020 NOAA/NCEP/EMC
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
 set -ex
 
-name="bufrlib"
-version=$1
+name="bufr"
+# source should either be noaa-emc or jcsda
+source=$1
+version=$2
 
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
@@ -20,39 +23,47 @@ if $MODULES; then
     module list
     set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$source-$version"
     if [[ -d $prefix ]]; then
     [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
     fi
 
 else
-    prefix=${BUFRLIB_ROOT:-"/usr/local"}
+    prefix=${BUFR_ROOT:-"/usr/local"}
 fi
 
 export FC=$SERIAL_FC
+export F90=$SERIAL_FC
 export CC=$SERIAL_CC
 
-## Implementation can be switched to NCEPLIBS-bufr when shared libraries are supported
-software=bufrlib
-#software=NCEPLIBS-bufr
+software=NCEPLIBS-bufr
 
 # Release git tag name
-tag=bufr_v$version
+if [[ ${source} == "jcsda-internal" ]]
+then
+  gitOrg="jcsda-internal"
+  tag=$version
+else
+  gitOrg="${source}"
+  tag=bufr_v$version
+fi
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-[[ -d $software ]] || git clone https://github.com/JCSDA/$software.git
+[[ -d $software ]] || git clone https://github.com/$gitOrg/$software.git
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git fetch
 git checkout --detach $tag
-[[ -d build ]] && rm -rf build
+#[[ -d build ]] && rm -rf build
+[[ -d build ]] && $SUDO rm -rf build
+mkdir -p build && cd build
 
-cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=1 -DOPT_IPO=OFF
-cd build
+cmake -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 VERBOSE=$MAKE_VERBOSE $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules compiler $name $version \
-         || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
+pythonVersion=$(`which python3` -c 'import sys;print(sys.version_info[0],".",sys.version_info[1],sep="")')
+$MODULES && update_modules compiler $name $source-$version $pythonVersion \
+         || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log

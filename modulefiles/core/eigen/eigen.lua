@@ -7,7 +7,7 @@ local pkgNameVer = myModuleFullName()
 
 conflict(pkgName)
 
-try_load("boost_headers")
+try_load("boost-headers")
 
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 

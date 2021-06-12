@@ -33,8 +33,9 @@ fi
 export FC=$SERIAL_FC
 export CC=$SERIAL_CC
 
-export FFLAGS="-fPIC ${FFLAGS}"
-export CFLAGS="-fPIC ${CFLAGS}"
+export FFLAGS="-fPIC"
+export FCFLAGS="-fPIC"
+export CFLAGS="-fPIC"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
@@ -47,8 +48,8 @@ url="https://github.com/Reference-LAPACK/lapack/archive/$tarball"
 [[ -d build ]] && rm -rf build
 
 # Add CMAKE_INSTALL_LIBDIR to make sure it will be installed under lib not lib64
-cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_Fortran_COMPILER=$SERIAL_FC
+cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_SHARED_LIBS=ON -DCMAKE_Fortran_COMPILER=$SERIAL_FC -DCMAKE_Fortran_FLAGS=$FCFLAGS
 cd build
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
