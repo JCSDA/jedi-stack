@@ -42,6 +42,7 @@ mkdir -p build && cd build
 [[ -n $JSON_DIR ]] || ( echo "Required json cmake configuration not found, ABORT!"; exit 1 )
 cmake .. \
       -DCMAKE_INSTALL_PREFIX=$prefix \
+      -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
       -DBUILD_SHARED_LIBS=Y \
