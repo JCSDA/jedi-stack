@@ -3,10 +3,10 @@
 # This software is licensed under the terms of the Apache Licence Version 2.0 which can be obtained at
 # http://www.apache.org/licenses/LICENSE-2.0.
 
-# Hosts cheyenne and casper use different module trees:
+# Hosts cheyenne and casper use different default system module trees:
 #  cheyenne / MODULESHOME: /glade/u/apps/ch/opt
 #  casper / MODULESHOME:   /glade/u/apps/dav/opt
-# Set PREFIX and CXXFLAGS / LDFLAGS accordingly per host-specific config_<host>.sh script
+# Use these to set CXXFLAGS / LDFLAGS accordingly per host-specific config_<host>.sh script
 
 # Compiler/MPI combination
 #export JEDI_COMPILER="gnu/9.1.0"
@@ -42,6 +42,7 @@ export WGET="wget -nv"
 export FFLAGS=""
 export CFLAGS=""
 
+# C++-14 compliant compiler settings
 # set / export these variables when building for Intel compiler(s)
 export CXXFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/lib64"
 export LDFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/lib64"
