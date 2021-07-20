@@ -26,7 +26,7 @@ export JEDI_COMPILER_BUILD="native-module"
 export MPI_BUILD="native-module"
 
 # Build options
-oexport PREFIX=/glade/work/jedipara/casper/opt/modules
+export PREFIX=/glade/work/jedipara/casper/opt/modules
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
