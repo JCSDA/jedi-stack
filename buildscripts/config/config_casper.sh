@@ -26,7 +26,7 @@ export JEDI_COMPILER_BUILD="native-module"
 export MPI_BUILD="native-module"
 
 # Build options
-export PREFIX=/glade/work/jedipara/cheyenne/opt/modules
+oexport PREFIX=/glade/work/jedipara/casper/opt/modules
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -43,5 +43,5 @@ export FFLAGS=""
 export CFLAGS=""
 
 # set / export these variables when building for Intel compiler(s)
-export CXXFLAGS="-gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64"
-export LDFLAGS="-gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64"
+export CXXFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/lib64"
+export LDFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/lib64"
