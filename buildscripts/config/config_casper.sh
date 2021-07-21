@@ -45,6 +45,6 @@ export CFLAGS=""
 # C++-14 compliant compiler settings
 # set / export these variables when building for Intel compiler(s)
 if [[ "$JEDI_COMPILER" =~ .*"intel"* ]]; then
-   export CXXFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/      +++lib64"
-   export LDFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/       +++lib64"
+   export CXXFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/lib64"
+   export LDFLAGS="-gxx-name=/glade/u/apps/dav/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/dav/opt/gnu/9.1.0/lib64"
 fi
