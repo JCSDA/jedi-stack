@@ -32,5 +32,10 @@ export WGET="wget -nv"
 #Global compiler flags
 export FFLAGS="-m64"
 export CFLAGS="-m64"
-export CXXFLAGS="-m64"
-export LDFLAGS=""
+
+# C++-14 compliant compiler settings
+# set / export these variables when building for Intel compiler(s)
+if [[ "$JEDI_COMPILER" =~ .*"intel"* ]]; then
+    export CXXFLAGS="-m64"
+    export LDFLAGS=""
+fi
