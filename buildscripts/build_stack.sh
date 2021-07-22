@@ -114,7 +114,7 @@ build_lib XERCES xerces 3.1.4
 build_lib NCEPLIBS nceplibs fv3
 build_lib TKDIFF tkdiff 4.3.5
 build_lib PYJEDI pyjedi
-build_lib PYBIND11 pybind11 2.6.2
+build_lib PYBIND11 pybind11 2.7.0
 build_lib GSL_LITE gsl_lite 0.37.0
 build_lib GEOS geos 3.8.1
 build_lib SQLITE sqlite 3.32.3
