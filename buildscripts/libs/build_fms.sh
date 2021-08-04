@@ -20,6 +20,7 @@ if $MODULES; then
   source $MODULESHOME/init/bash
   module load jedi-$JEDI_COMPILER
   module load jedi-$JEDI_MPI
+  module try-load ncarcompilers
   module load netcdf
   module list
   set -x

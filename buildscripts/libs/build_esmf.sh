@@ -20,6 +20,7 @@ if $MODULES; then
   module load jedi-$JEDI_COMPILER
   module try-load szip
   [[ -z $mpi ]] || module load jedi-$JEDI_MPI
+  module try-load ncarcompilers
   module load hdf5
   [[ -z $mpi ]] || module load pnetcdf
   module load netcdf
