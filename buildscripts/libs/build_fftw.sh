@@ -18,6 +18,7 @@ set +x
 source $MODULESHOME/init/bash
 module load jedi-$JEDI_COMPILER
 [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
+module try-load ncarcompilers
 module list
 set -x
 

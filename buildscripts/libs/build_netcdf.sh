@@ -19,6 +19,7 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     [[ -z $mpi ]] || module load jedi-$JEDI_MPI 
+    module try-load ncarcompilers
     module try-load szip
     module load hdf5
     [[ -z $mpi ]] || module load pnetcdf

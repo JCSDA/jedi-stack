@@ -21,6 +21,7 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module load jedi-$JEDI_MPI 
+    module try-load ncarcompilers
     module try-load cmake
     module try-load git-lfs
     module try-load hdf5
