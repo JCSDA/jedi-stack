@@ -157,6 +157,14 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix
 
+# If on macos, rename the file "VERSION" so it doesn't collide with the
+# c++ include file (named "version"). Note this collision occurs since macos
+# uses a case-insensitive file system.
+if [[ "$(uname)" == "Darwin" ]]
+then
+  mv VERSION config.VERSION
+fi
+
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install
