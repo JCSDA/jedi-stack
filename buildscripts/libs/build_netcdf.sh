@@ -158,6 +158,19 @@ mkdir -p build && cd build
 
 ../configure --prefix=$prefix
 
+# If on macos, rename the file "VERSION" so it doesn't collide with the
+# c++ include file (named "version"). Note this collision occurs since macos
+# uses a case-insensitive file system.
+#
+# Unidata has fixed this in their development track:
+#   https://github.com/Unidata/netcdf-cxx4/commit/41c0233cb964a3ee1d4e5db5448cd28d617925fb
+# Once this fix is released, and we update to that release, the following
+# if statements needs to be removed.
+if [[ "$(uname)" == "Darwin" ]]
+then
+  mv VERSION config.VERSION
+fi
+
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
 $SUDO make install

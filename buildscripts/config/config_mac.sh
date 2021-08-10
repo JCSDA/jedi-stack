@@ -5,7 +5,7 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="clang/11.0.3"
+export JEDI_COMPILER="clang/12.0.5"
 export FC=gfortran #Set the initial fortran compiler to build MPI distribution
 #export JEDI_MPI="openmpi/4.0.3"
 export JEDI_MPI="mpich/3.3.2"
