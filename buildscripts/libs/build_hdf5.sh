@@ -64,7 +64,8 @@ mkdir -p build && cd build
 
 [[ -z $mpi ]] || extra_conf="--enable-parallel"
 
-../configure --prefix=$prefix --with-pic --enable-fortran --enable-static --enable-shared --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf
+../configure --prefix=$prefix --with-pic --enable-fortran --enable-static --enable-shared \
+             --with-szlib=$SZIP_ROOT --with-zlib=$ZLIB_ROOT $extra_conf --enable-build-mode=production
 
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
