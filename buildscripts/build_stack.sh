@@ -94,7 +94,7 @@ build_lib GITLFS git-lfs 2.11.0
 #----------------------
 # These must be rebuilt for each MPI implementation
 build_lib HDF5 hdf5 1.12.0
-build_lib PNETCDF pnetcdf 1.12.1
+build_lib PNETCDF pnetcdf 1.12.2
 build_lib NETCDF netcdf 4.7.4 4.5.3 4.3.0
 build_lib NCCMP nccmp 1.8.7.0
 build_lib ECKIT eckit ecmwf 1.16.0
