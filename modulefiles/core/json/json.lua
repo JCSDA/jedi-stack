@@ -11,8 +11,7 @@ local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
 local base = pathJoin(opt,"core",pkgName,pkgVersion)
 
-setenv("JSON_ROOT", base)
-setenv("JSON_DIR", pathJoin(base,"lib","cmake","nlohmann_json"))
+setenv("nlohmann_json_ROOT", base)
 
 whatis("Name: ".. pkgName)
 whatis("Version: " .. pkgVersion)
