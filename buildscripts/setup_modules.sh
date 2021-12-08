@@ -61,9 +61,13 @@ compilerVersion=$(echo $JEDI_COMPILER | cut -d/ -f2)
 mpiName=$(echo $JEDI_MPI | cut -d/ -f1)
 mpiVersion=$(echo $JEDI_MPI | cut -d/ -f2)
 
+pythonName=$(echo $JEDI_PYTHON | cut -d/ -f1)
+pythonVersion=$(echo $JEDI_PYTHON | cut -d/ -f2)
+
 set +x
 echo "Compiler: $compilerName/$compilerVersion"
 echo "Mpi: $mpiName/$mpiVersion"
+echo "Python: $pythonName/$pythonVersion"
 set -x
 
 # install with root permissions?
@@ -77,6 +81,7 @@ set -x
 $SUDO mkdir -p $JEDI_OPT/modulefiles/core
 $SUDO mkdir -p $JEDI_OPT/modulefiles/compiler/$compilerName/$compilerVersion
 $SUDO mkdir -p $JEDI_OPT/modulefiles/mpi/$compilerName/$compilerVersion/$mpiName/$mpiVersion
+$SUDO mkdir -p $JEDI_OPT/modulefiles/python/$pythonName/$pythonVersion
 
 $SUDO mkdir -p $JEDI_OPT/modulefiles/core/jedi-$compilerName
 $SUDO cp $JEDI_STACK_ROOT/modulefiles/core/jedi-$compilerName/jedi-$compilerName.lua \
@@ -85,6 +90,10 @@ $SUDO cp $JEDI_STACK_ROOT/modulefiles/core/jedi-$compilerName/jedi-$compilerName
 $SUDO mkdir -p $JEDI_OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName
 $SUDO cp $JEDI_STACK_ROOT/modulefiles/compiler/compilerName/compilerVersion/jedi-$mpiName/jedi-$mpiName.lua \
          $JEDI_OPT/modulefiles/compiler/$compilerName/$compilerVersion/jedi-$mpiName/$mpiVersion.lua
+
+$SUDO mkdir -p $JEDI_OPT/modulefiles/core/jedi-$pythonName
+$SUDO cp $JEDI_STACK_ROOT/modulefiles/core/jedi-$pythonName/jedi-$pythonName.lua \
+         $JEDI_OPT/modulefiles/core/jedi-$pythonName/$pythonVersion.lua
 
 #===============================================================================
 # Make sure compiler is available
@@ -152,7 +161,7 @@ case ${MPI_BUILD} in
     set +x
     echo -e "==========================\n USING NATIVE MPI MODULE"
     source $MODULESHOME/init/bash
-    module load jedi-$JEDI_COMPILER
+    module load $JEDI_COMPILER
     module load $JEDI_MPI
     module list
     set -x
@@ -178,6 +187,31 @@ case ${MPI_BUILD} in
         exit $RetCode
     fi
     echo "MPI BUILD SUCCESS!"
+    ;;
+esac
+
+#===============================================================================
+# Make sure Python is available
+#
+
+case ${PYTHON_BUILD} in
+  "native-module")
+    echo -e "==========================\n USING NATIVE PYTHON MODULE"
+    set +x
+    source $MODULESHOME/init/bash
+    module load $JEDI_PYTHON
+    module list
+    set -x
+    ;;
+  "native-pkg")
+    echo -e "==========================\n USING NATIVE PYTHON"
+    cd $JEDI_OPT/modulefiles/core/jedi-$pythonName
+    $SUDO sed -i -e '/load(python)/d' $pythonVersion.lua
+    $SUDO sed -i -e '/prereq(python)/d' $pythonVersion.lua
+    ;;
+  "from-source")
+    echo "ERROR: INSTALLING PYTHON FROM SOURCE IS NOT SUPPORTED AT THIS TIME, ABORT!"
+    exit 1
     ;;
 esac
 
