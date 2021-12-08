@@ -37,7 +37,7 @@ url="https://github.com/nlohmann/json/archive/$tarfile"
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-cmake .. -DCMAKE_INSTALL_PREFIX=$prefix -DJSON_BuildTests=$MAKE_CHECK
+cmake .. -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib -DJSON_BuildTests=$MAKE_CHECK
 [[ $MAKE_CHECK =~ [yYtT] ]] && make test
 $SUDO make install
 
