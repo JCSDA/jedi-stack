@@ -156,6 +156,8 @@ software=$name-"cxx4"-$version
 mkdir -p build && cd build
 
 ../configure --prefix=$prefix
+# Bug fix for case-insensitive macOS file systems
+mv -v VERSION VERSION.txt
 
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && make check
