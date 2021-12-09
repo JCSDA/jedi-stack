@@ -73,6 +73,11 @@ mkdir -p $logdir
 $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 
 #----------------------
+# Prerequisite, must be built first so that
+# the Python-dependent builds (e.g. bufr) work
+build_lib PYJEDI pyjedi
+
+#----------------------
 # MPI-independent
 # - should add a check at some point to see if they are already there.
 # this can be done in each script individually
@@ -113,7 +118,6 @@ build_lib ARMADILLO armadillo 1.900.1
 build_lib XERCES xerces 3.1.4
 build_lib NCEPLIBS nceplibs fv3
 build_lib TKDIFF tkdiff 4.3.5
-build_lib PYJEDI pyjedi
 build_lib PYBIND11 pybind11 2.5.0
 build_lib GSL_LITE gsl_lite 0.37.0
 build_lib GEOS geos 3.8.1
