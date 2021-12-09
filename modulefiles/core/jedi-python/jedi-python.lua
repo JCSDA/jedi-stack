@@ -25,4 +25,6 @@ whatis("Description: non-conda python configuration")
 load(python)
 prereq(python)
 
-prepend_path("PYTHONPATH", opt .. "/modules/pyjedi")
+-- Set environment variable that tell JEDI python environments if this is conda or not
+setenv("JEDI_PYTHON_STYLE", "other")
+

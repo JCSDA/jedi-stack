@@ -25,9 +25,7 @@ whatis("Description: conda python configuration")
 local conda_dir = "${CONDA_ROOT}"
 local funcs = "conda __conda_activate __conda_hashr __conda_reactivate __add_sys_prefix_to_path"
 
--- On unload: Deactivate environment and remove exported functions
--- execute{cmd="for i in $(seq ${CONDA_SHLVL:=0}); do conda deactivate; done")
-execute{cmd="conda deactivate", modeA={"unload"}}
+-- On unload: Remove exported functions
 execute{cmd="unset -f " .. funcs, modeA={"unload"}}
 
 load(python)
@@ -38,9 +36,9 @@ setenv("CONDA_ENVS_PATH", opt)
 -- Directories are separated with a comma
 setenv("CONDA_PKGS_DIRS", conda_dir .. "/pkgs")
 
--- On load: Initialize conda and activate environment (unless told to skip)
+-- Set environment variable that tell JEDI python environments if this is conda or not
+setenv("JEDI_PYTHON_STYLE", "conda")
+
+-- On load: Initialize conda
 execute{cmd="source " .. conda_dir .. "/etc/profile.d/conda.sh; export -f " .. funcs, modeA={"load"}}
-local skip_activate=os.getenv("SKIP_ACTIVATE_PYJEDI") or ""
-if ( not skip_activate ) then
-  execute{cmd="conda activate pyjedi", modeA={"load"}}
-end
+
