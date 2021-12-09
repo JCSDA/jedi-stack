@@ -29,6 +29,9 @@ function update_modules {
         mpi      )
             tmpl_file=$JEDI_STACK_ROOT/modulefiles/mpi/compilerName/compilerVersion/mpiName/mpiVersion/$2/$2.lua
             to_dir=$OPT/modulefiles/mpi/$JEDI_COMPILER/$JEDI_MPI ;;
+        python  )
+            tmpl_file=$JEDI_STACK_ROOT/modulefiles/python/pythonName/pythonVersion/$2/$2.lua
+            to_dir=$OPT/modulefiles/python/$JEDI_PYTHON ;;
         *) echo "ERROR: INVALID MODULE PATH, ABORT!"; exit 1 ;;
     esac
 
@@ -152,6 +155,7 @@ function _initialize_prefix() {
             core) prefix="${PREFIX:-"/opt/modules"}/core/$name/$version";;
             compiler) prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version";;
             mpi) prefix="${PREFIX:-"/opt/modules"}/$compiler/$mpi/$name/$version";;
+            # python not yet implemented
         esac
         if [[ -d $prefix ]]; then
             [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!"; $SUDO rm -rf $prefix ) \
@@ -189,4 +193,5 @@ export -f build_lib
 export -f _initialize_prefix
 export -f initialize_prefix_core
 export -f initialize_prefix_compiler
+# Note: this isn't used anywhere
 export -f initialize_prefix_mpi
