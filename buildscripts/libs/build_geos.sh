@@ -21,7 +21,7 @@ compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 set +x
 source $MODULESHOME/init/bash
 module load jedi-$JEDI_COMPILER
-module try-load cmake
+module try_load cmake
 set -x
 
 initialize_prefix_compiler $name $version $compiler

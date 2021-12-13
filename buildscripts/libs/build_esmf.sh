@@ -18,13 +18,13 @@ if $MODULES; then
   set +x
   source $MODULESHOME/init/bash
   module load jedi-$JEDI_COMPILER
-  module try-load szip
+  module try_load szip
   [[ -z $mpi ]] || module load jedi-$JEDI_MPI
-  module try-load ncarcompilers
+  module try_load ncarcompilers
   module load hdf5
   [[ -z $mpi ]] || module load pnetcdf
   module load netcdf
-  module try-load udunits
+  module try_load udunits
   module list
   set -x
 
