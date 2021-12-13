@@ -26,7 +26,7 @@ if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
-    module try-load cmake git python qt
+    module try_load cmake git python qt
     module list
     set -x
 

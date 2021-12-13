@@ -19,12 +19,12 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module load jedi-$JEDI_MPI
-    module try-load ncarcompilers
-    module try-load cmake
-    module try-load ecbuild
-    module try-load zlib
-    module try-load boost-headers
-    module try-load eigen
+    module try_load ncarcompilers
+    module try_load cmake
+    module try_load ecbuild
+    module try_load zlib
+    module try_load boost-headers
+    module try_load eigen
     module list
     set -x
 

@@ -17,11 +17,11 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     [[ -z $mpi ]] || module load jedi-$JEDI_MPI
-    module try-load ncarcompilers
-    module try-load szip
+    module try_load ncarcompilers
+    module try_load szip
     module load hdf5
     module load netcdf
-    module try-load udunits
+    module try_load udunits
     module list
     set -x
 

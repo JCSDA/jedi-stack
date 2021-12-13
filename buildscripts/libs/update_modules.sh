@@ -144,7 +144,7 @@ function _initialize_prefix() {
         fi
         if [[ $# > 6 ]]; then
             for mod in ${@:7}; do
-                module try-load $mod
+                module try_load $mod
             done
         fi
         module list
