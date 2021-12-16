@@ -17,8 +17,9 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module load jedi-$JEDI_MPI 
-    module try-load cmake
-    module try-load szip
+    module try_load ncarcompilers
+    module try_load cmake
+    module try_load szip
     module load hdf5
     module load netcdf
     module list
@@ -54,7 +55,7 @@ software=$name-$version
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 
-cmake -DCMAKE_INSTALL_PREFIX=$prefix -DENABLE_NETCDF=ON -DENABLE_FORTRAN=ON ..
+cmake -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib -DENABLE_NETCDF=ON -DENABLE_FORTRAN=ON ..
 
 VERBOSE="$MAKE_VERBOSE" make -j${NTHREADS:-4}
 [[ $MAKE_CHECK =~ [yYtT] ]] && ctest

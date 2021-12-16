@@ -60,6 +60,7 @@ export   STACK_BUILD_PYBIND11=Y
 export   STACK_BUILD_GSL_LITE=Y
 
 # Optional Additions
+export       STACK_BUILD_ECCODES=Y
 export           STACK_BUILD_ODC=Y
 export           STACK_BUILD_PIO=Y
 export          STACK_BUILD_GPTL=N
