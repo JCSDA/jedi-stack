@@ -30,7 +30,7 @@ software=$name-$version
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 tarname="$software.tar.bz2"
 url="https://download.osgeo.org/geos/${tarname}"
-[[ -d $software ]] || ( $WGET $url; tar -xf ${tarname} )
+[[ -d $software ]] || ( rm -f ${tarname}; $WGET $url; tar -xf ${tarname} )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 

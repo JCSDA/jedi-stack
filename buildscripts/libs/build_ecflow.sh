@@ -64,7 +64,7 @@ if [ -z $boost_root ]; then
     echo "Building boost from source"
     boost_software=$boost\_$(echo $boost_version | sed 's/\./_/g')
     url="https://boostorg.jfrog.io/artifactory/main/release/$boost_version/source/$boost_software.tar.gz"
-    [[ -d $boost_software ]] || ( $WGET $url; tar -xf $boost_software.tar.gz )
+    [[ -d $boost_software ]] || ( rm -f $boost_software.tar.gz; $WGET $url; tar -xf $boost_software.tar.gz )
     [[ -d $boost_software ]] && cd $boost_software || ( echo "$boost_software does not exist, ABORT!"; exit 1 )
 
     debug="--debug-configuration"

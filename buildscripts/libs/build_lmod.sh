@@ -32,6 +32,7 @@ lmod_version="8.0"
 #sudo luarocks install luafilesystem
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+rm -f lua-$lua_version.tar.bz2
 $WGET https://sourceforge.net/projects/lmod/files/lua-$lua_version.tar.bz2
 bzip2 -d lua-$lua_version.tar.bz2; tar xvf lua-$lua_version.tar
 cd lua-$lua_version

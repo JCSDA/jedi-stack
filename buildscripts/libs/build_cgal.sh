@@ -51,7 +51,7 @@ cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
 
 software="CGAL-"$version
 url="https://github.com/CGAL/cgal/releases/download/v$version/$software-library.tar.xz"
-[[ -d $software ]] || ( $WGET $url; tar -xf $software-library.tar.xz )
+[[ -d $software ]] || ( rm -f $software-library.tar.xz; $WGET $url; tar -xf $software-library.tar.xz )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 
