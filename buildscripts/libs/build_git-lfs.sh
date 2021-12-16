@@ -13,7 +13,7 @@ if $MODULES; then
 
     set +x
     source $MODULESHOME/init/bash
-    module try-load git
+    module try_load git
     module list
     set -x
 

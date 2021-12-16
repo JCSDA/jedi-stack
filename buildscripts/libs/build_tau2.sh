@@ -18,9 +18,9 @@ if $MODULES; then
     source $MODULESHOME/init/bash
     module load jedi-$JEDI_COMPILER
     module load jedi-$JEDI_MPI 
-    module try-load ncarcompilers
-    module try-load pdtoolkit
-    module try-load zlib
+    module try_load ncarcompilers
+    module try_load pdtoolkit
+    module try_load zlib
     module list
     set -x
 
