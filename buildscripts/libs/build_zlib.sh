@@ -39,7 +39,7 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=$name-$version
 url=http://www.zlib.net/$software.tar.gz
-[[ -d $software ]] || ( $WGET $url; tar -xf $software.tar.gz )
+[[ -d $software ]] || ( rm -f $software.tar.gz; $WGET $url; tar -xf $software.tar.gz )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build

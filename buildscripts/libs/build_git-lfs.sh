@@ -32,6 +32,7 @@ cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
 software=git-lfs-linux-386-v$version
 mkdir -p $software
 cd $software
+rm -f $software.tar.gz
 wget https://github.com/git-lfs/git-lfs/releases/download/v$version/$software.tar.gz
 tar xvf $software.tar.gz
 $SUDO mkdir -p $prefix/bin

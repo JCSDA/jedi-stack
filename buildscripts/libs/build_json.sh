@@ -31,7 +31,7 @@ cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
 software="$name-$version"
 tarfile="v$version.tar.gz"
 url="https://github.com/nlohmann/json/archive/$tarfile"
-[[ -d $software ]] || ( $WGET $url; tar -xf $tarfile )
+[[ -d $software ]] || ( rm -f $tarfile; $WGET $url; tar -xf $tarfile )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
