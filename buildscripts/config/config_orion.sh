@@ -5,8 +5,13 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/2020"
-export JEDI_MPI="impi/2020"
+# GNU
+export JEDI_COMPILER="gnu/10.2.0"
+export JEDI_MPI="openmpi/4.0.4"
+
+# Intel
+export JEDI_COMPILER="intel/2020.2"
+export JEDI_MPI="impi/2020.2"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -19,7 +24,7 @@ export JEDI_COMPILER_BUILD="native-module"
 export MPI_BUILD="native-module"
 
 # Build options
-export PREFIX=/work/noaa/da/mmiesch/modules
+export PREFIX=/work/noaa/da/jedipara/opt/modules
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
