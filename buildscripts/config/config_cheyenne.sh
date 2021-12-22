@@ -9,11 +9,13 @@
 # Use these to set CXXFLAGS / LDFLAGS accordingly per host-specific config_<host>.sh script
 
 # Compiler/MPI combination
-#export JEDI_COMPILER="gnu/9.1.0"
-#export JEDI_MPI="openmpi/4.0.3"
+# GNU (default)
+#export JEDI_COMPILER="gnu/10.1.0"
+#export JEDI_MPI="openmpi/4.1.0"
 
-export JEDI_COMPILER="intel/19.0.5"
-export JEDI_MPI="impi/2019.6.154"
+# Intel (default)
+export JEDI_COMPILER="intel/19.1.1"
+export JEDI_MPI="impi/2019.7.217"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
