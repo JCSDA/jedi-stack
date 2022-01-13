@@ -8,6 +8,9 @@ set -ex
 name="json-schema-validator"
 version=$1
 
+# Hyphenated version used for install prefix
+compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -17,7 +20,7 @@ if $MODULES; then
     module list
     set -x
 
-    prefix="${PREFIX:-"/opt/modules"}/core/$name/$version"
+    prefix="${PREFIX:-"/opt/modules"}/$compiler/$name/$version"
     if [[ -d $prefix ]]; then
         [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $prefix EXISTS: OVERWRITING!";$SUDO rm -rf $prefix ) \
                                    || ( echo "WARNING: $prefix EXISTS, SKIPPING"; exit 1 )
@@ -53,7 +56,7 @@ cmake .. \
 $SUDO make install
 
 # generate modulefile from template
-$MODULES && update_modules core $name $version \
+$MODULES && update_modules compiler $name $version \
          || echo $name $version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
 
 exit 0
