@@ -99,11 +99,11 @@ build_lib HDF5 hdf5 1.12.0
 build_lib PNETCDF pnetcdf 1.12.2
 build_lib NETCDF netcdf 4.7.4 4.5.3 4.3.0
 build_lib NCCMP nccmp 1.8.7.0
-build_lib ECKIT eckit ecmwf 1.16.0
-build_lib FCKIT fckit ecmwf 0.9.2
-build_lib ATLAS atlas ecmwf 0.24.1
+build_lib ECKIT eckit ecmwf 1.18.2
+build_lib FCKIT fckit ecmwf 0.9.5
+build_lib ATLAS atlas ecmwf 0.27.0
 build_lib ODB odb 0.18.1.r2
-build_lib ODC odc ecmwf 2021.03.0
+build_lib ODC odc ecmwf 1.4.4
 build_lib ECCODES eccodes 2.24.0
 
 # ===============================================================================
