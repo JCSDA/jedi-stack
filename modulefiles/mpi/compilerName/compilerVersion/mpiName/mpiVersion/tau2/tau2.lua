@@ -5,15 +5,17 @@ local pkgName    = myModuleName()
 local pkgVersion = myModuleVersion()
 local pkgNameVer = myModuleFullName()
 
-local hierA        = hierarchyA(pkgNameVer,1)
-local compNameVer  = hierA[1]
+local hierA        = hierarchyA(pkgNameVer,2)
+local mpiNameVer   = hierA[1]
+local compNameVer  = hierA[2]
+local mpiNameVerD  = mpiNameVer:gsub("/","-")
 local compNameVerD = compNameVer:gsub("/","-")
 
 conflict(pkgName)
 
 local opt = os.getenv("JEDI_OPT") or os.getenv("OPT") or "/opt/modules"
 
-local base = pathJoin(opt,compNameVerD,pkgName,pkgVersion)
+local base = pathJoin(opt,compNameVerD,mpiNameVerD,pkgName,pkgVersion)
 
 prepend_path("LD_LIBRARY_PATH", pathJoin(base,"lib"))
 prepend_path("DYLD_LIBRARY_PATH", pathJoin(base,"lib"))
