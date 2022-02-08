@@ -59,11 +59,14 @@ git checkout --detach $tag
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 
+# Need to set PYTHONPATH for the "python3 setup.py install" command that runs during make process
+pythonVersion=$(`which python3` -c 'import sys;print(sys.version_info[0],".",sys.version_info[1],sep="")')
+pyPath="${prefix}/lib/python${pythonVersion}/site-packages"
+
 cmake -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
-VERBOSE=$MAKE_VERBOSE $SUDO make install
+$SUDO PYTHONPATH=$pyPath VERBOSE=$MAKE_VERBOSE make install
 
 # generate modulefile from template
-pythonVersion=$(`which python3` -c 'import sys;print(sys.version_info[0],".",sys.version_info[1],sep="")')
 $MODULES && update_modules compiler $name $source-$version $pythonVersion \
          || echo $name $source-$version >> ${JEDI_STACK_ROOT}/jedi-stack-contents.log
