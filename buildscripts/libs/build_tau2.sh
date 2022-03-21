@@ -11,7 +11,6 @@ version="2.28.1"
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=tau2  
-[[ -d $PDTOOLKIT_ROOT ]] || ( echo "$software requires pdtoolkit, ABORT!"; exit 1 )
 [[ -d $software ]] || git clone https://github.com/UO-OACISS/tau2
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 
@@ -50,6 +49,7 @@ fi
 
 export PDTOOLKIT_ROOT=$PDT_ROOT
 
+[[ -d $PDTOOLKIT_ROOT ]] || ( echo "$software requires pdtoolkit, ABORT!"; exit 1 )
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 
