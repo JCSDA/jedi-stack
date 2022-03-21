@@ -14,6 +14,26 @@ version=$2
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
+software=NCEPLIBS-bufr
+
+# Release git tag name
+if [[ ${source} == "jcsda-internal" ]]
+then
+  gitOrg="jcsda-internal"
+  tag=$version
+else
+  gitOrg="${source}"
+  tag=bufr_v$version
+fi
+
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+[[ -d $software ]] || git clone https://github.com/$gitOrg/$software.git
+
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+git fetch
+git checkout --detach $tag
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 # manage package dependencies here
 if $MODULES; then
     set +x
@@ -37,24 +57,6 @@ export FC=$SERIAL_FC
 export F90=$SERIAL_FC
 export CC=$SERIAL_CC
 
-software=NCEPLIBS-bufr
-
-# Release git tag name
-if [[ ${source} == "jcsda-internal" ]]
-then
-  gitOrg="jcsda-internal"
-  tag=$version
-else
-  gitOrg="${source}"
-  tag=bufr_v$version
-fi
-
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-[[ -d $software ]] || git clone https://github.com/$gitOrg/$software.git
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-git fetch
-git checkout --detach $tag
 #[[ -d build ]] && rm -rf build
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
@@ -65,7 +67,7 @@ pyPath="${prefix}/lib/python${pythonVersion}/site-packages"
 
 cmake -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_LIBDIR=lib ..
 VERBOSE=$MAKE_VERBOSE make -j${NTHREADS:-4}
-$SUDO PYTHONPATH=$pyPath VERBOSE=$MAKE_VERBOSE make install
+VERBOSE=$MAKE_VERBOSE PYTHONPATH=$pyPath $SUDO make install
 
 # generate modulefile from template
 $MODULES && update_modules compiler $name $source-$version $pythonVersion \

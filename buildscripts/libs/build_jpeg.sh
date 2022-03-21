@@ -11,6 +11,13 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+software=$name-$version
+gitURL="https://github.com/LuaDist/libjpeg"
+[[ -d $software ]] || ( git clone $gitURL $software )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 # manage package dependencies here
 if $MODULES; then
     set +x
@@ -33,12 +40,6 @@ fi
 export CC=$SERIAL_CC
 export CFLAGS+=" -fPIC"
 
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-software=$name-$version
-gitURL="https://github.com/LuaDist/libjpeg"
-[[ -d $software ]] || ( git clone $gitURL $software )
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 sourceDir=$PWD
 [[ -d build ]] && rm -rf build

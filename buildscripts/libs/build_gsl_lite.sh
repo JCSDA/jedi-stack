@@ -11,6 +11,16 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+software=gsl-lite
+branch=v$(echo $version)
+[[ -d $software ]] || git clone https://github.com/gsl-lite/$software
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+git fetch
+git checkout $branch
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -28,15 +38,6 @@ else
     prefix="/usr/local"
 fi
 
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-software=gsl-lite
-branch=v$(echo $version)
-[[ -d $software ]] || git clone https://github.com/gsl-lite/$software
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-git fetch
-git checkout $branch
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=$prefix -DGSL_LITE_OPT_BUILD_TESTS=OFF -DGSL_LITE_OPT_INSTALL_COMPAT_HEADER=ON -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_VERBOSE_MAKEFILE=1 ..

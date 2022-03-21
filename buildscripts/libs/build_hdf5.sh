@@ -12,6 +12,14 @@ version=$1
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
+gitURL="https://github.com/HDFGroup/hdf5.git"
+
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+software=$name-$(echo $version | sed 's/\./_/g')
+[[ -d $software ]] || ( git clone -b $software $gitURL $software )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -51,13 +59,6 @@ export FCFLAGS="$FFLAGS"
 SZIP_ROOT=${SZIP_ROOT:-/usr}
 ZLIB_ROOT=${ZLIB_ROOT:-/usr}
 
-gitURL="https://github.com/HDFGroup/hdf5.git"
-
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-software=$name-$(echo $version | sed 's/\./_/g')
-[[ -d $software ]] || ( git clone -b $software $gitURL $software )
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build

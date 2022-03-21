@@ -14,6 +14,15 @@ version=$2
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
+software=$name
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+[[ -d $software ]] || git clone https://github.com/$source/$software.git
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+git fetch --tags
+git checkout $version
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -43,14 +52,6 @@ export FC=$MPI_FC
 export CC=$MPI_CC
 export CXX=$MPI_CXX
 
-software=$name
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-[[ -d $software ]] || git clone https://github.com/$source/$software.git
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-git fetch --tags
-git checkout $version
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 

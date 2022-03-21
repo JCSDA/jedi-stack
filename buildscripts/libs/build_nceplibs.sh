@@ -12,6 +12,9 @@ set -ex
 name="nceplibs"
 version=$1
 
+# NCEPlibs ship with jedi-stack so there is nothing to download
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 

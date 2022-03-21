@@ -11,6 +11,13 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+software=$name-$version
+url=ftp://ftp.unidata.ucar.edu/pub/udunits/$software.tar.gz
+[[ -d $software ]] || (rm -f $software.tar.gz; $WGET $url; tar xvf $software.tar.gz )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -35,12 +42,6 @@ export FFLAGS+=" -fPIC"
 export CFLAGS+=" -fPIC"
 export FCFLAGS="$FFLAGS"
 
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-software=$name-$version
-url=ftp://ftp.unidata.ucar.edu/pub/udunits/$software.tar.gz
-[[ -d $software ]] || (rm -f $software.tar.gz; $WGET $url; tar xvf $software.tar.gz )
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build

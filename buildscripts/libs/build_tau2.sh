@@ -8,6 +8,13 @@ set -ex
 name="tau2"
 version="2.28.1"
 
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+software=tau2  
+[[ -d $PDTOOLKIT_ROOT ]] || ( echo "$software requires pdtoolkit, ABORT!"; exit 1 )
+[[ -d $software ]] || git clone https://github.com/UO-OACISS/tau2
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
@@ -43,12 +50,6 @@ fi
 
 export PDTOOLKIT_ROOT=$PDT_ROOT
 
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-software=tau2  
-[[ -d $PDTOOLKIT_ROOT ]] || ( echo "$software requires pdtoolkit, ABORT!"; exit 1 )
-[[ -d $software ]] || git clone https://github.com/UO-OACISS/tau2
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 

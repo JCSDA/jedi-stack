@@ -11,6 +11,14 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
+cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
+
+software="$name-$version"
+tarfile="$version.tar.gz"
+url="https://github.com/pboettch/json-schema-validator/archive/$tarfile"
+[[ -d $software ]] || ( rm -f $tarfile; $WGET $url; tar -xf $tarfile )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -31,13 +39,6 @@ else
     JSON_DIR=${JSON_DIR:-$prefix/lib/cmake/nlohmann_json}
 fi
 
-cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
-
-software="$name-$version"
-tarfile="$version.tar.gz"
-url="https://github.com/pboettch/json-schema-validator/archive/$tarfile"
-[[ -d $software ]] || ( rm -f $tarfile; $WGET $url; tar -xf $tarfile )
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build
