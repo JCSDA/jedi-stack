@@ -16,8 +16,6 @@ version=$1
 # Hyphenated version used for install prefix
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 
-initialize_prefix_compiler $name $version $compiler
-
 software="sqlite-autoconf-${version:0:1}${version:2:2}0${version:5:1}00"
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 tarname="$software.tar.gz"
@@ -25,6 +23,8 @@ url="https://www.sqlite.org/2020/$tarname"
 [[ -d $software ]] || ( rm -f $tarname; $WGET $url; tar -xf $tarname )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+
+initialize_prefix_compiler $name $version $compiler
 
 ./configure --prefix=$prefix
 make V=$MAKE_VERBOSE -j${NTHREADS:-4}

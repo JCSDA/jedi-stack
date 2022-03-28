@@ -12,12 +12,12 @@ version=$1
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
-gitURL="https://developer.nasa.gov/GMAO/ESMA-Baselibs.git"
+gitURL="https://github.com/GEOS-ESM/ESMA-Baselibs.git"
 
 cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
-software=$name-$version
-[[ -d $software ]] || ( git clone -b $version $gitURL $software )
+software=$name-v$version
+[[ -d $software ]] || ( git clone -b v$version $gitURL $software )
 [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 
 if $MODULES; then

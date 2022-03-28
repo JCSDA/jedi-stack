@@ -35,7 +35,6 @@ export      STACK_BUILD_NCEPLIBS=N
 export          STACK_BUILD_JPEG=N
 export           STACK_BUILD_PNG=N
 export        STACK_BUILD_JASPER=N
-export     STACK_BUILD_ARMADILLO=N
 export        STACK_BUILD_XERCES=N
 export        STACK_BUILD_TKDIFF=N
 export    STACK_BUILD_BOOST_FULL=N
