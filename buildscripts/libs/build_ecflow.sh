@@ -15,10 +15,10 @@ cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
 
 software=$name
 [[ -d $software ]] || git clone https://github.com/$source/$software.git
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 git fetch --tags
 git checkout $version
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 

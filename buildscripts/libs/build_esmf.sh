@@ -14,6 +14,15 @@ software=${name}_$version
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
+gitURL="https://git.code.sf.net/p/esmf/esmf.git"
+gitURL="https://github.com/esmf-org/esmf"
+
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+
+software="ESMF_$version"
+[[ -d $software ]] || ( git clone -b $software $gitURL $software )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
   set +x
   source $MODULESHOME/init/bash
@@ -90,14 +99,6 @@ export ESMF_INSTALL_LIBDIR=lib
 export ESMF_INSTALL_MODDIR=mod
 export ESMF_ABI=64
 
-gitURL="https://git.code.sf.net/p/esmf/esmf.git"
-gitURL="https://github.com/esmf-org/esmf"
-
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-
-software="ESMF_$version"
-[[ -d $software ]] || ( git clone -b $software $gitURL $software )
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 export ESMF_DIR=$PWD
 

@@ -11,6 +11,15 @@ source=$1
 version=$2
 dash_version=$(echo -n $version | sed -e "s@/@-@g")
 
+software=ecbuild
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+[[ -d $software ]] && [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $software EXISTS: OVERWRITING!";$SUDO rm -rf $software )
+[[ -d $software ]] || git clone https://github.com/$source/$software.git
+[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
+git fetch --tags
+git checkout $version
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -27,14 +36,6 @@ else
     prefix=${ECBUILD_ROOT:-"/usr/local"}
 fi
 
-software=ecbuild
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-[[ -d $software ]] && [[ $OVERWRITE =~ [yYtT] ]] && ( echo "WARNING: $software EXISTS: OVERWRITING!";$SUDO rm -rf $software )
-[[ -d $software ]] || git clone https://github.com/$source/$software.git
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
-[[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
-git fetch --tags
-git checkout $version
 [[ -d build ]] && $SUDO rm -rf build
 mkdir -p build && cd build
 

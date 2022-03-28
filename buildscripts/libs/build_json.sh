@@ -8,6 +8,14 @@ set -ex
 name="json"
 version=$1
 
+cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
+
+software="$name-$version"
+tarfile="v$version.tar.gz"
+url="https://github.com/nlohmann/json/archive/$tarfile"
+[[ -d $software ]] || ( rm -f $tarfile; $WGET $url; tar -xf $tarfile )
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -26,13 +34,6 @@ else
     prefix=${json_ROOT:-"/usr/local"}
 fi
 
-cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
-
-software="$name-$version"
-tarfile="v$version.tar.gz"
-url="https://github.com/nlohmann/json/archive/$tarfile"
-[[ -d $software ]] || ( rm -f $tarfile; $WGET $url; tar -xf $tarfile )
-[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
 [[ -d $software ]] && cd $software || ( echo "$software does not exist, ABORT!"; exit 1 )
 [[ -d build ]] && rm -rf build
 mkdir -p build && cd build

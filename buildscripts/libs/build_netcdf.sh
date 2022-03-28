@@ -14,6 +14,36 @@ cxx_version=$3
 compiler=$(echo $JEDI_COMPILER | sed 's/\//-/g')
 mpi=$(echo $JEDI_MPI | sed 's/\//-/g')
 
+gitURLroot="https://github.com/Unidata"
+
+cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
+curr_dir=$(pwd)
+
+cd $curr_dir
+
+##################################################
+# Download only
+
+if [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]]; then
+
+    version=$c_version
+    software=$name-"c"-$version
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-c.git $software )
+
+    version=$f_version
+    software=$name-"fortran"-$version
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-fortran.git $software )
+
+    version=$cxx_version
+    software=$name-"cxx4"-$version
+    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-cxx4.git $software )
+
+    exit 0
+
+fi
+
+##################################################
+
 if $MODULES; then
     set +x
     source $MODULESHOME/init/bash
@@ -52,37 +82,7 @@ export CFLAGS+=" -fPIC"
 export CXXFLAGS+=" -fPIC -std=c++11"
 export FCFLAGS="$FFLAGS"
 
-gitURLroot="https://github.com/Unidata"
-
-cd ${JEDI_STACK_ROOT}/${PKGDIR:-"pkg"}
-curr_dir=$(pwd)
-
 export LDFLAGS+=" -L$HDF5_ROOT/lib -L$SZIP_ROOT/lib"
-
-cd $curr_dir
-
-##################################################
-# Download only
-
-if [[ ${DOWNLOAD_ONLY} =~ [yYtT] ]]; then
-
-    version=$c_version
-    software=$name-"c"-$version
-    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-c.git $software )
-
-    version=$f_version
-    software=$name-"fortran"-$version
-    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-fortran.git $software )
-
-    version=$cxx_version
-    software=$name-"cxx4"-$version
-    [[ -d $software ]] || ( git clone -b "v$version" $gitURLroot/$name-cxx4.git $software )
-
-    exit 0
-
-fi
-
-##################################################
 
 set +x
 echo "################################################################################"

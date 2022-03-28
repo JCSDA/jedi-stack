@@ -8,6 +8,16 @@ set -ex
 name="git-lfs"
 version=$1
 
+cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
+
+software=git-lfs-linux-386-v$version
+mkdir -p $software
+cd $software
+rm -f $software.tar.gz
+wget https://github.com/git-lfs/git-lfs/releases/download/v$version/$software.tar.gz
+tar xvf $software.tar.gz
+[[ ${DOWNLOAD_ONLY} =~ [yYtT] ]] && exit 0
+
 # this is only needed if MAKE_CHECK is enabled
 if $MODULES; then
 
@@ -27,14 +37,6 @@ else
     prefix=${GITLFS_ROOT:-"/usr/local"}
 fi
 
-cd $JEDI_STACK_ROOT/${PKGDIR:-"pkg"}
-
-software=git-lfs-linux-386-v$version
-mkdir -p $software
-cd $software
-rm -f $software.tar.gz
-wget https://github.com/git-lfs/git-lfs/releases/download/v$version/$software.tar.gz
-tar xvf $software.tar.gz
 $SUDO mkdir -p $prefix/bin
 $SUDO rm -rf $prefix/bin/git-lfs*
 install git-lfs $prefix/bin/git-lfs
