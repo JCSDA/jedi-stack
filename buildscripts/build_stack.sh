@@ -80,7 +80,7 @@ $MODULES && (set +x;  source $MODULESHOME/init/bash; module purge; set -x)
 build_lib CMAKE cmake 3.20.0
 build_lib UDUNITS udunits 2.2.28
 build_lib JPEG jpeg 9.1.0
-build_lib ZLIB zlib 1.2.11
+build_lib ZLIB zlib 1.2.12
 build_lib PNG png 1.6.35
 build_lib SZIP szip 2.1.1
 build_lib LAPACK lapack 3.8.0
@@ -112,7 +112,6 @@ build_lib ECCODES eccodes 2.24.0
 #----------------------
 # MPI-independent
 build_lib JASPER jasper 1.900.1
-build_lib ARMADILLO armadillo 1.900.1
 build_lib XERCES xerces 3.1.4
 build_lib NCEPLIBS nceplibs fv3
 build_lib TKDIFF tkdiff 4.3.5
@@ -132,7 +131,7 @@ build_lib PIO pio 2.5.1
 build_lib FFTW fftw 3.3.8
 build_lib BOOST_FULL boost 1.68.0
 build_lib ESMF esmf 8_0_1
-build_lib BASELIBS baselibs 5.2.2
+build_lib BASELIBS baselibs 6.2.13
 build_lib PDTOOLKIT pdtoolkit 3.25.1
 build_lib TAU2 tau2 3.25.1
 build_lib FMS fms jcsda release-stable

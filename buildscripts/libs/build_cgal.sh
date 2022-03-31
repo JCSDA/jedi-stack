@@ -36,6 +36,8 @@ url="https://github.com/CGAL/cgal/releases/download/v$version/$software-library.
 # Apply a patch to fix CMake intel compiler flags.
 # Remove when possible or update as needed.
 if [[ $version == "5.0.4" ]]; then
+    # Note. Default patch on macOS doesn't recognize --merge,
+    # need to install gpatch via homebrew (brew install gpatch)
     patch --merge -p1 < ${JEDI_STACK_ROOT}/buildscripts/libs/patches/${software}-intel-fpmodel-flag-fix.patch
 else
     echo "Error: Must generate new patch for unsupported CGal version: $version"
