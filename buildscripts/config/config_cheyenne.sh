@@ -17,6 +17,10 @@
 export JEDI_COMPILER="intel/19.1.1"
 export JEDI_MPI="impi/2019.7.217"
 
+# Intel (for testing)
+#export JEDI_COMPILER="intel/2021.2"
+#export JEDI_MPI="impi/2021.2"
+
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
 # native-module: load a pre-existing module (common for HPC systems)
