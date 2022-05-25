@@ -32,7 +32,7 @@ export JEDI_COMPILER_BUILD="native-module"
 export MPI_BUILD="native-module"
 
 # Build options
-export PREFIX=/glade/work/jedipara/cheyenne/opt/modules
+export PREFIX=${JEDI_OPT:-/glade/work/jedipara/cheyenne/opt/modules}
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
@@ -41,8 +41,8 @@ export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=Y
 export   MAKE_CLEAN=N
-export DOWNLOAD_ONLY=F
-export STACK_EXIT_ON_FAIL=T
+export DOWNLOAD_ONLY=N
+export STACK_EXIT_ON_FAIL=Y
 export WGET="wget -nv"
 #Global compiler flags
 export FFLAGS=""
