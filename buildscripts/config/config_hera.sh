@@ -5,8 +5,14 @@
 
 
 # Compiler/MPI combination
-export JEDI_COMPILER="intel/19.0.5"
-export JEDI_MPI="impi/19.0.5"
+
+# Intel (default)
+#export JEDI_COMPILER="intel/2020.2"
+#export JEDI_MPI="impi/2020.2"
+
+# GNU / OpenMPI
+export JEDI_COMPILER="gnu/9.2.0"
+export JEDI_MPI="openmpi/3.1.4"
 
 # This tells jedi-stack how you want to build the compiler and mpi modules
 # valid options include:
@@ -18,11 +24,12 @@ export JEDI_MPI="impi/19.0.5"
 export COMPILER_BUILD="native-module"
 export MPI_BUILD="native-module"
 # Build options
-export PREFIX=${JEDI_OPT:-/data/users/$USER/modules}
+# export PREFIX=${JEDI_OPT2:-/opt/modules}
+export PREFIX=${JEDI_OPT:-/opt/modules}
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
-export OVERWRITE=N
+export OVERWRITE=Y
 export NTHREADS=4
 export   MAKE_CHECK=N
 export MAKE_VERBOSE=Y
@@ -33,11 +40,5 @@ export WGET="wget -nv"
 #Global compiler flags
 export FFLAGS=""
 export CFLAGS=""
-
-# C++-14 compliant compiler settings
-# set / export these variables when building for Intel compiler(s)
-if [[ "$JEDI_COMPILER" =~ .*"intel"* ]]; then
-    export CXXFLAGS="-std=c++14"
-    export LDFLAGS="-std=c++14"
-fi
-
+export CXXFLAGS=""
+export LDFLAGS=""
