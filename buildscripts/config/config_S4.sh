@@ -18,7 +18,7 @@ export JEDI_MPI="impi/19.0.5"
 export COMPILER_BUILD="native-module"
 export MPI_BUILD="native-module"
 # Build options
-export PREFIX=${JEDI_STACK_PREFIX:-/data/users/$USER/modules}
+export PREFIX=${JEDI_OPT:-/data/users/$USER/modules}
 export USE_SUDO=N
 export PKGDIR=pkg
 export LOGDIR=buildscripts/log
